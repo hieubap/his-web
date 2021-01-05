@@ -4,8 +4,6 @@ import { Provider } from "react-redux";
 import stores from "redux-store/stores";
 import App from "./app";
 import * as serviceWorker from "./serviceWorker";
-import "./global-styles";
-import "./styles.css";
 import "./themes/default.less";
 import "./i18n";
 import { BrowserRouter } from "react-router-dom";
