@@ -37,7 +37,6 @@ export default {
               auth: s?.data,
             });
             resolve(s?.data);
-            dispatch.department.getAllDepartments();
             dispatch.patientRoom.getAllNursing();
           })
           .catch((e) => {

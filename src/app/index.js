@@ -11,7 +11,6 @@ import viVN from "antd/es/locale/vi_VN";
 import { Switch, Route } from "react-router-dom";
 import { originUrl, accountUrl } from "client/request";
 import { messaging } from "components/Notification/init-fcm";
-import { vitalSignsPrint } from "pages/constants";
 import { useHistory } from "react-router-dom";
 
 Array.prototype.insert = function (index, item) {
@@ -90,10 +89,6 @@ const App = (props) => {
       <ConfigProvider locale={viVN}>
         <Switch>
           <Route path={"/logout"} component={logout} />
-          <Route
-            path={"/vital-signs/:patientDocument"}
-            component={vitalSignsPrint}
-          />
           <Main>
             <Route path={"/"} component={Layout} />
           </Main>

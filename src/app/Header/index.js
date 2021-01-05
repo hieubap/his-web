@@ -122,21 +122,6 @@ const Header = (props) => {
         </div>
         <div className="app-header__content">
           <div className="app-header-left">
-            {/* <div
-              className={`search-wrapper ${state.isShowSearch ? "active" : ""}`}
-            >
-              <div className="input-holder">
-                <input
-                  type="text"
-                  className="search-input"
-                  placeholder="Type to search"
-                />
-                <button className="search-icon" onClick={showSearch(true)}>
-                  <span></span>
-                </button>
-              </div>
-              <button className="close" onClick={showSearch(false)}></button>
-            </div> */}
           </div>
           <div className="app-header-right">
             <div className="header-dots">
@@ -158,54 +143,6 @@ const Header = (props) => {
                 </a>
               </div>
               <ButtonNotification />
-
-              {/* <div className="dropdown">
-                <button
-                  type="button"
-                  data-toggle="dropdown"
-                  className="p-0 mr-2 btn btn-link"
-                >
-                  <span className="icon-wrapper icon-wrapper-alt rounded-circle">
-                    <span className="icon-wrapper-bg bg-focus"></span>
-                    <VN className="language-icon opacity-8 flag large" />
-                  </span>
-                </button>
-                <div
-                  tabIndex="-1"
-                  role="menu"
-                  aria-hidden="true"
-                  className="rm-pointers dropdown-menu dropdown-menu-right"
-                >
-                  <div className="dropdown-menu-header">
-                    <div className="dropdown-menu-header-inner pt-4 pb-4 bg-focus">
-                      <div className="menu-header-image opacity-05"></div>
-                      <div className="menu-header-content text-center text-white">
-                        <h6 className="menu-header-subtitle mt-0">
-                          {t("language")}
-                        </h6>
-                      </div>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    tabIndex="0"
-                    className="dropdown-item"
-                    onClick={changeLanguage("vi")}
-                  >
-                    <VN className="mr-3 opacity-8 flag large CH" />
-                    Tiếng Việt
-                  </button>
-                  <button
-                    type="button"
-                    tabIndex="0"
-                    className="dropdown-item"
-                    onClick={changeLanguage("en")}
-                  >
-                    <UK className="mr-3 opacity-8 flag large CH" />
-                    English
-                  </button>
-                </div>
-              </div> */}
             </div>
             <UserInfo />
           </div>
@@ -225,61 +162,3 @@ export default connect(
     showInAppNotification,
   })
 )(Header);
-
-// <div className={"left-side-header"}>
-// <Link to={"/"} className={"logo-link"}>
-//   <Logo width={110} height={40} />
-// </Link>
-
-// <span className={"left-side-header-title"}>
-//   {process.env.REACT_APP_TITLE}
-// </span>
-// </div>
-
-// <div className="header-icon">
-// <div className={"document"}>
-//   <a
-//     target={"_blank"}
-//     href={`${window.location.origin}${process.env.REACT_APP_DOCUMENT_LINK}`}
-//   >
-//     <span title={"Tài liệu, hướng dẫn sử dụng"}>
-//       <Icon
-//         type="question-circle"
-//         style={{ color: "#fff", fontSize: 16 }}
-//       />
-//     </span>
-//   </a>
-// </div>
-
-// <div className={"app-notification"}>
-//   <Popover
-//     content={<Notification show={state.showNotification} />}
-//     trigger="click"
-//     onVisibleChange={onShowNotification}
-//   >
-//     <div className="notification-contain">
-//       <Icon type="bell" style={{ fontSize: 18, color: "#fff" }} />
-//       {props.totalUnread > 0 && (
-//         <span className="badge">
-//           {props.totalUnread > 99 ? "99+" : props.totalUnread}
-//         </span>
-//       )}
-//     </div>
-//   </Popover>
-// </div>
-// <div className={"app-language"}>
-//   <Dropdown
-//     overlay={menu(changeLanguage)}
-//     overlayStyle={{ minWidth: 120 }}
-//     placement={"bottomRight"}
-//   >
-//     <div id={"app-language"} className={"language-contain"}>
-//       <Icon type="global" style={{ fontSize: 18, color: "#fff" }} />
-//       <span className={"language-title"}>{t("language")}</span>
-//     </div>
-//   </Dropdown>
-// </div>
-// <div className={"use-info-header"}>
-//   <UserInfo />
-// </div>
-// </div>

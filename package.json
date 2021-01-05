@@ -103,18 +103,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "build:110:develop": "env-cmd -f .env.110.staging node scripts/build.js",
-    "build:110:production": "env-cmd -f .env.110.production node scripts/build.js",
-    "build:spaul:develop": "env-cmd -f .env.spaul.staging node scripts/build.js",
-    "build:spaul:production": "env-cmd -f .env.spaul.production node scripts/build.js",
-    "build:dhy:production": "env-cmd -f .env.dhy.production node scripts/build.js",
-    "build:dhy:develop": "env-cmd -f .env.dhy.staging node scripts/build.js",
-    "build:mat:develop": "env-cmd -f .env.mat.staging node scripts/build.js",
-    "build:mat:production": "env-cmd -f .env.mat.production node scripts/build.js",
-    "build:thanhhoa:develop": "env-cmd -f .env.thanhhoa.staging node scripts/build.js",
-    "build:thanhhoa:production": "env-cmd -f .env.thanhhoa.production node scripts/build.js",
-    "build:mediplus:develop": "env-cmd -f .env.medi.staging node scripts/build.js",
-    "build:mediplus:production": "env-cmd -f .env.medi.production node scripts/build.js",
+    "build:develop": "env-cmd -f .env.staging node scripts/build.js",
+    "build:production": "env-cmd -f .env.production node scripts/build.js",
     "test": "node scripts/test.js"
   },
   "eslintConfig": {

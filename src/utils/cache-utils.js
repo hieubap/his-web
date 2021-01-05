@@ -11,7 +11,7 @@ export default {
         if (encrypt) {
           data = CryptoJS.AES.encrypt(
             JSON.stringify(data),
-            "ISOFH_EMR"
+            "ISOFH_HIS_CORE"
           ).toString();
         } else {
           data = JSON.stringify(data);
@@ -37,7 +37,7 @@ export default {
         .then((item) => {
           try {
             if (item && encrypt) {
-              item = CryptoJS.AES.decrypt(item, "ISOFH_EMR").toString(
+              item = CryptoJS.AES.decrypt(item, "ISOFH_HIS_CORE").toString(
                 CryptoJS.enc.Utf8
               );
             }

@@ -17,21 +17,4 @@ const PageHeader = (props) => {
   );
 };
 
-const mapState = (state) => ({
-  isLoadingRecordType: state.medicalRecord.isLoadingRecordType,
-  dataRecordTypes: state.medicalRecord.dataRecordTypes || [],
-  recordTypeTotal: state.medicalRecord.recordTypeTotal || 0,
-  recordTypePage: state.medicalRecord.recordTypePage || 0,
-  recordTypeSize: state.medicalRecord.recordTypeSize || 10,
-  recordType: state.medicalRecord.recordType,
-});
-
-const mapDispatch = ({
-  medicalRecord: { onSearchRecordType, onSizeChangeRecordType, getDetail },
-}) => ({
-  onSearchRecordType,
-  onSizeChangeRecordType,
-  getDetail,
-});
-
-export default connect(mapState, mapDispatch)(PageHeader);
+export default PageHeader;
