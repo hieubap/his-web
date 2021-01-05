@@ -88,6 +88,6 @@
     "logout": "logout"
   },
   "patient": {
-    "list": "Patient list"
+    "list": "Patient list",
   }
 }
