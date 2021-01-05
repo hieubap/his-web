@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 
 import PageWrapper from "components/PageWrapper";
 
-// const VitalSignsCategory = React.lazy(() => import("./categories/vital-signs"));
+const Reception = React.lazy(() => import("./reception"));
 
 const Page = (Component, roles = []) => (props) => {
   return (
@@ -16,12 +16,12 @@ const Page = (Component, roles = []) => (props) => {
 
 
 const pages = {
-  // vitalSignsCategory: {
-  //   component: Page(VitalSignsCategory, []),
-  //   accessRoles: [],
-  //   path: "/servival-index",
-  //   exact: false,
-  // },
+  reception: {
+    component: Page(Reception, []),
+    accessRoles: [],
+    path: "/",
+    exact: false,
+  },
 };
 
 export { pages };

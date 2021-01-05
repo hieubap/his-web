@@ -2,35 +2,25 @@ import styled from "styled-components";
 import { Modal } from "antd";
 
 export const Main = styled(Modal)`
-  width: 100% !important;
-  top: 0 !important;
-  height: 100%;
-  padding-bottom: 0px !important;
-  .header {
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
+  width: 650px !important;
   & .ant-modal-content {
-    border-radius: 0;
     height: 100%;
     & .ant-modal-body {
       padding: 0;
-      display: flex;
-      height: 100%;
-      align-items: center;
-      justify-content: center;
-      position: relative;
+      section {
+        div {
+          border: 75px solid rgba(0, 0, 0, 0.3) !important; 
+        }
+      }
     }
   }
   & video {
     height: 100%;
   }
-
   & .camera-container {
     width: 100%;
     height: 100%;
   }
-
   & .camera-footer {
     height: 100px;
     background: #00000030;
@@ -38,7 +28,7 @@ export const Main = styled(Modal)`
     display: flex;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: -18;
     padding: 10px;
     flex-direction: column;
     justify-content: center;
@@ -46,13 +36,7 @@ export const Main = styled(Modal)`
     & .tip {
       color: #fff;
       font-weight: bold;
-    }
-    & .button-close {
-      margin-top: 10px;
-      background: red;
-      padding: 10px;
-      border-radius: 25px;
-      cursor: pointer;
+      font-size: 18px;
     }
     & .button-switch {
       margin-top: 10px;

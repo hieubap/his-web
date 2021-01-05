@@ -12,7 +12,7 @@ import { Switch, Route } from "react-router-dom";
 import { originUrl, accountUrl } from "client/request";
 import { messaging } from "components/Notification/init-fcm";
 import { useHistory } from "react-router-dom";
-
+import IndexedDB from 'utils/IndexedDB';
 Array.prototype.insert = function (index, item) {
   this.splice(index, 0, item);
 };

@@ -1,14 +1,11 @@
-import React, {
-  useState,
-  useRef,
-  forwardRef,
-  useImperativeHandle,
-} from "react";
+import React, { useState, useRef, forwardRef, useImperativeHandle } from "react";
 import { Main } from "./styled";
-import BarcodeScanner from "./index2";
+import QrReader from "react-qr-reader";
 import ButtonClose from "assets/svg/camera-close.svg";
+
 function ScanQrCode(props, ref) {
   const refCallback = useRef(null);
+
   const [state, _setState] = useState({});
   const setState = (data = {}) => {
     _setState((state) => {
@@ -17,9 +14,9 @@ function ScanQrCode(props, ref) {
   };
 
   useImperativeHandle(ref, () => ({
-    show: (callback) => {
+    show: (data = {}, callback) => {
       setState({
-        show: true,
+        show: data.show
       });
       refCallback.current = callback;
     },
@@ -27,17 +24,24 @@ function ScanQrCode(props, ref) {
 
   const handleScan = (data) => {
     if (data) {
-      if (props.onOK) {
-        props.onOK(data);
-      }
-      setState({ show: false });
       if (refCallback.current) refCallback.current(data);
     }
-  };
-  const handleError = (err) => {};
+  }
+  const handleError = (err) => {
+    console.error(err);
+  }
   const onCancel = () => {
-    setState({ show: false });
-  };
+    navigator && navigator.getUserMedia({ audio: false, video: true },
+      function (stream) {
+        var track = stream.getTracks()[0];
+        track.stop();
+        setState({ show: false });
+        if (refCallback.current) refCallback.current();
+      },
+      function (error) {
+        console.log('getUserMedia() error', error);
+      });
+  }
   return (
     <Main
       visible={state.show}
@@ -45,16 +49,10 @@ function ScanQrCode(props, ref) {
       onCancel={onCancel}
       closable={false}
     >
-      {state.show && (
-        <BarcodeScanner
-          style={{ width: "100%" }}
-          facingMode={state.facingMode}
-          onUpdate={(err, result) => {
-            if (result) handleScan(result.text);
-            else handleError("Not Found");
-          }}
-        />
-      )}
+      <QrReader
+        onError={handleError}
+        onScan={(e) => handleScan(e)}
+      />
       <div className="camera-footer">
         <span className="tip">Di chuyển Camera đến khu vực cần quét</span>
         <div>
