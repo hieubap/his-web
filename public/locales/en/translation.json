@@ -1,0 +1,93 @@
+{
+  "title": "Welcome to react using react-i18next",
+  "language": "Chọn ngôn ngữ",
+  "updateSuccess": "Update success",
+  "menu": {
+    "emr": "Medical record",
+    "manageSignature": "Manage signature",
+    "listMedicine": "medicine listing",
+    "listSignature": "Signature listing",
+    "historySignature": "Signature history",
+    "infoRoom": "Management infomation rooms",
+    "permission": "Permission list",
+    "userRoles": "User roles",
+    "setting": "Setting",
+    "inpatientTreatment": "treatment",
+    "treatment": "Treatment",
+    "manageMedicine": "Manage medicine",
+    "medicinePlan": "Medicine planes",
+    "medicineDistribution": "Medicine distribution",
+    "medicineReport": "Report",
+    "medicineReport1":"QLT01. Tổng hợp phát thuốc",
+    "medicineReport2":"QLT02. Chi tiết phát thuốc",
+    "categories": "Categories",
+    "lifePoint": "Life point",
+    "config": "Config",
+    "room": "Room",
+    "formCategory":"Form",
+    "manageMedicalRecord":"Manage medical records"
+  },
+  
+  "drugDistributions": {
+      "infoPatient": "Patient information",
+      "patientCode": "Patient's code",
+      "patientDocument": "Patient's document",
+      "address": "Address",
+      "department": "Department",
+      "doctor": "Doctor",
+      "diagnose": "Diagnose",
+      "room": "Room",
+      "bed": "Bed",
+      "close": "Close",
+      "patientList": "Patient list",
+      "medicineList": "Medicine list",
+      "searchPatientPlaceHolder": "Search medical code/patient document code or patient name",
+      "medicalCode": "Medical code",
+      "normalMedicine":"Normal medicine",
+      "injectionMedicine": "Injection medicine",
+      "isDistributed": "Distributed",
+      "tablet": "tablets",
+      "distributionTime": "Distribution time",
+      "medicineDistributor": "Medicine distributor",
+      "distributionList": "Medicine distribution list",
+      "selectDepartmant": "Select department",
+      "selectRoom": "Select room",
+      "detailTitle": "Distribution detail",
+      "ampoule": "Ampoule",
+      "age": "years old",
+      "noData": "No data !"
+  },
+  "patientRoom": {
+    "titlePage": "Management in charge of patient prevention",
+    "nursingIncharge": "Nursing in charge",
+    "searchNursing": "Search nursing",
+    "nursingCode": "Nursing code"
+    
+  },
+  "permission":{
+    "categories": "setup permission categories",
+    "detail":"View detail",
+    "STT": "No.",
+    "permissionCode": "Mã quyền",
+    "rightToUse": "Right to use",
+    "descriptions": "Descriptions",
+    "effective": "Effective",
+    "action": "Action",
+    "detailInfo": "Chi tiết quyền",
+    "application": "Application",
+    "in": "in",
+    "save": "Save",
+    "selectApplycation": "Select applycation",
+    "assign": "Assign",
+    "acc": "Account"
+  },
+  "pagination":{
+    "rowDisplay": "Number of rows:"
+  },
+  "user": {
+    "logout": "logout"
+  },
+  "patient": {
+    "list": "Patient list"
+  }
+}
