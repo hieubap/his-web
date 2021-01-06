@@ -12,6 +12,7 @@ export const Main = styled(Modal)`
         border-radius: 16px;
     }   
     .container{
+        width:100%;
         padding:0 21px;
         h3{
             margin-top:6px;

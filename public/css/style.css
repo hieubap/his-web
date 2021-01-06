@@ -83,6 +83,13 @@ body {
     width: 4px;
     height: 4px;
 }
+.ant-table-body::-webkit-scrollbar-track {
+    border-bottom-right-radius: 20px;
+  }
+.ant-table-body::-webkit-scrollbar-thumb {
+    background: rgb(177, 177, 177);
+    border-radius: 25px;
+  }
 .pr-3{
     padding-right: 15px;
 }

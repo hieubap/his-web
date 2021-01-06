@@ -161,6 +161,7 @@ export const Main = styled(Col)`
                     .input-content{
                         .form-control{
                             ${input};
+                            padding-left: 12px;
                             &:focus{
                                 border-right-width: 1px !important;
                                 outline: 0;
@@ -297,7 +298,8 @@ export const Main = styled(Col)`
                     cursor: pointer;
                     width: 100%;
                     ${displayFlex("center", "center")};
-                    margin-top: 54px;
+                    margin-top: 59px;
+                    font-weight:600;
                     margin-bottom: 10px;
                     letter-spacing: 0.75px;
                     color: #2f80ed;

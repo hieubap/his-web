@@ -28,4 +28,10 @@ export const Main = styled(Row)`
             }
         }
     }
+    & .bg-color{
+            background-color: #E9F3FC;
+    }
+    ::-webkit-scrollbar{
+        display: none!important;
+        }
 `;

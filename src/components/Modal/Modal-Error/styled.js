@@ -73,6 +73,7 @@ export const Main = styled(Modal)`
                 border: 2px solid #0291E1;
             }
             h6{
+                margin-bottom:0;
                 font-weight: normal;
                 font-size: 14px;
                 line-height: 18px;

@@ -30,14 +30,14 @@ const Index = props => {
             x[1].style.display = "none";
             x[2].style.display = "none";
             let elementButtonClear = document.querySelectorAll(".button-clear")
-            elementButtonClear[0].style.marginTop = "54px"
+            elementButtonClear[0].style.marginTop = "59px"
         } else {
             let x = document.querySelectorAll(".hidden-form");
             x[0].style.display = "block";
             x[1].style.display = "block";
             x[2].style.display = "flex";
             let elementButtonClear = document.querySelectorAll(".button-clear")
-            elementButtonClear[0].style.marginTop = "240px"
+            elementButtonClear[0].style.marginTop = "248px"
         }
         setState({ checkFormInfo: !checkFormInfo });
     }
@@ -119,7 +119,7 @@ const Index = props => {
                         <Col md={24} xl={24} xxl={24}>
                             <div className="item">
                                 <label> Địa chỉ</label>
-                                <h5 style={{ fontStyle: "italic", marginTop: 3 }}> Ví dụ: Số 313 Trường Chinh, Khương Mai, Thanh Xuân, Hà Nội</h5>
+                                <h5 style={{ fontStyle: "italic", marginTop: 3,marginBottom:0 }}> Ví dụ: Số 313 Trường Chinh, Khương Mai, Thanh Xuân, Hà Nội</h5>
                                 <AddressFull
                                     onChange={(e) => onChange(e, "diaChi")}
                                     placeholder="Nhập địa chỉ"

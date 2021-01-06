@@ -150,6 +150,7 @@ export const Main = styled.div`
             ${displayFlex("center", "center")};
             margin-top: 14px;
             margin-bottom: 10px;
+            font-weight:600;
             letter-spacing: 0.75px;
             color: #2f80ed;
             .icon {

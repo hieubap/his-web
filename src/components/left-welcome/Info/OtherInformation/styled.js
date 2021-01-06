@@ -74,6 +74,7 @@ export const Main = styled(Row)`
         width: 100%;
         ${displayFlex("center", "center")};
         margin-top: 15px;
+        font-weight:600;
         letter-spacing: 0.75px;
         color: #2f80ed;
         .icon {

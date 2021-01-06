@@ -10,7 +10,7 @@ function index(props) {
                 <div className="title">DS gọi nhỡ</div>
                 <div className="content">
                     <Table
-                        scroll={{ x: 280, y: 110 }}
+                        scroll={{ y: 110 }}
                         columns={[
                             {
                                 title: (
@@ -20,7 +20,7 @@ function index(props) {
                                         <div className="title-box">STT</div>
                                     </div>
                                 ),
-                                width: 10,
+                                width: 20,
                                 dataIndex: "col1",
                                 key: "col1"
                             },
@@ -35,7 +35,7 @@ function index(props) {
 
                                     </div>
                                 ),
-                                width: 60,
+                                width: 80,
                                 dataIndex: "col2",
                                 key: "col2"
                             },

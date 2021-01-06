@@ -30,7 +30,7 @@ function index(props) {
                     // diaChi={props.diaChi}
                 />
             </Col>
-            <Col md={24} xl={8} xxl={8}>
+            <Col md={24} xl={8} xxl={8} className="bg-color">
                 <MainRight
                     // history={props.history}
                     // updateData={props.updateData}
