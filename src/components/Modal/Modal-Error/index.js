@@ -80,11 +80,11 @@ const ModalError = (props, ref) => {
                 <Row className="button-bottom">
                     <div className="btn-left">
                         <span>Bỏ kiểm tra thẻ</span>
-                        <img src={require("resources/images/welcome/delete.png")}></img>
+                        <img src={require("assets/images/welcome/delete.png")}></img>
                     </div>
                     <div className="btn-right" onClick={() => onBack()}>
                         <span>Quay lại</span>
-                        <img src={require("resources/images/welcome/back.png")}></img>
+                        <img src={require("assets/images/welcome/back.png")}></img>
                     </div>
                 </Row>
                 <Row className="footer">

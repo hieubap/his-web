@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
 import { Col } from 'antd';
-import MainLeft from 'components/left-welcome';
-import MainRight from 'components/right-welcome';
+import MainLeft from 'components/LeftWelcome';
+import MainRight from 'components/RightWelcome';
 import { Main } from './styled';
 import { connect } from 'react-redux';
 // import actionHISReception from "@actions/HISReception";
 // import actionHISAddress from "@actions/HISAddress";
 // import actionHISCounters from "@actions/HISCounters";
 // import actionHISQms from "@actions/HISQms";
-import cacheProvider from "data-access/datacache-provider";
+import cacheUtils from "utils/cache-utils";
 
 function index(props) {
-    let quayTiepDonId = cacheProvider.read("COUNTERS_ID", "");
+    let quayTiepDonId = cacheUtils.read("COUNTERS_ID", "");
     // useEffect(() => {
     //     props.searchCounters();
     // }, []);
@@ -20,7 +20,7 @@ function index(props) {
             <div className="line"></div>
             <Col md={24} xl={16} xxl={16} className="body">
                 <div className="background">
-                    <img src={require("resources/images/welcome/backgroundkiosk.png")}></img>
+                    <img src={require("assets/images/welcome/backgroundkiosk.png")}></img>
                 </div>
                 <MainLeft
                     // history={props.history}

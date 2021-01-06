@@ -6,7 +6,7 @@ const index = (props) => {
     return (
         <Main>
             <Col md={5} lg={7} xl={7}>
-                <div className="logo"><img src={require("resources/images/welcome/logokiosk.png")}></img></div>
+                <div className="logo"><img src={require("assets/images/welcome/logokiosk.png")}></img></div>
             </Col>
             <Col md={10} lg={8} xl={8}>
                 <div className="text">{props.title}</div>
@@ -15,7 +15,7 @@ const index = (props) => {
                 <div className="user">
                     <div className="name">Phùng Thanh Tùng</div>
                     <div className="avatarIcon">
-                        <img src={require("resources/images/welcome/avatar.jpg")}></img>
+                        <img src={require("assets/images/welcome/avatar.jpg")}></img>
                     </div>
                 </div>
             </Col>

@@ -44,11 +44,11 @@ const ModalAccuracy = (props, ref) => {
                 <div className="button-bottom">
                     <div className="btn-back" onClick={() => onBack()}>
                         <span>Quay lại</span>
-                        <img src={require("resources/images/welcome/back.png")}></img>
+                        <img src={require("assets/images/welcome/back.png")}></img>
                          </div>
                     <div className="btn-use">
                         <span>Sử dụng thông tin thẻ</span>
-                        <img src={require("resources/images/welcome/correct.png")}></img>
+                        <img src={require("assets/images/welcome/correct.png")}></img>
                          </div>
                 </div>
                 </div>

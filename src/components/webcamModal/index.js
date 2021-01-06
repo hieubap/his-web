@@ -157,7 +157,7 @@ const WebcamModal = ({ image, modalActions, title, show, onClose, ...props }) =>
       visible={show}
       title={
         <div>
-          <img src={require("resources/images/web-cam/camera.png")} />
+          <img src={require("assets/images/web-cam/camera.png")} />
           <span>{title}</span>
         </div>}
       onCancel={handleCancel}
@@ -172,7 +172,7 @@ const WebcamModal = ({ image, modalActions, title, show, onClose, ...props }) =>
               ref={refImage}
             />
             <Button onClick={handleUploadFile} size={"small"} style={{ height: 35 }} type="dashed">
-              <img src={require("resources/images/web-cam/image.png")} /> Tải ảnh lên
+              <img src={require("assets/images/web-cam/image.png")} /> Tải ảnh lên
             </Button>
             <span className={"name-image"} style={{ marginLeft: 12 }}>
               {state.checkFormatImage ? <span className="error">Vui lòng chọn đúng định dạng ảnh đại diện!</span> : null}

@@ -73,11 +73,11 @@ const ModalAddForm = (props, ref) => {
             <Row className="footer">
                 <div className="btn-cancel" onClick={() => onBack()}>
                     <span> Quay lại </span>
-                    <img src={require("resources/images/welcome/back.png")}></img>
+                    <img src={require("assets/images/welcome/back.png")}></img>
                 </div>
                 <div className="btn-accept" onClick={() => onOK()}>
                     <span>  Lưu thông tin</span>
-                    <img src={require("resources/images/welcome/save.png")}></img>
+                    <img src={require("assets/images/welcome/save.png")}></img>
                 </div>
             </Row>
         </Main>

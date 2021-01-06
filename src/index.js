@@ -6,6 +6,7 @@ import App from "./app";
 import * as serviceWorker from "./serviceWorker";
 import "./themes/default.less";
 import "./i18n";
+import './utils/validate';
 import { BrowserRouter } from "react-router-dom";
 import dateUtils from "mainam-react-native-date-utils";
 import stringUtils from "mainam-react-native-string-utils";
