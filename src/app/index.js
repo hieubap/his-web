@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
 import { ThemeProvider } from "styled-components";
@@ -19,7 +19,7 @@ Array.prototype.insert = function (index, item) {
 
 const App = (props) => {
   const history = useHistory();
-
+  
   useEffect(() => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
@@ -35,7 +35,7 @@ const App = (props) => {
             let deviceToken = await messaging.getToken();
             onLogin(authCode, deviceToken, originUrl);
           })
-          .catch((e) => {
+          .catch(() => {
             onLogin(authCode, "", originUrl);
           });
       else onLogin(authCode, "", originUrl);
@@ -47,18 +47,17 @@ const App = (props) => {
         window.location.href = accountUrl;
       }
     }
-    reportWindowSize();
-    window.addEventListener("resize", reportWindowSize);
-    return () => {
-      window.removeEventListener("resize", reportWindowSize);
-    };
   }, []);
 
-  const reportWindowSize = () => {
-    props.updateApplication({
-      width: window.innerWidth,
-    });
-  };
+  const [initSuccess, setInitSuccess] = useState(false);
+  useEffect(() => {
+    IndexedDB.open(setInitSuccess);
+  }, []);
+
+  if (!initSuccess) {
+    return null;
+  }
+
   const onLogin = (code, deviceToken, redirectURI) => {
     props.updateData({ auth: null });
     props
@@ -68,7 +67,7 @@ const App = (props) => {
         const state = decodeURIComponent(urlParams.get("state"));
         if (history) history.push(`${state}`);
       })
-      .catch((e) => {});
+      .catch((e) => { });
   };
   const logout = connect(null, ({ auth: { updateData } }) => ({ updateData }))(
     (props) => {
@@ -104,13 +103,11 @@ const mapState = (state) => ({
 
 const mapDispatch = ({
   auth: { onLogin, onLogout, updateData, loadWithToken },
-  application: { updateData: updateApplication },
 }) => ({
   onLogin,
   onLogout,
   updateData,
   loadWithToken,
-  updateApplication,
 });
 
 export default connect(mapState, mapDispatch)(App);

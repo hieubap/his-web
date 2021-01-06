@@ -1,6 +1,6 @@
 import Zones from './Zones';
-import Provinces from './Provinces';
-const DB_NAME = 'medi-plus';
+
+const DB_NAME = 'HIS_core';
 const DB_VERSION = 5;
 
 class IndexDB {
@@ -14,7 +14,6 @@ class IndexDB {
     request.onupgradeneeded = e => {
       const db = e.currentTarget.result;
       Zones.onupgradeneeded(db);
-      Provinces.onupgradeneeded(db);
     };
 
     request.onerror = e => {};
@@ -24,7 +23,6 @@ class IndexDB {
 
       callBack(true);
       Zones.onsuccess(db);
-      Provinces.onsuccess(db);
     };
   };
 }
