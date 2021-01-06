@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Main } from './styled';
 import { Col } from 'antd';
 import Select from 'components/Select';
-import cacheProvider from "data-access/datacache-provider";
+import cacheUtils from "utils/cache-utils";
 
 const Index = props => {
     const { listCounters, quayTiepDonId } = props;
@@ -10,7 +10,7 @@ const Index = props => {
 
     const onSave = (data) => {
         setQuayId(data);
-        cacheProvider.save("COUNTERS_ID", "", data);
+        cacheUtils.save("COUNTERS_ID", "", data, false);
     }
     return (
         <Main>

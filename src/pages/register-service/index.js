@@ -1,8 +1,7 @@
 import React from 'react';
-import './style.scss';
 import { Col } from 'antd';
-import LeftRegister from '../component-reception/left-register';
-import RightRegister from '../component-reception/right-register';
+import LeftRegister from 'components/LeftRegister';
+import RightRegister from 'components/RightRegister';
 import { Main } from './styled';
 function index() {
     return (

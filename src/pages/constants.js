@@ -3,6 +3,7 @@ import React, { Suspense } from "react";
 import PageWrapper from "components/PageWrapper";
 
 const Reception = React.lazy(() => import("./reception"));
+const RegisterService = React.lazy(() => import("./register-service"));
 
 const Page = (Component, roles = []) => (props) => {
   return (
@@ -14,14 +15,19 @@ const Page = (Component, roles = []) => (props) => {
   );
 };
 
-
 const pages = {
+  registerService: {
+    component: Page(RegisterService, []),
+    accessRoles: [],
+    path: "/register-service",
+    exact: true
+  },
   reception: {
     component: Page(Reception, []),
     accessRoles: [],
     path: "/",
-    exact: false,
-  },
+    exact: true,
+  }
 };
 
 export { pages };
