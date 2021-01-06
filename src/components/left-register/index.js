@@ -74,7 +74,7 @@ function index() {
             />
             <div className="button-bottom">
                 <span>Quay lại</span>
-                <img src={require("resources/images/welcome/back.png")}></img>
+                <img src={require("assets/images/welcome/back.png")}></img>
             </div>
         </Main>
     )

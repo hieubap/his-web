@@ -7,7 +7,7 @@ function index(props) {
         <Main className="info">
             <Col md={12} xl={8} xxl={6} >
                 <div className="avatar">
-                    <img src={require("resources/images/welcome/avatar.jpg")}></img>
+                    <img src={require("assets/images/welcome/avatar.jpg")}></img>
                     <div className="content">
                         <div className="content-text">Số thứ tự</div>
                         <div className="number">0004</div>
@@ -56,7 +56,7 @@ function index(props) {
             <Col md={11} xl={24} xxl={5} className="check-info">
                 <div className="button">
                     <span>Xem lại thông tin</span>
-                    <img src={require("resources/images/welcome/eyes.png")}></img>
+                    <img src={require("assets/images/welcome/eyes.png")}></img>
                 </div>
             </Col>
         </Main>

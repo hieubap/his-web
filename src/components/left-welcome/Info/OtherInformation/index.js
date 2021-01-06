@@ -74,8 +74,8 @@ const Index = props => {
                     <div className="button-clear" onClick={() => showItemBosung()} >
                         <span>{checkFormttbosung ? "Thu gọn" : "Xem thêm  "}</span>
                         {checkFormttbosung ?
-                            <img className="icon" src={require("resources/images/welcome/arrow.png")} /> :
-                            <img className="icon" src={require("resources/images/welcome/arrowDown.png")} />}
+                            <img className="icon" src={require("assets/images/welcome/arrow.png")} /> :
+                            <img className="icon" src={require("assets/images/welcome/arrowDown.png")} />}
                     </div>
                 </Row>
             </div>

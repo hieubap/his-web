@@ -1,4 +1,4 @@
-// import constants from '../resources/strings';
+// import constants from '../assets/strings';
 // import clientUtils from '../utils/client-utils';
 // import crosstab from "crosstab";
 

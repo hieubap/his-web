@@ -46,8 +46,8 @@ const Index = props => {
                     type={"anhDaiDien"}
                     title={"Upload avatar"}
                     className={"avatar__"}
-                    image={require("resources/images/welcome/avatar.png")}
-                    icon={require("resources/images/welcome/avatarIcon.png")}
+                    image={require("assets/images/welcome/avatar.png")}
+                    icon={require("assets/images/welcome/avatarIcon.png")}
                 />
             </Col>
             <Col sm={12} md={12} xl={7} xxl={7} className="main__first">

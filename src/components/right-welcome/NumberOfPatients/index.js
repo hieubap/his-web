@@ -16,7 +16,7 @@ function index(props) {
                                 title: (
                                     <div className="custome-header">
                                         <div className="addition-box pl-1" >
-                                            <img src={require("resources/images/welcome/search.png")} style={{ left: 15 }}></img>
+                                            <img src={require("assets/images/welcome/search.png")} style={{ left: 15 }}></img>
                                             <Input placeholder="Tìm Mã hoặc tên phòng" style={{ position: "absolute", top: 0, left: 10, width: 255, zIndex: "1" }} />
                                         </div>
                                         <div className="title-box">Mã Phòng</div>

@@ -27,7 +27,7 @@ function index(props) {
                             <div className="custome-header">
                                 <div className="addition-box">
                                     <div className="input-text">
-                                        <img src={require("resources/images/welcome/search.png")}></img>
+                                        <img src={require("assets/images/welcome/search.png")}></img>
                                         <Input placeholder="Tìm tên dịch vụ, phòng thực hiện" />
                                     </div>
                                     <div className="button-choose">
@@ -89,8 +89,8 @@ function index(props) {
                             <div className="custome-header">
                                 <div className="addition-box">
                                     <div className="icon-option">
-                                        <img style={{ top: 9, cursor: "pointer" }} src={require("resources/images/welcome/iconTable.png")}></img>
-                                        <img style={{ top: 9, left: 40, cursor: "pointer" }} src={require("resources/images/welcome/iconTabletwo.png")}></img>
+                                        <img style={{ top: 9, cursor: "pointer" }} src={require("assets/images/welcome/iconTable.png")}></img>
+                                        <img style={{ top: 9, left: 40, cursor: "pointer" }} src={require("assets/images/welcome/iconTabletwo.png")}></img>
                                     </div>
                                 </div>
                                 <div className="title-box">Chọn</div>

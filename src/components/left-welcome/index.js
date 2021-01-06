@@ -86,21 +86,21 @@ const Index = props => {
                     <Col md={4} xl={4} xxl={11} >
                         <div className="button button-back" onClick={() => showAddNewInfo()}>
                             <span>Quay lại</span>
-                            <img src={require("resources/images/welcome/back.png")}></img>
+                            <img src={require("assets/images/welcome/back.png")}></img>
                         </div>
                     </Col>
                     <Col md={20} xl={20} xxl={13} className="button-bottom-right">
                         <div className="button button-danger" onClick={() => showError()}>
                             <span>Hủy tiếp đón</span>
-                            <img src={require("resources/images/welcome/danger.png")}></img>
+                            <img src={require("assets/images/welcome/danger.png")}></img>
                         </div>
                         <div className="button button-sucess" onClick={() => showAccuracy()}>
                             <span>Xác thực thông tin</span>
-                            <img src={require("resources/images/welcome/success.png")}></img>
+                            <img src={require("assets/images/welcome/success.png")}></img>
                         </div>
                         <div className="button button-save" onClick={() => showCancel()}>
                             <span>Lưu thông tin</span>
-                            <img src={require("resources/images/welcome/save.png")}></img>
+                            <img src={require("assets/images/welcome/save.png")}></img>
                         </div>
                     </Col>
                 </Row>

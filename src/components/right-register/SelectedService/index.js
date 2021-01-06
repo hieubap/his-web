@@ -48,7 +48,7 @@ function index(props) {
                         dataIndex: "col4",
                         key: "col4",
                         render: () => {
-                            return <div className="btn-delete"><img src={require("resources/images/welcome/delete.png")}></img></div>
+                            return <div className="btn-delete"><img src={require("assets/images/welcome/delete.png")}></img></div>
                         }
                     },
                 ]}

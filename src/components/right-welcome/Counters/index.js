@@ -30,7 +30,7 @@ const Index = props => {
             <Col md={11}>
                 <div className="button-close" onClick={() => onSave(null)}>
                     <span>Đóng quầy</span>
-                    <img src={require("resources/images/welcome/close.png")}></img>
+                    <img src={require("assets/images/welcome/close.png")}></img>
                 </div>
             </Col >
         </Main>

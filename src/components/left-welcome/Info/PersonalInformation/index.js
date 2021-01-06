@@ -177,8 +177,8 @@ const Index = props => {
                                         ref={refMatTruoc}
                                         type={"matTruoc"}
                                         title={"Mặt trước"}
-                                        image={require("resources/images/welcome/Mattruoc.png")}
-                                        icon={require("resources/images/welcome/iconAccept.png")}
+                                        image={require("assets/images/welcome/Mattruoc.png")}
+                                        icon={require("assets/images/welcome/iconAccept.png")}
                                     />
                                     <div className="text">CMND/Căn cước <br />Mặt trước</div>
                                 </div>
@@ -191,8 +191,8 @@ const Index = props => {
                                         ref={refMatSau}
                                         type={"matSau"}
                                         title={"Mặt sau"}
-                                        image={require("resources/images/welcome/Matsau.png")}
-                                        icon={require("resources/images/welcome/iconAccept.png")}
+                                        image={require("assets/images/welcome/Matsau.png")}
+                                        icon={require("assets/images/welcome/iconAccept.png")}
                                     />
                                     <div className="text">CMND/Căn cước <br />Mặt sau</div>
                                 </div>
@@ -203,8 +203,8 @@ const Index = props => {
                         <div className="button-clear" onClick={() => showItemInfo()}>
                             <span>{checkFormInfo ? "Thu gọn" : "Xem thêm  "}</span>
                             {checkFormInfo ?
-                                <img className="icon" src={require("resources/images/welcome/arrow.png")} /> :
-                                <img className="icon" src={require("resources/images/welcome/arrowDown.png")} />}
+                                <img className="icon" src={require("assets/images/welcome/arrow.png")} /> :
+                                <img className="icon" src={require("assets/images/welcome/arrowDown.png")} />}
                         </div>
                     </Row>
                 </div>

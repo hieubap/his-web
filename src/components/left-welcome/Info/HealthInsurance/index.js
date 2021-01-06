@@ -56,7 +56,7 @@ const Index = props => {
                             <Input className="input-first" placeholder="Nhập số bảo hiểm" />
                             <div className="qr-icon">
                                 <span>Quét mã bảo hiểm</span>
-                                <img onClick={() => onScanQRcode()} src={require("resources/images/welcome/iconqr.png")}></img>
+                                <img onClick={() => onScanQRcode()} src={require("assets/images/welcome/iconqr.png")}></img>
                             </div>
                         </div>
                     </Col>
@@ -119,8 +119,8 @@ const Index = props => {
                     <div className="button-clear" onClick={() => showItemBhyt()} >
                         <span>{checkFormBhyt ? "Thu gọn" : "Xem thêm  "}</span>
                         {checkFormBhyt ?
-                            <img className="icon" src={require("resources/images/welcome/arrow.png")} /> :
-                            <img className="icon" src={require("resources/images/welcome/arrowDown.png")} />}
+                            <img className="icon" src={require("assets/images/welcome/arrow.png")} /> :
+                            <img className="icon" src={require("assets/images/welcome/arrowDown.png")} />}
                     </div>
                 </Row>
             </Row>

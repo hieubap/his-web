@@ -10,7 +10,7 @@ function index() {
             <div className="line"></div>
             <Col md={24} xl={16} xxl={16} className="body">
                 <div className="background">
-                    <img src={require("resources/images/welcome/backgroundkiosk.png")}></img>
+                    <img src={require("assets/images/welcome/backgroundkiosk.png")}></img>
                 </div>
                 <LeftRegister />
             </Col>

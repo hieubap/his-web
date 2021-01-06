@@ -36,7 +36,7 @@ function index(props) {
             </div>
             <div className="button">
                 <span>Hoàn thành ĐK dịch vụ</span>
-                <img src={require("resources/images/welcome/save.png")}></img>
+                <img src={require("assets/images/welcome/save.png")}></img>
             </div>
         </Main>
     )

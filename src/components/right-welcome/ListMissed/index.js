@@ -28,7 +28,7 @@ function index(props) {
                                 title: (
                                     <div className="custome-header">
                                         <div className="addition-box">
-                                            <img src={require("resources/images/welcome/search.png")}></img>
+                                            <img src={require("assets/images/welcome/search.png")}></img>
                                             <Input placeholder="Tìm tên NB" />
                                         </div>
                                         <div className="title-box">Họ tên tuổi</div>

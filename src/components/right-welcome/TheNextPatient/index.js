@@ -13,7 +13,7 @@ const Index = props => {
             <div className="person">
                 <div className="title">Người bệnh tiếp theo</div>
                 <div className="code">
-                    <img src={require("resources/images/welcome/code.png")}></img>
+                    <img src={require("assets/images/welcome/code.png")}></img>
                     <span>KCB0004</span>
                 </div>
                 <div className="name">Lương thị ngọc yến- 24T</div>
