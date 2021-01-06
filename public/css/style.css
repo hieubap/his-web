@@ -25,7 +25,7 @@ body {
 .body {
 	background: white;
 	font-family: "Nunito Sans" !important;
-	position: relative;
+    position: relative;
 }
 .ant-table-header {
     border-top: 4px solid rgba(224, 224, 224, 1);
@@ -82,4 +82,48 @@ body {
 .ant-table-body::-webkit-scrollbar {
     width: 4px;
     height: 4px;
+}
+.pr-3{
+    padding-right: 15px;
+}
+.pl-3{
+    padding-left: 15px;
+}
+.mt-3{
+    margin-top: 15px;
+}
+@font-face {
+    font-family: "Nunito Sans";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local("Nunito Sans Regular"), local("NunitoSans-Regular"),
+        url(../fonts/nunitosans/NunitoSans-Regular.ttf) format("woff2");
+}
+
+@font-face {
+    font-family: "Nunito Sans";
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: local("Nunito Sans SemiBold"), local("NunitoSans-SemiBold"),
+        url(../fonts/nunitosans/NunitoSans-SemiBold.ttf) format("woff2");
+}
+
+@font-face {
+    font-family: "Nunito Sans";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local("Nunito Sans Bold"), local("NunitoSans-Bold"),
+        url(../fonts/nunitosans/NunitoSans-Bold.ttf) format("woff2");
+}
+
+@font-face {
+    font-family: "Nunito Sans";
+    font-style: normal;
+    font-weight: 900;
+    font-display: swap;
+    src: local("Nunito Sans Black"), local("NunitoSans-Black"),
+        url(../fonts/nunitosans/NunitoSans-Black.ttf) format("woff2");
 }

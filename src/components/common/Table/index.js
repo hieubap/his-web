@@ -2,7 +2,6 @@ import React from "react";
 import T from "prop-types";
 import { Table } from "antd";
 import { Main } from "./styled";
-import stringUtils from "mainam-react-native-string-utils";
 
 const CustomTable = (props) => {
   const setRowClassName = (item = {}, index) => {
