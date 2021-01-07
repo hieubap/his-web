@@ -9,7 +9,7 @@ import T from "prop-types";
 import { Button, Modal, Upload, Icon, Spin, message } from "antd";
 import { Main } from "./styled";
 import "react-html5-camera-photo/build/css/index.css";
-import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 
@@ -30,7 +30,7 @@ const ModalWebcam = ({ image, upload, title, ...props }, ref) => {
       return { ...state, ...data };
     });
   };
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   const refCallBack = useRef(null);
   useImperativeHandle(ref, () => ({
     show: (data = {}, callback) => {

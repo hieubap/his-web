@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import { Row, Col, Input, Select, DatePicker, Checkbox, TimePicker } from 'antd';
 import AddressFull from 'components/AddressFull';
 import Header from "components/Header";
-// import actionHISReception from "@actions/HISReception";
 import { connect } from 'react-redux';
 import { Main } from './styled';
 import Camera from "components/Camera";
@@ -71,7 +70,7 @@ const Index = props => {
                 <Row className="row-date">
                     <Col md={7} xl={16} xxl={7} className="pr-3">
                         <div className="item">
-                            <label class="item-title"> Ngày tháng năm sinh</label>
+                            <label className="item-title"> Ngày tháng năm sinh</label>
                             <DatePicker className="item-born" />
                         </div>
                     </Col>
@@ -214,7 +213,7 @@ const Index = props => {
 }
 const mapStateToProps = state => {
     return {
-        diaChi: state.HISReception.diaChi || "",
+        diaChi: state.reception.diaChi || "",
     };
 }
 const mapDispatchToProps = dispatch => {

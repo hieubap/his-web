@@ -77,7 +77,7 @@ function index(props) {
             />
             <Row className="second-row">
                 <TheNextPatient
-                    searchQms={searchQms}
+                    // searchQms={searchQms}
                     quayTiepDonId={quayTiepDonId}
                 />
                 <ListMissed

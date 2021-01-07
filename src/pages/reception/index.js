@@ -1,20 +1,24 @@
 import React, { useEffect } from 'react';
 import { Col } from 'antd';
-import MainLeft from 'components/LeftWelcome';
-import MainRight from 'components/RightWelcome';
+import LeftWelcome from 'components/LeftWelcome';
+import RightWelcome from 'components/RightWelcome';
 import { Main } from './styled';
 import { connect } from 'react-redux';
-// import actionHISReception from "@actions/HISReception";
-// import actionHISAddress from "@actions/HISAddress";
-// import actionHISCounters from "@actions/HISCounters";
-// import actionHISQms from "@actions/HISQms";
 import cacheUtils from "utils/cache-utils";
 
-function index(props) {
+const Reception = (props) => {
     let quayTiepDonId = cacheUtils.read("COUNTERS_ID", "");
-    // useEffect(() => {
-    //     props.searchCounters();
-    // }, []);
+    useEffect(() => {
+        // props.searchCounters();
+        props.updateData({
+            quocTichId: 1000179,
+            quocGiaId: 1000179,
+            checkValidate: false,
+            dinhdangngaysinh: false,
+            checkNgaySinh: false,
+        });
+        props.getAllDistricts();
+    }, []);
     return (
         <Main>
             <div className="line"></div>
@@ -22,21 +26,19 @@ function index(props) {
                 <div className="background">
                     <img src={require("assets/images/welcome/backgroundkiosk.png")}></img>
                 </div>
-                <MainLeft
-                    // history={props.history}
-                    // updateData={props.updateData}
-                    // searchDistrict={props.searchDistrict}
-                    // updateDataAddress={props.updateDataAddress}
-                    // diaChi={props.diaChi}
+                <LeftWelcome
+                    history={props.history}
+                    updateData={props.updateData}
+                    diaChi={props.diaChi}
                 />
             </Col>
             <Col md={24} xl={8} xxl={8} className="bg-color">
-                <MainRight
+                <RightWelcome
                     // history={props.history}
                     // updateData={props.updateData}
                     // listCounters={props.listCounters}
                     // searchQms={props.searchQms}
-                    // quayTiepDonId={quayTiepDonId}
+                    quayTiepDonId={quayTiepDonId}
                 />
             </Col>
         </Main>
@@ -44,17 +46,24 @@ function index(props) {
 }
 const mapStateToProps = state => {
     return {
-        diaChi: state.HISReception.diaChi || "",
+        diaChi: state.reception.diaChi || "",
         listCounters: state.HISCounters.listCounters || [],
     };
 }
-const mapDispatchToProps = dispatch => {
-    return {
-        // updateData: event => dispatch(actionHISReception.updateData(event)),
-        // searchDistrict: (event, action) => dispatch(actionHISAddress.searchDistrict(event, action)),
-        // updateDataAddress: event => dispatch(actionHISAddress.updateData(event)),
-        // searchCounters: event => dispatch(actionHISCounters.search(event)),
-        // searchQms: (page, size, trangThai, quayTiepDonId) => dispatch(actionHISQms.gotoPage(page, size, trangThai, quayTiepDonId)),
-    }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(index);
+const mapDispatchToProps = ({
+    address: { getAllDistricts },
+    reception: { updateData }
+}) => ({
+    getAllDistricts,
+    updateData,
+})
+// const mapDispatchToProps = dispatch => {
+//     return {
+// updateData: event => dispatch(actionHISReception.updateData(event)),
+// searchDistrict: (event, action) => dispatch(actionHISAddress.searchDistrict(event, action)),
+// updateDataAddress: event => dispatch(actionHISAddress.updateData(event)),
+// searchCounters: event => dispatch(actionHISCounters.search(event)),
+// searchQms: (page, size, trangThai, quayTiepDonId) => dispatch(actionHISQms.gotoPage(page, size, trangThai, quayTiepDonId)),
+//     }
+// }
+export default connect(mapStateToProps, mapDispatchToProps)(Reception);

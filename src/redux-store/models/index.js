@@ -5,6 +5,8 @@ import application from "./application";
 import HISReception from "./application";
 import HISCounters from "./application";
 import auth from "./auth";
+import address from "./address";
+import reception from "./reception";
 export {
   common,
   listing,
@@ -12,5 +14,7 @@ export {
   application,
   auth,
   HISReception,
-  HISCounters
+  HISCounters,
+  address,
+  reception
 };

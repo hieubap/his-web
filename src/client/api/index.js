@@ -54,3 +54,6 @@ export const forms = "/forms";
 
 // template
 
+//HIS core
+export const DISTRICTS = "/dm-quan-huyen";
+export const ZONES = "/dm-xa-phuong";

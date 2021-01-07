@@ -4,9 +4,8 @@ import { Main } from './styled';
 const Index = props => {
     const { searchQms, quayTiepDonId } = props;
     useEffect(() => {
-        if (quayTiepDonId) searchQms(0, 1, 20, quayTiepDonId).then((s) => {
-            debugger
-        });
+        // if (quayTiepDonId) searchQms(0, 1, 20, quayTiepDonId).then((s) => {
+        // });
     }, []);
     return (
         <Main md={24} xl={24} xxl={12} className="pr-3 fix">

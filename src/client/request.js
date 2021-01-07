@@ -5,7 +5,7 @@ const LAN_URL = process.env.REACT_APP_URL_LAN;
 const NGHIEM_THU_URL = process.env.REACT_APP_URL_NGHIEM_THU;
 const DOMAIN_URL = process.env.REACT_APP_URL_DOMAIN;
 
-const dataPath = "/api/emr/v1";
+const dataPath = "/api/medi/v1";
 const patientPath = "/api/patient/v1";
 const masterDataPath = "/api/master-data/v1";
 const medicinePath = "/api/phat-thuoc/v1";
@@ -15,6 +15,7 @@ export const authPath = "/auth/oauth";
 const formPath = "/api/html-editor/v1";
 export const originUrl = window.location.origin;
 const search = window.location.search;
+
 
 export const HOST =
   window.location.host === LAN_URL

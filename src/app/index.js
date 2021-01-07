@@ -72,7 +72,8 @@ const App = (props) => {
 
   return (
     <ThemeProvider theme={pink}>
-      <ConfigProvider locale={viVN}>
+      {/* <ConfigProvider locale={viVN}> */}
+      <ConfigProvider>
         <Switch>
           <Route path={"/logout"} component={logout} />
           <Main>
