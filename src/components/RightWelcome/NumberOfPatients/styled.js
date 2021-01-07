@@ -5,7 +5,7 @@ import { panel } from "components/mixin";
 export const Main = styled(Row)`
     margin-top: 30px;
     @media (max-width:1600px) {
-        margin-top: 190px;
+        margin-top: 200px;
     }
     .pannel {
         ${panel};
@@ -14,6 +14,9 @@ export const Main = styled(Row)`
         .title {
             padding-top: 11px;
             padding-bottom: 15px;
+            @media (min-width:1200px) and (max-width:1600px){
+                font-size:18px;
+            }
         }
     }
     .ant-table-container {

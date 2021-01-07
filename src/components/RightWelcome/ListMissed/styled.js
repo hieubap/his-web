@@ -13,6 +13,9 @@ export const Main = styled(Col)`
         .title {
             padding-top: 11px;
             padding-bottom: 4px;
+            @media (min-width:1200px) and (max-width:1600px){
+                font-size:18px;
+            }
         }
     }
     .ant-table-body{

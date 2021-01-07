@@ -83,7 +83,7 @@ const select = () => `
     @media screen and (max-width:1199px) {
         .ant-select-arrow {
             color: #2f588873 !important;
-            font-size: 18px !important;
+            font-size: 13px !important;
             right: 12px !important;
         }
     }

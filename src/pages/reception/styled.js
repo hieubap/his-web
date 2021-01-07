@@ -30,6 +30,9 @@ export const Main = styled(Row)`
     }
     & .bg-color{
             background-color: #E9F3FC;
+            @media (max-width:1600px){
+                height:1230px;
+            }
     }
     ::-webkit-scrollbar{
         display: none!important;

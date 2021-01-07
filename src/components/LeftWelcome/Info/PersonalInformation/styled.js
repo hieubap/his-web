@@ -30,6 +30,12 @@ export const Main = styled(Col)`
             padding: 0 30px;
             .item{
                 margin-top:15px;
+               &-title{
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+               }
                 ${itemInfo};
                &-born{
                 ${date};

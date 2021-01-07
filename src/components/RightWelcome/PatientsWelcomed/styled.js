@@ -9,7 +9,7 @@ export const Main = styled(Row)`
         //     margin-top: 210px;
         // }
         @media (max-width:1200px) {
-            margin-top: 189px;
+            margin-top: 210px;
         }
         .pannel {
             ${panel};
@@ -18,6 +18,9 @@ export const Main = styled(Row)`
             .title{
                 padding-top: 11px;
                 padding-bottom: 15px;
+                @media (min-width:1200px) and (max-width:1600px){
+                    font-size:18px;
+                }
             }
         }
         .ant-table-body{

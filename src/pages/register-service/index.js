@@ -13,7 +13,7 @@ function index() {
                 </div>
                 <LeftRegister />
             </Col>
-            <Col md={24} xl={8} xxl={8}>
+            <Col md={24} xl={8} xxl={8} className="bg-color" >
                 <RightRegister />
             </Col>
         </Main>

@@ -71,7 +71,7 @@ const Index = props => {
                 <Row className="row-date">
                     <Col md={7} xl={16} xxl={7} className="pr-3">
                         <div className="item">
-                            <label> Ngày tháng năm sinh</label>
+                            <label class="item-title"> Ngày tháng năm sinh</label>
                             <DatePicker className="item-born" />
                         </div>
                     </Col>

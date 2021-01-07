@@ -45,7 +45,7 @@ export const Main = styled(Col)`
                     flex-direction: column;
                     top: 50px;
                     border-top: solid 3px rgba(86, 204, 242, 1);
-                    height: 225px;
+                    height: 239px;
                     width: 100%;
                     background: #ffffff;
                     border-radius: 20px 0px 20px 20px;
@@ -97,9 +97,12 @@ export const Main = styled(Col)`
         .button{
             position: absolute;
             ${button};
-            bottom: -2px;
+            bottom: -17px;
             width: 226px;
             right: 31px;
+            @media (max-width:1200px){
+                bottom: 20px!important;
+            }
             span{
                 margin-right:5px;
                 font-size: 16px!important;
