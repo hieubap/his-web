@@ -8,6 +8,9 @@ h3,
 h4,
 h5,
 h6,
+li,
+ul,
+ol,
 img {
 	margin: 0;
 	padding: 0;
@@ -21,6 +24,9 @@ label {
 }
 body {
 	line-height: 1;
+}
+ol, ul {
+	list-style: none;
 }
 .body {
 	background: white;

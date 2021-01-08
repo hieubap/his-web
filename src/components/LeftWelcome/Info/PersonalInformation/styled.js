@@ -174,7 +174,7 @@ export const Main = styled(Col)`
                                 box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
                             }
                         }
-                        .bxwXcI{
+                        .iAtwne{
                             background-color:white;
                             border-radius: 4px;
                             max-height: 288px;
