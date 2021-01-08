@@ -3,7 +3,7 @@ import { client, dataPath } from "client/request";
 import { DISTRICTS, ZONES } from "client/api";
 
 export default {
-    searchDistricts: ({ page, active, sort, size = 2000, ...payload }) => {
+    searchDistricts: ({ page = 0, active = true, sort, size = 2000, ...payload }) => {
         return new Promise((resolve, reject) => {
             client.get(
                 combineUrlParams(`${dataPath}${DISTRICTS}`, {

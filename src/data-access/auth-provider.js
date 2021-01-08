@@ -1,11 +1,6 @@
-import { combineUrlParams } from "utils";
-import {
-  client,
-  dataPath,
-  patientPath,
-  masterDataPath,
-} from "client/request";
-import { SSO_LOGIN, USER_INFO, USERS } from "client/api";
+import { client, dataPath, patientPath } from "client/request";
+import { SSO_LOGIN, USER_INFO } from "client/api";
+
 export default {
   login: ({ code, deviceToken, redirectURI }) => {
     return new Promise((resolve, reject) => {

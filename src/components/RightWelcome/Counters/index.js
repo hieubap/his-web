@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Main } from './styled';
 import { Col } from 'antd';
 import Select from 'components/Select';
@@ -6,11 +6,16 @@ import cacheUtils from "utils/cache-utils";
 
 const Index = props => {
     const { listCounters, quayTiepDonId } = props;
+
     const [quayId, setQuayId] = useState(quayTiepDonId);
     const onSave = (data) => {
         setQuayId(data);
         cacheUtils.save("COUNTERS_ID", "", data, false);
-    }
+    };
+
+    useEffect(() => {
+        setQuayId(quayTiepDonId);
+    }, [quayTiepDonId]);
     return (
         <Main>
             <Col md={13}>
@@ -18,7 +23,7 @@ const Index = props => {
                     <div>Chọn quầy</div>
                     <Select
                         onChange={(e) => onSave(e)}
-                        // value={quayId}
+                        value={quayId}
                         className="select"
                         placeholder={"Quầy tự chọn"}
                         data={listCounters}

@@ -3,13 +3,11 @@ import ZonesDB from 'utils/IndexedDB/Zones';
 import DropdownList from '../DropdownList';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-// import actionAddress from "@actions/address";
-
 
 const AddressFilter = (props, ref) => {
     const { onChange, selectAddress, value, disabled, inputRef, placeholder } = props;
     const [address, setAddress] = useState([]);
-    const [size] = useState(8);
+    const [size] = useState(6);
 
     const convertAddress = (e) => {
         const output = e.target.value;
@@ -107,16 +105,9 @@ const AddressFilter = (props, ref) => {
     );
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        // updateData: event => dispatch(actionAddress.updateData(event)),
-        // searchZones: event => dispatch(actionAddress.searchZones(event))
-    }
-}
-
 const withConnect = connect(
     null,
-    mapDispatchToProps,
+    null,
     null,
     { forwardRef: true },
 );

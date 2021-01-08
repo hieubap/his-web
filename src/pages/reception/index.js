@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Col } from 'antd';
 import LeftWelcome from 'components/LeftWelcome';
 import RightWelcome from 'components/RightWelcome';
@@ -7,9 +7,9 @@ import { connect } from 'react-redux';
 import cacheUtils from "utils/cache-utils";
 
 const Reception = (props) => {
-    let quayTiepDonId = cacheUtils.read("COUNTERS_ID", "", "", false);
+    const [quayTiepDonId, setQuayId] = useState();
     useEffect(() => {
-        if (props.auth?.id) {
+        if (props.auth.id) {
             props.getAllCounters();
             props.updateData({
                 quocTichId: 1000179,
@@ -18,9 +18,15 @@ const Reception = (props) => {
                 dinhdangngaysinh: false,
                 checkNgaySinh: false,
             });
+            async function getQuayTiepDonID() {
+                let quayId = await cacheUtils.read("COUNTERS_ID", "", "", false);
+                setQuayId(quayId);
+            }
+            getQuayTiepDonID();
             props.getAllDistricts();
         }
-    }, [props.auth?.id]);
+    }, [props.auth.id]);
+
     return (
         <Main>
             <div className="line"></div>
@@ -39,7 +45,7 @@ const Reception = (props) => {
                     history={props.history}
                     updateData={props.updateData}
                     listCounters={props.listCounters}
-                    // searchQms={props.searchQms}
+                    searchQms={props.searchQms}
                     quayTiepDonId={quayTiepDonId}
                 />
             </Col>
@@ -56,15 +62,13 @@ const mapStateToProps = state => {
 const mapDispatchToProps = ({
     address: { getAllDistricts },
     reception: { updateData },
-    counters: { getAllCounters }
+    counters: { getAllCounters },
+    qms: { getQms: searchQms }
 }) => ({
     getAllDistricts,
     updateData,
-    getAllCounters
+    getAllCounters,
+    searchQms
 })
-// const mapDispatchToProps = dispatch => {
-//     return {
-// searchQms: (page, size, trangThai, quayTiepDonId) => dispatch(actionHISQms.gotoPage(page, size, trangThai, quayTiepDonId)),
-//     }
-// }
+
 export default connect(mapStateToProps, mapDispatchToProps)(Reception);
