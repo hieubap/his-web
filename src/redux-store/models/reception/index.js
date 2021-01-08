@@ -6,10 +6,6 @@ export default {
     },
   },
   effects: (dispatch) => ({
-    setCurrentFuction: (payload, state) => {
-      dispatch.application.updateData({
-        currentFunction: payload,
-      });
-    },
+    
   }),
 };

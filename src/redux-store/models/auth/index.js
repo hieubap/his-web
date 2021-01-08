@@ -1,6 +1,7 @@
 import { HOST } from "client/request";
 import { message } from "antd";
 import authProvider from "data-access/auth-provider";
+
 export default {
   state: {
     auth: (() => {

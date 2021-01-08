@@ -6,7 +6,7 @@ import { pink } from "themes";
 import Layout from "app/Layout";
 import { Main } from "./styled";
 import { ConfigProvider } from "antd";
-import viVN from "antd/es/locale/vi_VN";
+// import viVN from "antd/es/locale/vi_VN";
 
 import { Switch, Route } from "react-router-dom";
 import { originUrl, accountUrl } from "client/request";

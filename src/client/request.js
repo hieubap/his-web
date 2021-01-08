@@ -8,11 +8,8 @@ const DOMAIN_URL = process.env.REACT_APP_URL_DOMAIN;
 const dataPath = "/api/medi/v1";
 const patientPath = "/api/patient/v1";
 const masterDataPath = "/api/master-data/v1";
-const medicinePath = "/api/phat-thuoc/v1";
 const signerPath = "/api/signer/v1";
-const scanPath = "/api/file/v1";
 export const authPath = "/auth/oauth";
-const formPath = "/api/html-editor/v1";
 export const originUrl = window.location.origin;
 const search = window.location.search;
 
@@ -21,15 +18,10 @@ export const HOST =
   window.location.host === LAN_URL
     ? process.env.REACT_APP_HOST_LAN
     : window.location.host === DOMAIN_URL
-    ? process.env.REACT_APP_HOST_DOMAIN
-    : window.location.host === NGHIEM_THU_URL
-    ? process.env.REACT_APP_HOST_NGHIEM_THU
-    : process.env.REACT_APP_HOST;
-
-export const PDF_HOST =
-  window.location.host === DOMAIN_URL
-    ? process.env.REACT_APP_PDF_HOST_DOMAIN
-    : process.env.REACT_APP_PDF_HOST;
+      ? process.env.REACT_APP_HOST_DOMAIN
+      : window.location.host === NGHIEM_THU_URL
+        ? process.env.REACT_APP_HOST_NGHIEM_THU
+        : process.env.REACT_APP_HOST;
 
 const vitalSignPath = "/api/vital-signs/v1";
 
@@ -72,7 +64,6 @@ client.interceptors.request.use(async (config) => {
     if (access_token !== undefined && access_token !== null) {
       token = access_token;
     }
-
     if (token) {
       config.headers = {
         ...config.headers,
@@ -103,7 +94,7 @@ client.interceptors.response.use(
       try {
         if (error?.response?.data?.message)
           error.message = error.response.data.message;
-      } catch (error) {}
+      } catch (error) { }
     }
     return Promise.reject(error);
   }
@@ -112,11 +103,8 @@ client.interceptors.response.use(
 export {
   client,
   dataPath,
-  formPath,
   patientPath,
   masterDataPath,
-  medicinePath,
   vitalSignPath,
   signerPath,
-  scanPath,
 };

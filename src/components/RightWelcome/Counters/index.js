@@ -7,7 +7,6 @@ import cacheUtils from "utils/cache-utils";
 const Index = props => {
     const { listCounters, quayTiepDonId } = props;
     const [quayId, setQuayId] = useState(quayTiepDonId);
-
     const onSave = (data) => {
         setQuayId(data);
         cacheUtils.save("COUNTERS_ID", "", data, false);
@@ -17,14 +16,14 @@ const Index = props => {
             <Col md={13}>
                 <div className="item">
                     <div>Chọn quầy</div>
-                    {/* <Select
+                    <Select
                         onChange={(e) => onSave(e)}
-                        value={quayId}
+                        // value={quayId}
                         className="select"
                         placeholder={"Quầy tự chọn"}
                         data={listCounters}
                     >
-                    </Select> */}
+                    </Select>
                 </div>
             </Col >
             <Col md={11}>

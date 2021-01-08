@@ -216,9 +216,5 @@ const mapStateToProps = state => {
         diaChi: state.reception.diaChi || "",
     };
 }
-const mapDispatchToProps = dispatch => {
-    return {
-        // updateData: event => dispatch(actionHISReception.updateData(event))
-    }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Index);
+
+export default connect(mapStateToProps, null)(Index);

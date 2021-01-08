@@ -1,6 +1,7 @@
 import cacheUtils from "utils/cache-utils";
 import addressProvider from "data-access/address-provider";
 import ZoneDB from 'utils/IndexedDB/Zones';
+
 export default {
   state: {},
   reducers: {

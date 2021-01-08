@@ -7,18 +7,20 @@ import { connect } from 'react-redux';
 import cacheUtils from "utils/cache-utils";
 
 const Reception = (props) => {
-    let quayTiepDonId = cacheUtils.read("COUNTERS_ID", "");
+    let quayTiepDonId = cacheUtils.read("COUNTERS_ID", "", "", false);
     useEffect(() => {
-        // props.searchCounters();
-        props.updateData({
-            quocTichId: 1000179,
-            quocGiaId: 1000179,
-            checkValidate: false,
-            dinhdangngaysinh: false,
-            checkNgaySinh: false,
-        });
-        props.getAllDistricts();
-    }, []);
+        if (props.auth?.id) {
+            props.getAllCounters();
+            props.updateData({
+                quocTichId: 1000179,
+                quocGiaId: 1000179,
+                checkValidate: false,
+                dinhdangngaysinh: false,
+                checkNgaySinh: false,
+            });
+            props.getAllDistricts();
+        }
+    }, [props.auth?.id]);
     return (
         <Main>
             <div className="line"></div>
@@ -34,9 +36,9 @@ const Reception = (props) => {
             </Col>
             <Col md={24} xl={8} xxl={8} className="bg-color">
                 <RightWelcome
-                    // history={props.history}
-                    // updateData={props.updateData}
-                    // listCounters={props.listCounters}
+                    history={props.history}
+                    updateData={props.updateData}
+                    listCounters={props.listCounters}
                     // searchQms={props.searchQms}
                     quayTiepDonId={quayTiepDonId}
                 />
@@ -46,23 +48,22 @@ const Reception = (props) => {
 }
 const mapStateToProps = state => {
     return {
+        auth: state.auth.auth || {},
         diaChi: state.reception.diaChi || "",
-        listCounters: state.HISCounters.listCounters || [],
+        listCounters: state.counters.listCounters || [],
     };
 }
 const mapDispatchToProps = ({
     address: { getAllDistricts },
-    reception: { updateData }
+    reception: { updateData },
+    counters: { getAllCounters }
 }) => ({
     getAllDistricts,
     updateData,
+    getAllCounters
 })
 // const mapDispatchToProps = dispatch => {
 //     return {
-// updateData: event => dispatch(actionHISReception.updateData(event)),
-// searchDistrict: (event, action) => dispatch(actionHISAddress.searchDistrict(event, action)),
-// updateDataAddress: event => dispatch(actionHISAddress.updateData(event)),
-// searchCounters: event => dispatch(actionHISCounters.search(event)),
 // searchQms: (page, size, trangThai, quayTiepDonId) => dispatch(actionHISQms.gotoPage(page, size, trangThai, quayTiepDonId)),
 //     }
 // }
