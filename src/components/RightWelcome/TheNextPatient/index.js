@@ -32,7 +32,7 @@ const Index = props => {
         });
     }
     return (
-        <Main md={24} xl={24} xxl={12} className="pr-3 fix">
+        <Main md={12} xl={18} xxl={12} className="pr-3 fix">
             <div className="person">
                 <div className="title">Người bệnh tiếp theo</div>
                 <div className="code">

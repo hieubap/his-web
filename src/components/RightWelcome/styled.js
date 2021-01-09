@@ -11,6 +11,8 @@ export const Main = styled.div`
             margin-top: 12px;
         }
         .second-row {
+            display: flex;
+            justify-content: center;
             margin-top: 25px;    
         }
     }
