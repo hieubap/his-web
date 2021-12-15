@@ -1,0 +1,117 @@
+.scan-qr-code {
+  width: 100% !important;
+  top: 0;
+  padding-bottom: 0;
+  margin: 0 auto;
+  // @media (max-width: 991px) {
+  //   width: 60vw !important;
+  // }
+  // @media (max-width: 767px) {
+  //   width: 70vw !important;
+  //   top: 1.5em;
+  // }
+  // @media (max-width: 500px) {
+  //   width: 100vw !important;
+  // }
+  .ant-modal-content {
+    .ant-modal-body {
+      height: 100vh;
+      padding: 0;
+      position: relative;
+      // @media (min-width: 1440px) {
+      //   height: calc(100vh - 225px);
+      // }
+      .tip {
+        position: absolute;
+        top: 20px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        span {
+          background: #ffffff;
+          border-radius: 10px;
+          z-index: 9;
+          font-size: 18.0174px;
+          line-height: 26px;
+          text-align: center;
+          color: #666666;
+          width: 266px;
+          padding: 12px;
+          position: relative;
+          img {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+          }
+        }
+      }
+      section {
+        height: 100%;
+        padding-top: 0 !important;
+        // @media (min-width: 1440px) {
+        //   padding-top: 0 !important;
+        // }
+        div {
+          border: 8px solid rgba(0, 0, 0, 0.3) !important;
+          border-top-width: 110px !important;
+          border-bottom-width: 10px !important;
+        }
+      }
+    }
+  }
+  video {
+    height: 100%;
+  }
+  .camera-container {
+    width: 100%;
+    height: 100%;
+  }
+  .camera-footer {
+    height: 100px;
+    background: #00000030;
+    position: fixed;
+    display: flex;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 10px;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    color: #ffffff;
+    z-index: 9999;
+    div > div {
+      margin-top: 6px;
+    }
+    .button-switch {
+      margin-top: 10px;
+      background: #00e7f0;
+      margin-left: 10px;
+      padding: 10px;
+      border-radius: 25px;
+      cursor: pointer;
+    }
+  }
+  .scan-area {
+    position: absolute;
+  }
+}
+
+.rectangle-container {
+  position: absolute;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  .rectangle {
+    position: relative;
+    height: 200px;
+    width: 200px;
+    border-color: #00ff00;
+    background-color: transparent;
+  }
+}

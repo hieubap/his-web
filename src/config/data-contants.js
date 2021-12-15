@@ -1,0 +1,286 @@
+export default {
+  listRole: [
+    {
+      id: 1,
+      name: "User thường",
+    },
+    {
+      id: 2,
+      name: "Admin đơn vị",
+    },
+  ],
+  listRoleAdmin: [
+    {
+      id: 1,
+      name: "User thường",
+    },
+    {
+      id: 2,
+      name: "Admin đơn vị",
+    },
+    {
+      id: 3,
+      name: "Admin iVisitor",
+    },
+  ],
+  listStatus: [
+    {
+      id: 0,
+      label: "DANG_HOAT_DONG",
+      name: "Đang hoạt động",
+      english: "Active",
+      active: true,
+    },
+    {
+      id: 10,
+      label: "DA_KHOA",
+      name: "Đã khóa",
+      english: "Inactive",
+      active: false,
+    },
+  ],
+  listStatusApp: [
+    {
+      id: 10,
+      label: "DANG_DANG_KY",
+      name: "Chưa đăng ký",
+      english: "Not registered yet",
+    },
+    {
+      id: 20,
+      label: "DA_DANG_KY",
+      name: "Đã đăng ký",
+      english: "Registered",
+    },
+    {
+      id: 30,
+      label: "DA_VE",
+      name: "Đã ra về",
+      english: "Checked out",
+    },
+  ],
+  listValidity: [
+    {
+      id: true,
+      label: 1,
+      name: "Có hiệu lực",
+      english: "Validity",
+    },
+    {
+      id: false,
+      label: 2,
+      name: "Không có hiệu lực",
+      english: "Invalid",
+    },
+  ],
+  listStatusValidity: [
+    {
+      id: true,
+      label: 1,
+      name: "Đang hoạt động",
+      english: "Active",
+    },
+    {
+      id: false,
+      label: 2,
+      name: "Đã khóa",
+      english: "Inactive",
+    },
+  ],
+  listPostType: [
+    {
+      id: 1,
+      name: "Date",
+      english: "Date",
+    },
+    {
+      id: 2,
+      name: "Số",
+      english: "Number",
+    },
+    {
+      id: 3,
+      name: "Văn bản",
+      english: "Document",
+    },
+    {
+      id: 4,
+      name: "Lựa chọn",
+      english: "Option",
+    },
+    {
+      id: 5,
+      name: "Multiple choice grid",
+      english: "Multiple choice grid",
+    },
+  ],
+  listSetting: [
+    {
+      unUserType: ["ROLE_user"],
+      translate: "yeucauchuphinh",
+      maThietLap: "yeu_cau_chup_hinh",
+      name: "Yêu cầu Chụp hình",
+      english: "Yêu cầu Chụp hình",
+    },
+    {
+      unUserType: ["ROLE_user"],
+      translate: "yeucaubanghoi",
+      maThietLap: "yeu_cau_bang_hoi",
+      name: "Yêu cầu Bảng hỏi",
+      english: "Yêu cầu Bảng hỏi",
+    },
+    {
+      unUserType: ["ROLE_user"],
+      translate: "yeucaunhapsdt",
+      maThietLap: "yeu_cau_so_dien_thoai",
+      name: "Yêu cầu nhập Số điện thoại",
+      english: "Yêu cầu nhập Số điện thoại",
+    },
+    {
+      unUserType: ["ROLE_user"],
+      translate: "manhinhnhapsdt",
+      maThietLap: "su_dung_man_hinh_nhap_sdt",
+      name: "Sử dụng Màn hình Nhập SDT",
+      english: "Sử dụng Màn hình Nhập SDT",
+    },
+    {
+      unUserType: ["ROLE_user"],
+      translate: "tenphieukhaithacthongtin",
+      maThietLap: "ten_phieu_khai_thac_thong_tin",
+      name: "Tên Phiếu khai thác thông tin",
+      english: "Tên Phiếu khai thác thông tin",
+    },
+    {
+      unUserType: ["ROLE_user"],
+      translate: "inphanloaikhach",
+      maThietLap: "in_phan_loai_khach",
+      name: "In Phân loại khách",
+      english: "In Phân loại khách",
+    },
+    // {
+    //   unUserType: ["ROLE_user"],
+    //   translate: "khaibaothongtintinnhanthuonghieu",
+    //   maThietLap: "khai_bao_thong_tin_tin_nhan_thuong_hieu",
+    //   name: "Khai báo thông tin tin nhắn thương hiệu",
+    //   english: "Khai báo thông tin tin nhắn thương hiệu",
+    // },
+    {
+      unUserType: [],
+      translate: "cameramattruocmatsau",
+      maThietLap: "camera",
+      name: "Camera: Mặt trước/ Mặt sau",
+      english: "Camera: Mặt trước/ Mặt sau",
+    },
+    {
+      unUserType: [],
+      translate: "manhinhcheckinmacdinh",
+      maThietLap: "man_hinh_checkin_mac_dinh",
+      name: "Màn hình checkin mặc định: Form checkin/ Scan QR",
+      english: "Màn hình checkin mặc định: Form checkin/ Scan QR",
+    },
+    // {
+    //   unUserType: [],
+    //   translate: "loaigiayin",
+    //   maThietLap: "type_of_pager",
+    //   name: "Loại giấy in: In tem/ Giấy cắt",
+    //   english: "Loại giấy in: In tem/ Giấy cắt",
+    // },
+    // {
+    //   unUserType: [],
+    //   translate: "khogiay",
+    //   maThietLap: "paper_size",
+    //   name: "Khổ giấy",
+    //   english: "Khổ giấy",
+    // },
+    {
+      unUserType: [],
+      translate: "qrcodebarcodethongtin",
+      maThietLap: "qrcode_barcode",
+      name: "QRcode/ Barcode thông tin",
+      english: "QRcode/ Barcode thông tin",
+    },
+    {
+      unUserType: [],
+      translate: "donvitructhuoc",
+      maThietLap: "don_vi_truc_thuoc",
+      name: "Đơn vị trực thuộc",
+      english: "Dependent units",
+    },
+    {
+      unUserType: [],
+      translate: "chankytokhai",
+      maThietLap: "chan_ky_to_khai",
+      name: "Chân ký tờ khai",
+      english: "Signature",
+    },
+    {
+      unUserType: [],
+      translate: "footertokhai",
+      maThietLap: "footer_to_khai",
+      name: "Footer tờ khai",
+      english: "Footer",
+    },
+    {
+      unUserType: [],
+      translate: "checkininthekhach",
+      maThietLap: "check_in_in_the_khach",
+      name: "Check in In thẻ khách",
+      english: "Check in In thẻ khách",
+    },
+    {
+      unUserType: [],
+      translate: "thongbaokhibatthuong",
+      maThietLap: "thong_bao_khi_bat_thuong",
+      name: "Thông báo khi bất thường",
+      english: "Thông báo khi bất thường",
+    },
+  ],
+  listLanguage: [
+    {
+      language: "vi",
+      name: "Tiếng Việt",
+      english: "Vietnamese",
+      translate: "tiengviet",
+    },
+    {
+      language: "en",
+      name: "Tiếng Anh",
+      english: "English",
+      translate: "tienganh",
+    },
+    {
+      language: "ja",
+      name: "Tiếng Nhật",
+      english: "Japanese",
+      translate: "tiengnhat",
+    },
+    {
+      language: "ko",
+      name: "Tiếng Hàn",
+      english: "Korean",
+      translate: "tienghan",
+    },
+    {
+      language: "zh",
+      name: "Tiếng Trung",
+      english: "Chinese",
+      translate: "tiengtrung",
+    },
+  ],
+  listPaper: [
+    {
+      id: "70x50",
+      ten: "70x50",
+    },
+    {
+      id: "55x36.6",
+      ten: "55x.36.6",
+    },
+  ],
+  listPrintSpeed: [
+    { id: "0.005", ten: "0.005" },
+    { id: "0.01", ten: "0.01" },
+    { id: "0.015", ten: "0.015" },
+    { id: "0.02", ten: "0.02" },
+  ],
+};

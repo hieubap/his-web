@@ -1,0 +1,28 @@
+.intl-language {
+    line-height: 66px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.ant-popover {
+    // top: 56px !important;
+    .ant-popover-content {
+        .ant-popover-inner {
+            .ant-popover-title {
+                font-size: 16px;
+                padding: 10px 16px 10px;
+                font-weight: bold;
+            }
+            .ant-popover-inner-content {
+                color: #000;
+                font-size: 16px;
+            }
+        }        
+    }
+}
+.profile-image {
+    object-fit: contain;
+}
+// .page-header{
+//     margin-left: 17.2rem!important;
+// }

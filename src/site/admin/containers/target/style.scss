@@ -1,0 +1,52 @@
+.mgr-area {
+    .sort-area {
+        cursor: pointer;
+        padding-left: 15px;
+    }
+}
+.ant-empty-description {
+    visibility: hidden;
+    &:after {
+        visibility: visible;
+        padding-right: 45px;
+        content: "Không tìm thấy kết quả thoả mãn";
+    }
+}
+.btn-create {
+    background: linear-gradient(41.51deg, #0D2745 -0.1%,  #113d74 101.9%)!important;
+    border: none;
+        &:hover{
+        background-color: #5b6168;
+        box-shadow: 0px 0px 10px  #0D2745;
+        transition:0.3s;
+        }
+}
+.col-action{
+    .waves-themed {
+        background-color: #0D2745!important;
+        border: none;
+        &:hover {
+            box-shadow: 0px 0px 10px #0D2745;
+        }
+    }
+  
+}
+.ant-spin-nested-loading::-webkit-scrollbar {
+    background-color: unset;
+    display: block;
+    width: 0.1px;
+}
+.detail {
+   .item {
+    display: inline-block;
+    padding: 3px 10px;
+    margin-left: 5px;
+    background: rgb(21,62,108);
+    background: linear-gradient(90deg, rgba(21,62,108,1) 0%, rgba(35,94,163,1) 100%);
+    color: #fff;
+    font-weight: 600;
+    border-radius: 6px;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+}
