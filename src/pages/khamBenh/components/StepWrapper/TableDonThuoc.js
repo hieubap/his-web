@@ -1,0 +1,89 @@
+import React from 'react'
+import { Checkbox } from "antd";
+import TableWrapper from "components/TableWrapper";
+import HeaderSearch from "components/TableWrapper/headerSearch";
+import CircleCheck from "assets/images/khamBenh/circle-check.png";
+import { BoxWrapper } from "./styled";
+
+
+const TableLoaiDV = () => {
+  const onSelectChange = (selectedRowKeys) => {};
+  const rowSelection = {
+    columnTitle: <HeaderSearch title={<Checkbox />} />,
+    columnWidth: 25,
+    onChange: onSelectChange,
+    selectedRowKeys: [],
+  };
+      const data2 = [
+        {
+          id: 1,
+          name: "Cefprozil (PRICEFIL) 500mg",
+          soLuong: "06 viên",
+          lieuDung: "Uống 2 viên sau ăn, ngày 3 lần",
+        },
+      ];
+      const columnsTableLeft = [
+        {
+          title: "",
+          dataIndex: "stt",
+          key: "stt",
+          render: () => <Checkbox />,
+          width: "5%",
+        },
+        {
+          title: "",
+          dataIndex: "name",
+          key: "name",
+          width: "65%",
+        },
+        {
+          title: "",
+          dataIndex: "lieuLuong",
+          key: "lieuLuong",
+          width: "30%",
+        },
+      ];
+      const columnsTableRight = [
+        {
+          title: <HeaderSearch title="Tên Thuốc - hàm lượng" />,
+          dataIndex: "name",
+          key: "name",
+          width: "65%",
+        },
+        {
+          title: <HeaderSearch title="Số lượng" />,
+          dataIndex: "soLuong",
+          key: "soLuong",
+          width: "25%",
+        },
+        {
+          title: <HeaderSearch title="Liều dùng cách dùng" />,
+          dataIndex: "lieuDung",
+          key: "lieuDung",
+          width: "35%",
+        },
+      ];
+      return (
+        <BoxWrapper>
+          <div className="content-left">
+            <TableWrapper columns={columnsTableLeft} dataSource={data} />
+          </div>
+          <div className="content-right">
+            <div className="title">
+              <div className="title__left">
+                <img src={CircleCheck} alt="" /> Đã chọn
+              </div>
+              <div className="title__right">Tổng tiền: 999.999.999 vnđ</div>
+            </div>
+            <TableWrapper
+              rowSelection={rowSelection}
+              className="table-right"
+              columns={columnsTableRight}
+              dataSource={data2}
+            />
+          </div>
+        </BoxWrapper>
+      );
+}
+
+export default TableLoaiDV;
