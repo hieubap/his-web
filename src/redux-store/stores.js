@@ -6,5 +6,6 @@ const store = init({
 });
 
 const getState = store.getState;
-export { getState };
+const dispatch = store.dispatch;
+export { getState, dispatch };
 export default store;

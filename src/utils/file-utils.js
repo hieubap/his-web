@@ -1,7 +1,18 @@
 import { client } from "client/request";
 import { FILE } from "client/api";
+import { HOST } from "client/request";
 
 export default {
+  absoluteFileUrl: (item) => {
+    if (
+      item?.indexOf("http") === 0 ||
+      item?.indexOf("https") === 0 ||
+      item?.indexOf("blob") === 0 ||
+      item?.indexOf("data:") === 0
+    )
+      return this;
+    return HOST + "/api/his/v1/files/" + item + "";
+  },
   urltoFile: async (url, filename, mimeType) => {
     const res = await fetch(url);
     const buf = await res.arrayBuffer();

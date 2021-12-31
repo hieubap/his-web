@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Spin } from "antd";
-import { Document, Page } from "react-pdf";
+import { Document, Page, pdfjs } from "react-pdf";
 import { Main } from "./styled";
-import { A4 } from "components/constanst";
+import { A4 } from "constants/index";
 import fileUtils from "utils/file-utils";
-
+pdfjs.GlobalWorkerOptions.workerSrc = `/js/pdf.worker.js`;
 const PdfView = (props) => {
   const { width, height, src } = props;
   const [state, _setState] = useState({
@@ -46,7 +46,6 @@ const PdfView = (props) => {
       pageNumber: numPages,
     });
   };
-  console.log(src);
 
   return (
     <Main width={width} height={height}>
@@ -62,11 +61,11 @@ const PdfView = (props) => {
           }
         >
           {state.pages.map((item, index) => (
-            <React.Fragment key={index}>
-              <Page height={A4.height} width={A4.width} pageNumber={item} />
-              <p style={{ textAlign: "center" }}>
+            <React.Fragment key={index} >
+              <Page height={1400}  pageNumber={item} />
+              {/* <p style={{ textAlign: "center" }}>
                 {item} / {state.pageNumber}
-              </p>
+              </p> */}
             </React.Fragment>
           ))}
         </Document>

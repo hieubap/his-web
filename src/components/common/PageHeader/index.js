@@ -1,10 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
-import T from "prop-types";
-import { connect } from "react-redux";
-import { Spin, Icon, Pagination, Button, Input, Row, Col } from "antd";
+import React from "react";
 import { Main } from "./styled";
-import AddNewIcon from "assets/svg/addNew2.svg";
-import { Table } from "components/common";
 
 const PageHeader = (props) => {
   return (

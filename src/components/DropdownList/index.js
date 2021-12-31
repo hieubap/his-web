@@ -1,81 +1,86 @@
-import React from 'react';
-import T from 'prop-types';
-import { Main } from './styled';
-class DropdownList extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      active: 0,
-      page: 1,
+import React, { useState, useEffect, useRef } from "react";
+import T from "prop-types";
+import { Main } from "./styled";
+const DropdownList = (props) => {
+  const { listData, onClick, size, closeDropList, onFocus } = props;
+  const refDropList = useRef();
+  const [state, _setState] = useState({
+    active: 0,
+    page: 1,
+  });
+  const setState = (data = {}) => {
+    _setState((state) => {
+      return { ...state, ...data };
+    });
+  };
+  const { active, page } = state;
+
+  useEffect(() => {
+    window.addEventListener("keyup", keyDownSelectItem);
+    window.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      window.removeEventListener("keyup", keyDownSelectItem);
+      window.removeEventListener("mousedown", handleClickOutside);
     };
-  }
-  componentDidMount() {
-    document.addEventListener('keyup', this.keyDownSelectItem);
-    document.addEventListener('mousedown', this.handleClickOutside);
-  }
-  componentWillUnmount() {
-    document.removeEventListener('keyup', this.keyDownSelectItem);
-    document.removeEventListener('mousedown', this.handleClickOutside);
-  }
-  keyDownSelectItem = e => {
+  }, [state.active, state.page]);
+
+  const keyDownSelectItem = (e) => {
     e.preventDefault();
-    const { listData, onClick } = this.props;
-    const { active, page } = this.state;
-    let itemTop = 0
+    let itemTop = 0;
     if (e.keyCode === 40) {
-      itemTop = document.getElementById(`itemScroll${active}`).offsetTop + 31
-      const clientHeight = this.scrollHospitall.clientHeight
-      if (parseInt(itemTop) > parseInt(clientHeight)) {
-        this.scrollHospitall.scrollTop = itemTop
-        this.setState({
-          page: page + 1
-        })
+      if (state.active + 1 < listData?.length) {
+        itemTop =
+          document.getElementById(`itemScroll${state.active}`) &&
+          document.getElementById(`itemScroll${state.active}`).offsetTop + 31;
+        const clientHeight = refDropList.current.clientHeight;
+        if (parseInt(itemTop) > parseInt(clientHeight)) {
+          refDropList.current.scrollTop = itemTop;
+          setState({ page: page + 1 });
+        }
+        setState({ active: state.active + 1 });
       }
-      this.setState({
-        active: active + 1,
-      }, () => {
-      });
     }
     if (e.keyCode === 38) {
       const nextIndex = active > 0 ? active - 1 : active;
-      itemTop = document.getElementById(`itemScroll${active}`).offsetTop - 31
-      this.scrollHospitall.scrollTop = itemTop
-      this.setState({
-        active: nextIndex,
-      });
+      itemTop =
+        document.getElementById(`itemScroll${active}`) &&
+        document.getElementById(`itemScroll${active}`).offsetTop - 31;
+      refDropList.current.scrollTop = itemTop;
+      setState({ active: nextIndex });
     }
     if (e.keyCode === 13) {
       onClick(listData[active]);
     }
   };
-  onScroll = (e) => {
-    const { listData, size } = this.props
-    const { page } = this.state;
+  const onScroll = (e) => {
     let element = e.target ? e.target : e;
     if (
       parseInt(element.scrollHeight) - parseInt(element.scrollTop) ===
       parseInt(element.clientHeight)
     ) {
       if (page * size < listData.length) {
-        this.setState({ page: page + 1 })
+        setState({ page: page + 1 });
       }
     }
-  }
-  handleClickOutside = (event) => {
-    const { closeDropList } = this.props
-    if (this.scrollHospitall && !this.scrollHospitall.contains(event.target)) {
-      closeDropList()
+  };
+  const handleClickOutside = (event) => {
+    if (refDropList.current && !refDropList.current.contains(event.target)) {
+      closeDropList();
     }
-  }
-  render() {
-    const { onClick, listData, size, onFocus } = this.props;
-    const { active, page } = this.state;
-    return (
-      <Main onFocus={onFocus} className="list-hospital popup-list mostly-customized-scrollbar display-lists" onScroll={this.onScroll} ref={ref => (this.scrollHospitall = ref)}>
-        {listData.filter((item, index) => index < (page * size)).map((item, index) => {
+  };
+  return (
+    <Main
+      onFocus={onFocus}
+      className="list-hospital popup-list mostly-customized-scrollbar display-lists"
+      onScroll={onScroll}
+      ref={refDropList}
+    >
+      {listData
+        .filter((item, index) => index < page * size)
+        .map((item, index) => {
           return (
             <li
-              className={active === index ? 'active-item' : ''}
+              className={active === index ? "active-item" : ""}
               id={`itemScroll${index}`}
               key={index}
               onClick={() => onClick(item)}
@@ -84,14 +89,13 @@ class DropdownList extends React.PureComponent {
             </li>
           );
         })}
-      </Main>
-    );
-  }
-}
+    </Main>
+  );
+};
 
 DropdownList.defaultProps = {
   listData: [],
-  onClick: () => { },
+  onClick: () => {},
 };
 
 DropdownList.propTypes = {

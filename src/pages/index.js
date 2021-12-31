@@ -1,19 +1,20 @@
 import React from "react";
-import { Route } from "react-router-dom";
 import { pages } from "./constants";
-
-const Pages = () => {
+import RouterWithPaths from "components/RouterWithPaths";
+import { Switch } from "react-router-dom";
+const Pages = (props) => {
   return (
-    <div>
-      {Object.keys(pages).map(key => (
-        <Route
+    <Switch>
+      {Object.keys(pages).map((key) => (
+        <RouterWithPaths
           key={key}
           path={pages[key].path}
           component={pages[key].component}
           exact={pages[key].exact}
+          {...props}
         />
       ))}
-    </div>
+    </Switch>
   );
 };
 

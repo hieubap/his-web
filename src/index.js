@@ -6,10 +6,11 @@ import App from "./app";
 import * as serviceWorker from "./serviceWorker";
 import "./themes/default.less";
 // import "./i18n";
-import './utils/validate';
+import "./utils/validate";
 import { BrowserRouter } from "react-router-dom";
 import dateUtils from "mainam-react-native-date-utils";
 import stringUtils from "mainam-react-native-string-utils";
+import HotKey from "components/HotKey";
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
@@ -25,9 +26,10 @@ if ("serviceWorker" in navigator) {
 const Root = () => {
   return (
     <Provider store={stores}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+      <BrowserRouter>
+        <App />
+        <HotKey />
+      </BrowserRouter>
     </Provider>
   );
 };

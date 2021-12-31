@@ -29,7 +29,6 @@ const ButtonNotification = (props) => {
     }
     setState({ showNotification: true });
   };
-  console.log(props.windowWidth);
   return (
     <Main
       width={props.windowWidth}
