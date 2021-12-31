@@ -41,18 +41,18 @@ export default {
           })
           .then((s) => {
             if (s?.code === 0) {
-              let data = (s?.data || []).map((item, index) => {
-                const { ma, ten, id } = item;
-                return {
-                  ma,
-                  ten,
-                  id,
-                };
-              });
-              if (JSON.stringify(data) !== JSON.stringify(list)) {
-                dispatch.kho.updateData({ listAllKho: data });
+              // let data = (s?.data || []).map((item, index) => {
+              //   const { ma, ten, id } = item;
+              //   return {
+              //     ma,
+              //     ten,
+              //     id,
+              //   };
+              // });
+              if (JSON.stringify(s?.data) !== JSON.stringify(list)) {
+                dispatch.kho.updateData({ listAllKho: s?.data });
                 if (!size && page == 0)
-                  cacheUtils.save(userId, `DATA_ALL_KHO`, data, false);
+                  cacheUtils.save(userId, `DATA_ALL_KHO`, s?.data, false);
               }
               resolve(s);
             } else {

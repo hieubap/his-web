@@ -25,6 +25,7 @@ const TimKiemDonThuoc = (props) => {
   } = useSelector((state) => state.thuocKho);
   const { listAllNhanVien } = useSelector((state) => state.nhanVien);
   const { listKhoUser } = useSelector((state) => state.kho);
+  const { getAll, listAllKho, onChangeInputSearch, onSearch, listDataNhanVienKho, onSearchNhanVienKho, auth, layerId } = props;
 
   const {
     kho: { getAllTongHop: getAllKhoTongHop, getTheoTaiKhoan },
@@ -33,12 +34,47 @@ const TimKiemDonThuoc = (props) => {
   } = useDispatch();
 
   const listKhoNhanVienKho = useMemo(() => {
-    return listKhoUser.map((item) => {
-      item.value = item.id;
-      item.label = item?.ten;
-      return item;
+    return listKhoUser.map(item => {
+      item.value = item.id
+      item.label = item?.ten
+      return item
+    })
+  }, [listKhoUser])
+  
+  const refFocusTenNb = useRef();
+  const refFocusQr = useRef();
+  const refCreate = useRef();
+
+  const {
+    phimTat: { onRegisterHotkey },
+  } = useDispatch();
+
+  useEffect(() => {
+    onRegisterHotkey({
+      layerId,
+      hotKeys: [
+        {
+          keyCode: 112, //F1
+          onEvent: () => {
+            refCreate.current && refCreate.current.click();
+          },
+        },
+        {
+          keyCode: 114, //F3
+          onEvent: () => {
+            refFocusQr.current && refFocusQr.current.focus();
+          },
+        },
+        {
+          keyCode: 117, //F6
+          onEvent: () => {
+            refFocusTenNb.current && refFocusTenNb.current.focus();
+          },
+        },
+      ],
     });
-  }, [listKhoUser]);
+  }, []);
+
   useEffect(() => {
     getAllKhoTongHop({});
     getListAllNhanVien();
@@ -260,6 +296,7 @@ const TimKiemDonThuoc = (props) => {
           <div className="title">
             <label>Danh sách đơn thuốc</label>
             <Button
+              ref={refCreate}
               className="btn_new"
               onClick={() => {
                 history.push("/nha-thuoc/them-moi");
@@ -319,6 +356,7 @@ const TimKiemDonThuoc = (props) => {
           <Col xs={3}>
             <InputSearch>
               <Input
+                ref={refFocusTenNb}
                 placeholder="Tìm theo tên người bệnh"
                 onChange={onChange("tenNb")}
               />
@@ -328,6 +366,7 @@ const TimKiemDonThuoc = (props) => {
           <Col xs={9}>
             <InputSearch>
               <Input
+                ref={refFocusQr}
                 onChange={onChangeSearch("qrBN", true)}
                 onKeyDown={onKeyDown}
                 placeholder="Quét Qr người bệnh hoặc nhập mã hồ sơ để tìm đơn mới"

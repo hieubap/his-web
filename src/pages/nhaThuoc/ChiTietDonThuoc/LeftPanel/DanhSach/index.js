@@ -40,7 +40,7 @@ import HeaderSearch from "components/TableWrapper/headerSearch";
 import { combineSort } from "utils";
 const { RangePicker } = DatePicker;
 
-const DanhSach = ({ isThemMoi }) => {
+const DanhSach = ({ isThemMoi, layerId }) => {
   const infoPatientInit = useRef(null);
   //get redux
   const thuocChiTiet = useSelector((state) => state.thuocChiTiet);
@@ -54,6 +54,10 @@ const DanhSach = ({ isThemMoi }) => {
   const refModalNotificationDeleted = useRef(null);
   const refListDichVuTimKiem = useRef(null);
   const refTimeout = useRef(null);
+
+  const { onRegisterHotkey } = useDispatch().phimTat;
+  const refSearch = useRef();
+  
   const [state, _setState] = useState({
     dsThuoc: [],
     discount: 1,
@@ -81,6 +85,20 @@ const DanhSach = ({ isThemMoi }) => {
       },
     };
   };
+  useEffect(() => {
+    // đăng ký phím tắt
+    onRegisterHotkey({
+      layerId,
+      hotKeys: [
+        {
+          keyCode: 117, //F6
+          onEvent: () => {
+            refSearch.current && refSearch.current.focus();
+          },
+        },
+      ],
+    });
+  }, []);
   useEffect(() => {
     if (infoPatient.dsThuoc) {
       //mặc định cho redux dsThuocEdit
@@ -587,6 +605,7 @@ const DanhSach = ({ isThemMoi }) => {
         <InputSearch>
           <img src={IconSearch} alt="IconSearch" className="icon-search" />
           <Input
+            ref={refSearch}
             placeholder="Nhập hoặc quét mã dịch vụ, tên dịch vụ"
             autoFocus
             onChange={onSearch}

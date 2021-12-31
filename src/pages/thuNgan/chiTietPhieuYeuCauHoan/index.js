@@ -33,7 +33,7 @@ const ChiTietPhieuYeuCauHoan = (props) => {
   );
   const {
     match: {
-      params: { phieuHoanTraId },
+      params: { phieuHoanTraId, maHoSo },
     },
   } = props;
   useEffect(() => {
@@ -115,7 +115,7 @@ const ChiTietPhieuYeuCauHoan = (props) => {
         </Col>
         <Row gutter="40" style={{ width: "100%", marginTop: "15px" }}>
           <Col span={17}>
-            <ThongTinBenhNhan />
+            <ThongTinBenhNhan maHoSo={maHoSo} soPhieu={phieuHoanTraId} />
           </Col>
           <Col span={7} className="thong-tin-so-tien">
             <ThongTinSoTien />

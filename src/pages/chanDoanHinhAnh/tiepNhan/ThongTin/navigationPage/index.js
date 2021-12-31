@@ -1,5 +1,5 @@
 import React from "react";
-import Scroll from "react-scroll";
+import Scroll, { scroller } from "react-scroll";
 import { NavigationPage } from "../styled";
 import IcDot from "assets/images/khamBenh/icDot.svg";
 import { NavigationWrapper } from "./styled";
@@ -17,6 +17,21 @@ function ThongTin({
 
   const onActive = (key) => handleScroll(key);
 
+  const onClick = (e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    scroller.scrollTo(itemKey, {
+      duration: 500,
+      smooth: "easeInOutQuint",
+      containerId: "containerElement",
+    });
+    setTimeout(() => {
+      onActive(itemKey);
+    }, 500);
+  };
+
   return (
     <NavigationWrapper>
       <Link
@@ -30,7 +45,7 @@ function ThongTin({
         offset={-75}
         onSetActive={onActive}
       >
-        <NavigationPage padding={padding} color={color}>
+        <NavigationPage padding={padding} color={color} onClick={onClick}>
           {icon}
           <div className="content">
             <div className="content--title">{title}</div>

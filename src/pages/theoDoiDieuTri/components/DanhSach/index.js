@@ -35,7 +35,7 @@ const DanhSach = (props) => {
   };
 
   const handleSizeChange = (size) => {
-    onSizeChange({size});
+    onSizeChange({ size });
   };
 
   const history = useHistory();
@@ -45,9 +45,11 @@ const DanhSach = (props) => {
       onClick: () => {
         const { id } = record;
         updateData({
-          selectedId : id
-        })
-        history.push("/theo-doi-nguoi-benh/danh-sach-nguoi-benh/chi-tiet/" + id);
+          selectedId: id,
+        });
+        history.push(
+          "/theo-doi-nguoi-benh/danh-sach-nguoi-benh/chi-tiet/" + id
+        );
       },
     };
   };
@@ -120,7 +122,7 @@ const DanhSach = (props) => {
       dataIndex: "ngaySinh",
       key: "ngaySinh",
       render: (item, data, index) =>
-      item ? moment(item).format("DD/MM/YYYY") : "",
+        item ? moment(item).format("DD/MM/YYYY") : "",
     },
     {
       title: (
@@ -177,7 +179,8 @@ const DanhSach = (props) => {
       dataIndex: "ketThucTheoDoiCovid",
       key: "ketThucTheoDoiCovid",
       render: (item) => {
-        return TRANG_THAI_DIEU_TRI.find((x) => x.id === (item ? item : false))?.ten;
+        return TRANG_THAI_DIEU_TRI.find((x) => x.id === (item ? item : false))
+          ?.ten;
       },
     },
     {
@@ -213,6 +216,7 @@ const DanhSach = (props) => {
           current={page + 1}
           pageSize={size}
           total={totalElements}
+          listData={listThongTinNguoiBenh}
           onShowSizeChange={handleSizeChange}
           stylePagination={{ flex: 1, justifyContent: "flex-start" }}
         />
@@ -242,6 +246,6 @@ export default connect(
     onChangeInputSearch,
     onSortChange,
     updateData,
-    getListNguoiBenh  ,
+    getListNguoiBenh,
   })
 )(DanhSach);

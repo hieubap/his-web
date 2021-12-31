@@ -102,6 +102,7 @@ import danhSachPhieuThu from "./thuNgan/danhSachPhieuThu";
 import danhSachDichVu from "./thuNgan/danhSachDichVu";
 import nbDotDieuTri from "./thuNgan/nbDotDieuTri";
 import danhSachPhieuYeuCauHoan from "./thuNgan/danhSachPhieuYeuCauHoan";
+import dsHoaDonDienTu from "./thuNgan/dsHoaDonDienTu";
 
 import layMauXN from "./xetNghiem/layMauXN";
 import xetNghiem from "./xetNghiem";
@@ -118,6 +119,10 @@ import loaiPhieu from "./categories/loaiPhieu";
 import thietLapHangDoi from "./categories/thietLapHangDoi";
 import kiosk from "./categories/kiosk";
 import thietLapPhieuIn from "./categories/thietLapPhieuIn";
+import hdsd from "./categories/huongDanSuDung";
+import mauKetQuaCDHA from "./categories/mauKetQuaCDHA";
+import dichVuNgoaiDieuTri from "./categories/dichVuNgoaiDieuTri";
+import hoiDongKiemKe from "./categories/hoiDongKiemKe";
 
 // khamBenh
 import khamBenh from "./khamBenh";
@@ -273,6 +278,9 @@ export {
   hangThe,
   quyenKy,
   loaiPhieu,
+  hdsd,
+  dichVuNgoaiDieuTri,
+  hoiDongKiemKe,
   // danh-muc/thuoc
   danhMucThuoc,
   lieuDungThuoc,
@@ -300,6 +308,7 @@ export {
   danhSachDichVu,
   nbDotDieuTri,
   danhSachPhieuYeuCauHoan,
+  dsHoaDonDienTu,
   // Config
   thietLap,
   adminVaiTroHeThong,
@@ -367,5 +376,6 @@ export {
   phimTat,
   chiDinhDichVuTuTruc,
   nbDvHoan,
-  chiDinhDichVuVatTu
+  chiDinhDichVuVatTu,
+  mauKetQuaCDHA,
 };

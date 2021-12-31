@@ -1,21 +1,20 @@
 import { Col, Row } from "antd";
 import Select from "components/Select";
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import InputTimeout from "../../../../components/InputTimeout";
 import TrangThaiPhieuXuat from "../../components/TrangThaiPhieuXuat";
 import { openInNewTab } from "utils";
 
 const ThongTinPhieuXuat = (
-  {
-    data = {},
-    edit,
-    listHinhThucNhapXuat,
-    getListHinhThucNhapXuat,
-    onChangeData = () => {},
-  },
+  { data = {}, edit, onChangeData = () => {} },
   ref
 ) => {
+  const { listHinhThucNhapXuat } = useSelector(
+    (state) => state.hinhThucNhapXuat
+  );
+  const { getListHinhThucNhapXuat } = useDispatch().hinhThucNhapXuat;
+
   useEffect(() => {
     getListHinhThucNhapXuat({ dsHinhThucNhapXuat: 20 });
   }, []);
@@ -119,11 +118,4 @@ const ThongTinPhieuXuat = (
   );
 };
 
-export default connect(
-  ({ hinhThucNhapXuat: { listHinhThucNhapXuat } }) => ({
-    listHinhThucNhapXuat,
-  }),
-  ({ hinhThucNhapXuat: { getListHinhThucNhapXuat } }) => ({
-    getListHinhThucNhapXuat,
-  })
-)(ThongTinPhieuXuat);
+export default ThongTinPhieuXuat;

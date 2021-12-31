@@ -18,6 +18,7 @@ import { SORT_DEFAULT } from "./configs";
 import Checkbox from "components/Checkbox";
 import { DatePicker, Input, InputNumber } from "antd";
 const DichVuKham = (props) => {
+  console.log('render 1');
   const { totalElements, loaiDichVu, styleContainerButtonHeader, layerId } =
     props;
   const { onRegisterHotkey } = useDispatch().phimTat;
@@ -72,7 +73,7 @@ const DichVuKham = (props) => {
   };
   // console.log("styleContainerButtonHeader", styleContainerButtonHeader);
   useEffect(() => {
-    props.onSizeChange({ size: 10, loaiDichVu });
+    props.onSizeChange({ size: 10, loaiDichVu, dataSortColumn: { active: 0}});
     props.getUtils({ name: "loaiMau" });
     props.getUtils({ name: "nhomChiPhiBh" });
     props.getUtils({ name: "gioiTinh" });
@@ -209,6 +210,7 @@ const DichVuKham = (props) => {
         } else value = e;
         props.onChangeInputSearch({
           [key]: value,
+          "dichVu.loaiDichVu": loaiDichVu
         });
       },
       500,

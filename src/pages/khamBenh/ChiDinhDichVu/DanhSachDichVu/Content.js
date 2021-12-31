@@ -67,11 +67,18 @@ const DanhSachDichVu = ({
   const onClickSort = () => { };
   const handleEdit = (record) => () => {
     form.validateFields().then((values) => {
-      themThongTinDV({
-        body: values,
+      console.log('values: ', values);
+      let { ghiChu, ...rest } = values
+      let obj = {
+        body: {
+          rest,
+          nbDichVu: { ghiChu },
+        },
         id: record.id,
         loaiDichVu: record.loaiDichVu,
-      }).then((s) => {
+      }
+      console.log('obj: ', obj);
+      themThongTinDV(obj).then((s) => {
         if (s.code === 0) {
           getDsDichVu(record.loaiDichVu);
           onClose();
@@ -115,7 +122,7 @@ const DanhSachDichVu = ({
     if (type === "edit") {
       form.setFieldsValue({
         benhPhamId: record.benhPhamId ? record.benhPhamId : [],
-        ghiChu: record.ghiChu,
+        ghiChu: record.ghiChuNbDv,
         phongThucHienId: record.phongThucHienId,
         soPhieu: record.soPhieu,
         tuTra: record.tuTra,
@@ -207,7 +214,7 @@ const DanhSachDichVu = ({
                 </Form.Item>
               </Col>
             )}
-            <Col span={12} style={{display: "flex" , alignItems: "center"}}>
+            <Col span={12} style={{ display: "flex", alignItems: "center" }}>
               <Form.Item label="" name="tuTra" valuePropName="checked">
                 <Checkbox>Tự trả</Checkbox>
               </Form.Item>
@@ -221,7 +228,7 @@ const DanhSachDichVu = ({
 
   const renderContent = (typeContent) => (value, row, index) => {
     const obj = {
-      children: typeContent === "price" ? formatDecimal(value): value,
+      children: typeContent === "price" ? formatDecimal(value) : value,
       props: {},
     };
 
@@ -316,7 +323,7 @@ const DanhSachDichVu = ({
             {canEditOrUpdate(record.trangThai, record.loaiDichVu) && (
               <>
                 <CustomPopover
-                  overlayInnerStyle={{height: "fit-content", padding: "0px !important" }}
+                  overlayInnerStyle={{ height: "fit-content", padding: "0px !important" }}
                   overlayClassName="popover-custom-all popover-custom-all_res"
                   icon={IconEdit}
                   onSubmit={handleEdit(record)}

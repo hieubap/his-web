@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { Checkbox, Col, Input, Form, InputNumber, Upload } from "antd";
 import { HOST } from "client/request";
 import HomeWrapper from "components/HomeWrapper";
@@ -22,13 +22,15 @@ import uploadImg from "assets/images/his-core/import.png";
 import { SORT_DEFAULT, DS_DINH_DANG } from "./configs";
 import { checkRole } from "app/Sidebar/constant";
 import FormWraper from "components/FormWraper";
-import { INNHANH_KYSO } from "constants/index";
+import { IN_NHANH_KYSO } from "constants/index";
 import MultiLevelTab from "components/MultiLevelTab";
 import ThongTinThietLapQuyenKy from "./ThongTinThietLapQuyenKy";
 import IcCreate from "assets/images/kho/IcCreate.png";
 import { ModalNotification2 } from "components/ModalConfirm";
 import { debounce } from "lodash";
 import Breadcrumb from "components/Breadcrumb";
+import stringUtils from "mainam-react-native-string-utils";
+
 const getUploadedFileName = (url = "") => {
   const indexSlash = url?.lastIndexOf("/");
   let updatedName = url?.slice(indexSlash + 1);
@@ -73,6 +75,30 @@ const ThietLapQuyenKy = ({
     });
   };
 
+  const refLayerHotKey = useRef(stringUtils.guid());
+  const refClickBtnSave = useRef();
+  const refAutoFocus = useRef(null);
+  const { onAddLayer, onRemoveLayer, onRegisterHotkey } = useDispatch().phimTat;
+
+  // register layerId
+  useEffect(() => {
+    onAddLayer({ layerId: refLayerHotKey.current });
+    onRegisterHotkey({
+      layerId: refLayerHotKey.current,
+      hotKeys: [
+        {
+          keyCode: 115, //F4
+          onEvent: (e) => {
+            refClickBtnSave.current && refClickBtnSave.current(e);
+          },
+        },
+      ],
+    });
+    return () => {
+      onRemoveLayer({ layerId: refLayerHotKey.current });
+    };
+  }, []);
+
   useEffect(() => {
     onSizeChange({ size: 10 });
     onSizeChangeQuyenKy({ size: 9999 });
@@ -91,6 +117,7 @@ const ThietLapQuyenKy = ({
       invalidMauBaoCao: false,
       isSelected: true,
     });
+    updateData({ dataEditDefault: {} });
     form.resetFields();
   };
 
@@ -110,7 +137,7 @@ const ThietLapQuyenKy = ({
           ]
         : [],
     });
-    form.setFieldsValue(data);
+    // form.setFieldsValue(data);
   };
 
   const onRow = (record, index) => {
@@ -464,7 +491,8 @@ const ThietLapQuyenKy = ({
             buttonHeader={
               checkRole([ROLES["DANH_MUC"].BAO_CAO_THEM]) && [
                 {
-                  title: "Thêm mới",
+                  type: "create",
+                  title: "Thêm mới [F1]",
                   onClick: handleClickedBtnAdded,
                   buttonHeaderIcon: (
                     <img style={{ marginLeft: 5 }} src={IcCreate} alt="" />
@@ -487,7 +515,9 @@ const ThietLapQuyenKy = ({
             columns={columns}
             dataSource={listData}
             onRow={onRow}
-            rowClassName={setRowClassName}
+            layerId={refLayerHotKey.current}
+            dataEditDefault={dataEditDefault}
+            // rowClassName={setRowClassName}
           />
           {totalElements ? (
             <Pagination
@@ -516,6 +546,7 @@ const ThietLapQuyenKy = ({
             <ThongTinThietLapQuyenKy
               stateParent={state}
               setStateParent={setState}
+              refCallbackSave={refClickBtnSave}
             ></ThongTinThietLapQuyenKy>
           </MainChiTiet>
           {/* <MultiLevelTab

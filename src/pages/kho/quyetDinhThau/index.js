@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { Col, Tabs, Modal } from "antd";
 import { HomeWrapper } from "components";
 import { Main } from "./styled";
@@ -24,6 +24,8 @@ import {
 import { combineSort } from "utils";
 import { SORT_DEFAULT } from "constants/page/therapyConstant";
 import moment from "moment";
+import stringUtils from "mainam-react-native-string-utils";
+
 const { TabPane } = Tabs;
 
 const Index = ({
@@ -53,6 +55,10 @@ const Index = ({
   totalChiTietThau,
   getListAllQuyetDinhThau,
 }) => {
+  const refLayerHotKey1 = useRef(stringUtils.guid());
+  const refLayerHotKey2 = useRef(stringUtils.guid());
+  const refLayerHotKey3 = useRef(stringUtils.guid());
+  const { onAddLayer } = useDispatch().phimTat;
   const [activeTab, setActiveTab] = useState(0);
   const [quyetDinhThauId, setQuyetDinhThauId] = useState(null);
   const [chiTietThauId, setChiTietThauId] = useState(null);
@@ -63,6 +69,7 @@ const Index = ({
   const [collapseStatus, setCollapseStatus] = useState(false);
   const [state, _setState] = useState({
     showFullTable: false,
+    activeKeyTab: "1",
   });
   const setState = (data = {}) => {
     _setState((state) => {
@@ -71,6 +78,9 @@ const Index = ({
   };
   const callback = (key) => {
     setActiveTab(parseInt(key, 10));
+
+    if (key === "1") onAddLayer({ layerId: refLayerHotKey1.current });
+    else if (key === "2") onAddLayer({ layerId: refLayerHotKey2.current });
   };
   const listPanel = [
     {
@@ -82,6 +92,7 @@ const Index = ({
             handleSubmit={onSaveChiTietThau}
             ref={formChiTietThau}
             onCancel={onCancelChiTietThau}
+            layerId={refLayerHotKey2.current}
           />
         );
       },
@@ -95,6 +106,7 @@ const Index = ({
             handleSubmit={onSaveChiTietThau}
             ref={formChiTietThau}
             onCancel={onCancelChiTietThau}
+            layerId={refLayerHotKey3.current}
           />
         );
       },
@@ -386,6 +398,7 @@ const Index = ({
                 size={sizeQuyetDinhThau}
                 total={totalQuyetDinhThau}
                 updateData={updateDataQuyetDinhThau}
+                layerId={refLayerHotKey1.current}
               />
             </TabPane>
             <TabPane tab="Chi tiết thầu" key={2}>
@@ -405,6 +418,7 @@ const Index = ({
                 size={sizeChiTietThau}
                 total={totalChiTietThau}
                 updateData={updateDataChiTietThau}
+                layerId={refLayerHotKey2.current}
               />
             </TabPane>
           </Tabs>
@@ -431,14 +445,23 @@ const Index = ({
                 onVerify={onVerifyDocument}
                 onUndoVerify={onUndoVerifyDocument}
                 trangThai={trangThai}
+                layerId={refLayerHotKey1.current}
               />
             )}
             {activeTab === 2 && (
               <div className="tab-chi-tiet-dau-thau">
                 <MultiLevelTab
-                  defaultActiveKey={1}
+                  // defaultActiveKey={1}
                   listPanel={listPanel}
                   isBoxTabs={true}
+                  activeKey={state.activeKeyTab}
+                  onChange={(activeKeyTab) => {
+                    if (activeKeyTab === "1")
+                      onAddLayer({ layerId: refLayerHotKey2.current });
+                    else if (activeKeyTab === "2")
+                      onAddLayer({ layerId: refLayerHotKey3.current });
+                    setState({ activeKeyTab });
+                  }}
                 ></MultiLevelTab>
               </div>
             )}

@@ -24,7 +24,7 @@ const SuaThongTinThuocKeNgoai = (props, ref) => {
 
   const [show, setShow] = useState(false);
   const [data, setData] = useState([]);
-  
+
   const {
     getListAllLieuDung,
     listAllLieuDung,
@@ -51,7 +51,7 @@ const SuaThongTinThuocKeNgoai = (props, ref) => {
         return ({
           ...x,
           lieuDungId: x?.lieuDungId || null,
-          ngayThucHienTu: x?.ngayThucHienTu ||null,
+          ngayThucHienTu: x?.ngayThucHienTu || null,
           ngayThucHienDen: x?.ngayThucHienDen || null,
           listLieuDung: listLieuDungDependDichVu
         });
@@ -62,7 +62,14 @@ const SuaThongTinThuocKeNgoai = (props, ref) => {
   }));
   const blockInvalidChar = (e) =>
     ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
+  const blockInvalidChar2 = (e) => {
+    console.log('e.key: ', e.key);
+    if (e.key === 'Backspace' || e.keyCode === 37 || e.keyCode === 39) {
 
+    } else if (["e", "E", "+", "-"].includes(e.key) || e.target.value.length >= 3) {
+      return e.preventDefault()
+    }
+  };
   const onChangeInput = (type, index) => (e) => {
     let value = "";
     if (e?.target) {
@@ -155,7 +162,7 @@ const SuaThongTinThuocKeNgoai = (props, ref) => {
               notFoundContent={
                 <div>
                   <div style={{ color: "#7A869A", textAlign: "center" }}><small>Không có dữ liệu phù hợp</small></div>
-{/* 
+                  {/* 
                   <Row justify="center">
                     <Button trigger="click" style={{
                       border: "1px solid",
@@ -202,7 +209,9 @@ const SuaThongTinThuocKeNgoai = (props, ref) => {
             type="number"
             value={item}
             onChange={onChangeInput("dotDung", index)}
-            onKeyDown={blockInvalidChar}
+            onKeyDown={blockInvalidChar2}
+            min={1}
+            max={999}
           ></Input>
         );
       },
@@ -213,7 +222,7 @@ const SuaThongTinThuocKeNgoai = (props, ref) => {
       dataIndex: "",
       key: "",
       render: (item, data, index) => {
-        
+
         return (
           <RangePicker
             // format={"DD/MM/YYYY"}
@@ -244,7 +253,7 @@ const SuaThongTinThuocKeNgoai = (props, ref) => {
   ];
 
   const onSave = () => {
-    
+
     let payload = data.map((item) => ({
       // nbDichVu: {
       //   ghiChu: item?.ghiChu,
@@ -261,7 +270,7 @@ const SuaThongTinThuocKeNgoai = (props, ref) => {
       nbDotDieuTriId
     }));
 
-    
+
     updateRecordByIdThuocKeNgoai(payload[0])
       .then((s) => {
         if (s?.code === 0) {

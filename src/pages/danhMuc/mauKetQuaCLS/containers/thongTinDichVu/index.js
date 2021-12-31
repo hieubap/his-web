@@ -1,16 +1,104 @@
-import { Form, Col, Input, Row, Select, Button } from "antd";
+import { Form, Col, Input, Row } from "antd";
 import Checkbox from "antd/lib/checkbox/Checkbox";
-import React from "react";
-import SubmitIcon from "assets/svg/kho/save.svg";
+import React, { useEffect, useState } from "react";
 import { Main } from "./styled";
 import CreatedWrapper from "components/CreatedWrapper";
+import { useDispatch, useSelector } from "react-redux";
+import Select from "components/Select";
+import TextField from "components/TextField";
 
 const { Item } = Form;
 
 const ThongTinDichVu = (props) => {
+  const [state, _setState] = useState({});
+  const setState = (data = {}) => {
+    _setState((state) => {
+      return { ...state, ...data };
+    });
+  };
+
   const [form] = Form.useForm();
-  const onReset = () => {};
-  const onSave = () => {};
+  const {
+    mauKetQuaCDHA: { currentItem },
+    dichVuKyThuat: { listAll },
+  } = useSelector((state) => state);
+  const {
+    mauKetQuaCDHA: { createOrEdit },
+    dichVuKyThuat: { getAll },
+  } = useDispatch();
+
+  useEffect(() => {
+    getAll({ "dichVu.loaiDichVu": 30, size: 9999 });
+  }, []);
+
+  useEffect(() => {
+    loadCurrentItem(currentItem);
+  }, [currentItem]);
+
+  const loadCurrentItem = (item) => {
+    if (item) {
+      const {
+        ma,
+        ten,
+        dsDichVuId,
+        active,
+        ketLuan,
+        ketQua,
+        phuongThucCanThiep,
+        cachThucCanThiep,
+        id,
+      } = item || {};
+      const data = {
+        ma,
+        ten,
+        dsDichVuId,
+        active,
+        ketLuan,
+        ketQua,
+        phuongThucCanThiep,
+        cachThucCanThiep,
+        id,
+      };
+      form.setFieldsValue(data);
+      setState({ data });
+    } else {
+      form.resetFields();
+      setState({ data : null });
+    }
+  };
+  const onReset = () => {
+    form.resetFields();
+  };
+  const onSave = () => {
+    form.submit();
+  };
+  const onHandleSubmit = (values) => {
+    const {
+      ma,
+      ten,
+      dsDichVuId,
+      active,
+      ketLuan,
+      ketQua,
+      phuongThucCanThiep,
+      cachThucCanThiep,
+    } = values;
+    values = {
+      ma,
+      ten,
+      dsDichVuId,
+      active,
+      id: state?.data?.id,
+      ketLuan,
+      ketQua,
+      phuongThucCanThiep,
+      cachThucCanThiep,
+    };
+    createOrEdit(values).then((s) => {
+      form.resetFields();
+      setState({ data : null });
+    });
+  };
   return (
     <Main>
       <CreatedWrapper
@@ -24,7 +112,7 @@ const ThongTinDichVu = (props) => {
         editStatus={props?.stateParent?.editStatus}
       >
         <div className="content">
-          <Form>
+          <Form form={form} onFinish={onHandleSubmit}>
             <Row>
               <Col span={12}>
                 <Item
@@ -37,7 +125,7 @@ const ThongTinDichVu = (props) => {
                     },
                   ]}
                 >
-                  <Input />
+                  <Input autoFocus />
                 </Item>
               </Col>
               <Col span={12}>
@@ -56,28 +144,24 @@ const ThongTinDichVu = (props) => {
               </Col>
               <Col span={24}>
                 <div className="group-input">
-                  <Item name="">
-                    <span>Kết quả: </span>
-                    <Input></Input>
+                  <Item name="ketQua">
+                    <TextField label="Kết quả" html={state?.data?.ketQua}/>
                   </Item>
-                  <Item name="">
-                    <span>Kết luận: </span>
-                    <Input></Input>
+                  <Item name="ketLuan">
+                    <TextField label="Kết luận" html={state?.data?.ketLuan} />
                   </Item>
-                  <Item name="">
-                    <span>Cách thức can thiệp: </span>
-                    <Input></Input>
+                  <Item name="cachThucCanThiep" >
+                    <TextField label="Cách thức can thiệp" html={state?.data?.cachThucCanThiep} />
                   </Item>
-                  <Item name="">
-                    <span>Phương thức can thiệp: </span>
-                    <Input></Input>
+                  <Item name="phuongThucCanThiep">
+                    <TextField label="Phương thức can thiệp" html={state?.data?.phuongThucCanThiep}/>
                   </Item>
                 </div>
               </Col>
               <Col span={24}>
                 <Item
-                  label="Tên dịch vụ CLS"
-                  name="tenDichVu"
+                  label="Tên dịch vụ"
+                  name="dsDichVuId"
                   rules={[
                     {
                       required: true,
@@ -85,25 +169,20 @@ const ThongTinDichVu = (props) => {
                     },
                   ]}
                 >
-                  <Select mode="tags" />
+                  <Select
+                    mode="multiple"
+                    data={listAll}
+                    placeholder="Vui lòng chọn dịch vụ"
+                  />
                 </Item>
               </Col>
 
               <Col span={24}>
-                <Item name="hieuLuc">
+                <Item name="active" valuePropName="checked">
                   <Checkbox>Hiệu lực</Checkbox>
                 </Item>
               </Col>
             </Row>
-            {/* <div className="footer">
-              <Button className="left-btn">Hủy</Button>
-              <Button className="right-btn" htmlType="submit">
-                <span>Lưu</span>
-                <SubmitIcon
-                  style={{ width: "15px", height: "15px", marginLeft: "7px" }}
-                />
-              </Button>
-            </div> */}
           </Form>
         </div>
       </CreatedWrapper>

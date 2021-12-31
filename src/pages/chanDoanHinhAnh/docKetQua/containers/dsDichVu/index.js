@@ -464,6 +464,7 @@ const DsDichVu = (props) => {
           current={1}
           //   pageSize={state.size}
           total={200}
+          listData={dataTest}
           //   onShowSizeChange={(size) => setState({ ...state, page: 1, size })}
           stylePagination={{
             flex: 1,

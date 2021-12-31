@@ -1,17 +1,17 @@
 import React from "react";
 import { Route } from "react-router-dom";
-import { qmsPages } from "pages/constants";
+import { pageQMS } from "pages/constants";
 
 const QmsPages = (props) => {
-  console.log("qms",qmsPages)
+  console.log("qms",pageQMS)
   return (
       <div className={"app-contain"}>
-        {Object.keys(qmsPages).map((key) => (
+        {Object.keys(pageQMS).map((key) => (
           <Route
             key={key}
-            path={qmsPages[key].path}
-            component={qmsPages[key].component}
-            exact={qmsPages[key].exact}
+            path={pageQMS[key].path}
+            component={pageQMS[key].component}
+            exact={pageQMS[key].exact}
           />
         ))}
       </div>

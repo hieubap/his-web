@@ -1,8 +1,8 @@
-import React, { forwardRef, useImperativeHandle, useState } from "react";
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { Checkbox, Input, Form, DatePicker, Button, Row, Col } from "antd";
 import { CreatedWrapper, Select } from "components";
 import moment from 'moment';
-import { connect } from "react-redux"
+import { connect, useDispatch } from "react-redux"
 import { openInNewTab } from "utils";
 
 const FormQuyetDinhThau = ({
@@ -21,16 +21,33 @@ const FormQuyetDinhThau = ({
   edited,
   dataSort,
   trangThai,
+  layerId,
   ...props }, ref) => {
   const [form] = Form.useForm();
   const formRef = React.useRef();
   const [dataEdit, setDataEdit] = useState(null);
+  const { onRegisterHotkey } = useDispatch().phimTat;
+  const refClickBtnSave = useRef();
+  useEffect(() => {
+    onRegisterHotkey({
+      layerId,
+      hotKeys: [
+        {
+          keyCode: 115, //F4
+          onEvent: (e) => {
+            refClickBtnSave.current && refClickBtnSave.current(e);
+          },
+        },
+      ],
+    });
+  }, []);
 
   const dateFormat = 'DD-MM-YYYY';
 
   const onSave = () => {
     form.submit();
   };
+  refClickBtnSave.current = onSave;
 
   useImperativeHandle(ref, () => ({
     setfields: (data) => {

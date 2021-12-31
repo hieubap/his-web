@@ -1,18 +1,31 @@
 import { Row, Col } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DanhSach from "pages/danhMuc/thongSoHangDoi/components/DanhSach";
 import ChiTiet from "pages/danhMuc/thongSoHangDoi/components/ChiTiet";
 import { Main } from "./styled";
 import { HomeWrapper } from "components";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import {
   ADD_LAYOUT_COLLAPSE,
   TABLE_LAYOUT_COLLAPSE,
   ADD_LAYOUT,
   TABLE_LAYOUT,
 } from "constants/index";
+import stringUtils from "mainam-react-native-string-utils";
+
 const ThongSoHangDoi = (props) => {
   const { getUtils, listLoaiPhongHangDoi, listDoiTuongHangDoi } = props;
+
+  const refLayerHotKey = useRef(stringUtils.guid());
+  const { onAddLayer, onRemoveLayer } = useDispatch().phimTat;
+
+  // register layerId
+  useEffect(() => {
+    onAddLayer({ layerId: refLayerHotKey.current });
+    return () => {
+      onRemoveLayer({ layerId: refLayerHotKey.current });
+    };
+  }, []);
 
   useEffect(() => {
     getUtils({ name: "LoaiPhongHangDoi" });
@@ -62,6 +75,7 @@ const ThongSoHangDoi = (props) => {
             handleCollapsePane={handleCollapsePane}
             collapseStatus={collapseStatus}
             listLoaiPhongHangDoi={listLoaiPhongHangDoi}
+            layerId={refLayerHotKey.current}
           ></DanhSach>
         </Col>
         {!state.showFullTable && (
@@ -76,6 +90,7 @@ const ThongSoHangDoi = (props) => {
               listDoiTuongHangDoi={listDoiTuongHangDoi}
               stateParent={state}
               collapseStatus={collapseStatus}
+              layerId={refLayerHotKey.current}
             ></ChiTiet>
           </Col>
         )}

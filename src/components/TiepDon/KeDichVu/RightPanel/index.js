@@ -1,24 +1,22 @@
-import React, { memo, useEffect } from "react";
-import SelectedService from "./SelectedService";
-import SumMoney from "./SumMoney";
+import React, { memo, useEffect, useRef } from "react";
+import DichVuDaChon from "./DichVuDaChon";
+import TongTien from "./TongTien";
 import { Main, Main2 } from "./styledMain";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import CustomButton from "../../CustomeButton";
 import IcThongKe from "assets/svg/tiep-don/iconThongKe.svg";
 import IconBack from "assets/svg/tiep-don/iconBack.svg";
 import Icon from "@ant-design/icons";
 import { Col, Row } from "antd";
 import { useHistory } from "react-router";
+import TabThongTin from "components/TiepDon/DanhSachBenhNhan/TabThongTin";
+import { useParams } from "react-router-dom";
 
 const RightPanel = (props) => {
-  const {
-    id,
-    searchNbDvKyThuat,
-    getDetail,
-    updateDataTiepDon,
-    getListAllPhong,
-  } = props;
+  const refTabThongTin = useRef(null);
+  const { id } = useParams();
+
+  const { searchNbDvKyThuat, getDetail, getListAllPhong } = props;
   useEffect(() => {
     if (id) {
       if (props.idIndex !== id) getDetail(id);
@@ -26,13 +24,15 @@ const RightPanel = (props) => {
         nbDotDieuTriId: id,
         chiDinhTuLoaiDichVu: 200,
       });
-      // updateDataTiepDon({ disableTiepDon: true });
     }
     getListAllPhong({});
   }, []);
   const history = useHistory();
   const handleBack = () => {
     history.goBack();
+  };
+  const onViewThongKe = () => {
+    refTabThongTin.current && refTabThongTin.current.show({ isVisible: true });
   };
   return (
     <Main2>
@@ -43,13 +43,7 @@ const RightPanel = (props) => {
               <Icon component={IconBack} />
               <span>Quay lại</span>
             </p>
-            <p
-              onClick={() => {
-                props.showTabThongTin &&
-                  props.showTabThongTin({ isVisible: true });
-              }}
-              className="btn-thong-ke"
-            >
+            <p onClick={onViewThongKe} className="btn-thong-ke">
               Xem thống kê
               <Icon component={IcThongKe} />
             </p>
@@ -58,10 +52,11 @@ const RightPanel = (props) => {
       </Col>
       <Col md={24} xl={24} xxl={24}>
         <Main className="service-welcome">
-          <SelectedService deleteDvKyThuat={props.deleteDvKyThuat} />
-          <SumMoney id={id} />
+          <DichVuDaChon deleteDvKyThuat={props.deleteDvKyThuat} />
+          <TongTien />
         </Main>
       </Col>
+      <TabThongTin ref={refTabThongTin} />
     </Main2>
   );
 };
@@ -73,12 +68,11 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = ({
   tiepDonDichVu: { searchNbDvKyThuat, tamTinhTien, deleteDvKyThuat },
-  tiepDon: { getDetail, updateData: updateDataTiepDon },
+  tiepDon: { getDetail },
   phong: { getListAllPhong },
 }) => ({
   searchNbDvKyThuat,
   getDetail,
-  updateDataTiepDon,
   getListAllPhong,
   tamTinhTien,
   deleteDvKyThuat,

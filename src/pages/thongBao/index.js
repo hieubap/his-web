@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { Main } from "./styled";
 import { combineSort } from "utils";
 import FormWraper from "components/FormWraper";
@@ -26,6 +26,7 @@ import {
   HIEU_LUC,
 } from "constants/index";
 import { Checkbox, Col, Input, Form, Image, Modal } from "antd";
+import stringUtils from "mainam-react-native-string-utils";
 
 let timer = null;
 
@@ -67,6 +68,61 @@ const QuanLyThongBao = (props) => {
     });
   };
   const [form] = Form.useForm();
+
+  const refLayerHotKey = useRef(stringUtils.guid());
+  const refClickBtnAdd = useRef();
+  const refClickBtnSave = useRef();
+  const refSelectRow = useRef();
+  const refAutoFocus = useRef(null);
+  const { onAddLayer, onRemoveLayer, onRegisterHotkey } = useDispatch().phimTat;
+
+  // register layerId
+  useEffect(() => {
+    onAddLayer({ layerId: refLayerHotKey.current });
+    onRegisterHotkey({
+      layerId: refLayerHotKey.current,
+      hotKeys: [
+        {
+          keyCode: 112, //F1
+          onEvent: () => {
+            refClickBtnAdd.current && refClickBtnAdd.current();
+          },
+        },
+        {
+          keyCode: 115, //F4
+          onEvent: (e) => {
+            refClickBtnSave.current && refClickBtnSave.current(e);
+          },
+        },
+        {
+          keyCode: 38, //up
+          onEvent: (e) => {
+            refSelectRow.current && refSelectRow.current(-1);
+          },
+        },
+        {
+          keyCode: 40, //down
+          onEvent: (e) => {
+            refSelectRow.current && refSelectRow.current(1);
+          },
+        },
+      ],
+    });
+    return () => {
+      onRemoveLayer({ layerId: refLayerHotKey.current });
+    };
+  }, []);
+
+  refSelectRow.current = (index) => {
+    const indexNextItem =
+      (data?.findIndex((item) => item.id === dataEditDefault?.id) || 0) + index;
+    if (-1 < indexNextItem && indexNextItem < data.length) {
+      onShowAndHandleUpdate(data[indexNextItem]);
+      document
+        .getElementsByClassName("row-id-" + data[indexNextItem]?.id)[0]
+        .scrollIntoView({ block: "end", behavior: "smooth" });
+    }
+  };
 
   useEffect(() => {
     getListThongBao({});
@@ -408,6 +464,7 @@ const QuanLyThongBao = (props) => {
       })
       .catch((error) => {});
   };
+  refClickBtnSave.current = handleAdded;
 
   const handleDeleteItem = (item) => {
     Modal.confirm({
@@ -456,6 +513,7 @@ const QuanLyThongBao = (props) => {
     form.resetFields();
     updateData({ dataEditDefault: {} });
   };
+  refClickBtnAdd.current = handleClickedBtnAdded;
 
   const handleCancel = () => {
     if (editStatus) {
@@ -464,7 +522,6 @@ const QuanLyThongBao = (props) => {
       form.resetFields();
     }
   };
-  const refAutoFocus = useRef(null);
   useEffect(() => {
     if (refAutoFocus.current) {
       refAutoFocus.current.focus();
@@ -512,7 +569,7 @@ const QuanLyThongBao = (props) => {
             }}
             buttonHeader={[
               {
-                title: "Thêm mới",
+                title: "Thêm mới [F1]",
                 onClick: handleClickedBtnAdded,
                 buttonHeaderIcon: (
                   <img style={{ marginLeft: 5 }} src={IcCreate} alt="" />
@@ -541,8 +598,8 @@ const QuanLyThongBao = (props) => {
             onRow={onRow}
             rowClassName={(record, index) => {
               if (dataEditDefault.id === record.id) {
-                return "row-edit";
-              } else return "";
+                return "row-edit row-id-" + record.id;
+              } else return "row-id-" + record.id;
             }}
           ></TableWrapper>
           {totalElements && (
@@ -574,7 +631,7 @@ const QuanLyThongBao = (props) => {
               onCancel={handleCancel}
               cancelText="Hủy"
               onOk={handleAdded}
-              okText="Lưu"
+              okText="Lưu [F4]"
             >
               <FormWraper
                 form={form}

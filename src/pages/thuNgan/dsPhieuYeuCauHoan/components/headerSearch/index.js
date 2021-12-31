@@ -7,7 +7,6 @@ import IcFilter from "assets/images/kho/icFilter.png";
 import IconSearch from "assets/images/xetNghiem/icSearch.png";
 import IcDown from "assets/images/xetNghiem/icDown.png";
 import IcClose from "assets/images/kho/icClose.png";
-
 import { useDispatch, useSelector } from "react-redux";
 const HeaderSearch = (props) => {
   const [state, _setState] = useState({
@@ -23,16 +22,34 @@ const HeaderSearch = (props) => {
   const { onChangeInputSearch, updateData, onSearch } =
     dispatch.danhSachPhieuYeuCauHoan;
   const { listtrangThaiPhieuDoiTra } = useSelector((state) => state.utils);
-  const { dsTrangThai } = useSelector((state) => state.danhSachPhieuYeuCauHoan);
+  const { dsTrangThai, ...dataSearch } = useSelector(
+    (state) => state.danhSachPhieuYeuCauHoan.dataSearch
+  );
 
+  const isJson = (str) => {
+    try {
+      JSON.parse(str);
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
   let timer = null;
   const onSearchInput = (key) => (e) => {
     let value = "";
     if (key == "searchTongHop") {
+      updateData({
+        dataSearch: {
+          ...dataSearch,
+          tenNb: "",
+          maNb: ""
+        }
+      })
       if (Number.isInteger(+e.target.value)) {
         key = "maNb";
         value = e.target.value;
-      } else if (typeof JSON.parse(e.target.value) == "object") {
+      } else if (isJson(e.target.value)) {
+        console.log("d")
         const qrCode = JSON.parse(e.target.value);
         key = "maNb";
         value = qrCode?.maNb;
@@ -48,9 +65,6 @@ const HeaderSearch = (props) => {
     }
     clearTimeout(timer);
     timer = setTimeout(() => {
-      updateData({
-        [key]: value,
-      });
       onChangeInputSearch({
         [key]: value,
       });
@@ -67,7 +81,7 @@ const HeaderSearch = (props) => {
       });
     } else {
       onChangeInputSearch({
-        dsTrangThai: "",
+        dsTrangThai: [],
       });
     }
   };
@@ -88,7 +102,6 @@ const HeaderSearch = (props) => {
       });
     }
   }, [listtrangThaiPhieuDoiTra]);
-  console.log("dsTrangThai", dsTrangThai);
   const group = () => (
     <>
       <Checkbox onChange={onChangeStatus} value={state.statusAll}>

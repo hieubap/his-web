@@ -45,6 +45,7 @@ const ThongTinDichVu = ({
         let account = listAccount?.find(
           (item) => item?.nhanVienId == dataEditDefault?.bacSiId
         );
+        console.log(account);
         let dataEdit = {
           ...dataEditDefault,
           bacSiId: account?.nhanVienId,
@@ -78,8 +79,9 @@ const ThongTinDichVu = ({
       .then((values) => {
         let editStatus = false;
         const bs = listAccount?.find(
-          (item) => +item?.id == dataEditDefault.bacSiId
+          (item) => +item?.nhanVienId == dataEditDefault.bacSiId
         );
+        debugger;
         let formattedData = {
           active: true,
           bacSiId: state.editStatus ? bs?.nhanVienId : auth.nhanVienId,

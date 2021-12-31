@@ -19,10 +19,9 @@ import {
   HIEU_LUC,
   KHONG_TINH_TIEN,
 } from "constants/index";
-import { Checkbox, Col, Input, Modal, Form, InputNumber } from "antd";
+import { Checkbox, Col, Input, Form, InputNumber } from "antd";
 import { checkRole } from "app/Sidebar/constant";
 import { ROLES } from "constants/index";
-import { render } from "less";
 import IcCreate from "assets/images/kho/IcCreate.png";
 import showFull from "assets/svg/showFull.svg";
 import thuNho from "assets/svg/thuNho.svg";
@@ -46,18 +45,12 @@ const HoaChat = (props) => {
     updateData,
     onSearch,
     createOrEdit,
-    onDelete,
-    getListDonViTinh,
     listAllDonViTinh,
-    getListNhaSanXuat,
     listNSX,
     listNCC,
     listAllNhomDichVuCap1,
     listAllNhomDichVuCap2,
     listAllNhomDichVuCap3,
-    getAllDichVuCap1,
-    getAllDichVuCap2,
-    getAllDichVuCap3,
     //utils
     listnhomChiPhiBh,
     getUtils,
@@ -65,7 +58,6 @@ const HoaChat = (props) => {
     listSuppliesGroup,
     getListSuppliesGroupTongHop,
     // getListAllQuocGia,
-    getListXuatXu,
     // listAllQuocGia,
     listXuatXu,
     getAllTongHopDichVuCap1,
@@ -157,13 +149,15 @@ const HoaChat = (props) => {
         {
           keyCode: 38, //up
           onEvent: (e) => {
-            refSelectRow.current && refSelectRow.current(-1);
+            if (refSelectRow.current && e.target.nodeName != "INPUT")
+              refSelectRow.current(-1);
           },
         },
         {
           keyCode: 40, //down
           onEvent: (e) => {
-            refSelectRow.current && refSelectRow.current(1);
+            if (refSelectRow.current && e.target.nodeName != "INPUT")
+              refSelectRow.current(1);
           },
         },
       ],
@@ -773,6 +767,7 @@ const HoaChat = (props) => {
             tyLeBhTt: values.tyLeBhTt,
             tyLeTtDv: values.tyLeTtDv,
             loaiDichVu: 110,
+            dsNguonKhacChiTra: values.dsNguonKhacChiTra,
           },
           giaNhapSauVat: values.giaNhapSauVat,
           giaTran: values.giaTran,
@@ -838,6 +833,11 @@ const HoaChat = (props) => {
     form.resetFields();
     form.setFieldsValue({ logo: "" });
     updateData({ dataEditDefault: {} });
+    if (refAutoFocus.current) {
+      setTimeout(() => {
+        refAutoFocus.current.focus();
+      }, 50);
+    }
   };
   refClickBtnAdd.current = handleClickedBtnAdded;
 
@@ -864,11 +864,11 @@ const HoaChat = (props) => {
       : "row-id-" + record.id;
   };
   const refAutoFocus = useRef(null);
-  useEffect(() => {
-    if (refAutoFocus.current) {
-      refAutoFocus.current.focus();
-    }
-  }, [dataEditDefault]);
+  // useEffect(() => {
+  //   if (refAutoFocus.current) {
+  //     refAutoFocus.current.focus();
+  //   }
+  // }, [dataEditDefault]);
   const handleChangeshowTable = () => {
     setState({
       changeShowFullTbale: true,

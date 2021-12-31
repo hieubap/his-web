@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import {
   Checkbox,
   Col,
@@ -39,7 +39,7 @@ import uploadImg from "assets/images/his-core/import.png";
 import { SORT_DEFAULT, DS_DINH_DANG } from "./configs";
 import { checkRole } from "app/Sidebar/constant";
 import FormWraper from "components/FormWraper";
-import { INNHANH_KYSO } from "constants/index";
+import { IN_NHANH_KYSO } from "constants/index";
 import MultiLevelTab from "components/MultiLevelTab";
 import IcCreate from "assets/images/kho/IcCreate.png";
 import { ModalNotification2 } from "components/ModalConfirm";
@@ -69,6 +69,8 @@ const ThongTinChiTietLoaiPhieu = ({
   listKhoa,
   deleteThietLap,
   setStateParent,
+
+  refCallbackSave = {},
 }) => {
   const refConfirmXoaRow = useRef(null);
   const [collapseStatus, setCollapseStatus] = useState(false);
@@ -86,22 +88,23 @@ const ThongTinChiTietLoaiPhieu = ({
   };
 
   useEffect(() => {
-    if (dataEditDefault) {
+    // if (dataEditDefault) {
       setState({ ...stateParent });
       if (
         !stateParent.editStatus &&
         stateParent.mauBaoCao === null &&
         stateParent.defaultFileList?.length === 0 &&
-        !stateParent.invalidMauBaoCao
+        !stateParent.invalidMauBaoCao &&
+        !dataEditDefault?.id
       ) {
         form.resetFields();
       } else {
         form.setFieldsValue({
           ...dataEditDefault,
-          ten: dataEditDefault.nhanVien.ten,
+          ten: dataEditDefault?.nhanVien?.ten,
         });
       }
-    }
+    // }
   }, [dataEditDefault, stateParent]);
 
   useEffect(() => {
@@ -202,6 +205,7 @@ const ThongTinChiTietLoaiPhieu = ({
       return false;
     }
   };
+  refCallbackSave.current = handleAdded;
   //  ---------------------------------------------------------------- Table
   const onClickSort = (key, value) => {
     onSortChange({
@@ -561,6 +565,7 @@ const ThongTinChiTietLoaiPhieu = ({
               ]}
             >
               <Select
+                autoFocus
                 showSearch
                 placeholder="Vui lòng nhập tên tài khoản"
                 filterOption={filterOption}
@@ -748,7 +753,7 @@ const ThongTinChiTietLoaiPhieu = ({
               // loading={props.loading}
               hidden={handleHiddenSave()}
             >
-              {"Lưu"}
+              {"Lưu [F4]"}
               <img
                 style={{ marginLeft: 6 }}
                 src={require("assets/images/kho/save.png")}

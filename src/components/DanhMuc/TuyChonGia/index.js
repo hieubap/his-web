@@ -13,6 +13,8 @@ import { openInNewTab } from "utils";
 import { checkRole } from "app/Sidebar/constant";
 import { ROLES } from "constants/index";
 function TuyChonGia(props) {
+  console.log('render ... 3');
+  
   const { size, page, totalElements, dichVuId, refCallbackSave = {} } = props;
   const [state, _setState] = useState({
     active: false,
@@ -621,12 +623,12 @@ function TuyChonGia(props) {
       roleEdit={props.roleEdit}
       editStatus={state?.pressButtonAdded ? false : editStatus}
       forceShowButtonSave={
-        (state?.pressedRow && checkRole(props.roleEdit) && true) || false
+        (state?.pressedRow && checkRole(props.roleEdit) && true) || (state.pressButtonAdded && checkRole(props.roleEdit) && true) || false
       }
       forceShowButtonCancel={
-        (state?.pressedRow && checkRole(props.roleEdit) && true) || false
+        (state?.pressedRow && checkRole(props.roleEdit) && true) || (state.pressButtonAdded && checkRole(props.roleEdit) && true) || false
       }
-      // isHiddenButtonAdd={true}
+      isEditAndPressRow={dichVuId && checkRole(props.roleEdit)}
     >
       <fieldset disabled={state?.pressButtonAdded ? false : editStatus}>
         <div>

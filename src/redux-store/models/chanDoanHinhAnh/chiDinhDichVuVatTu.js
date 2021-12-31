@@ -1,8 +1,8 @@
 import tonKhoProvider from "data-access/kho/ton-kho-provider";
 import nbDvVatTuProvider from "data-access/nb-dv-vat-tu-provider";
+import dichVuKhoProvider from "data-access/categories/dm-dich-vu-kho-provider";
 import { message } from "antd";
 import cacheUtils from "utils/cache-utils";
-
 export default {
   state: {
     listDvKho: [],
@@ -20,6 +20,49 @@ export default {
   },
 
   effects: (dispatch) => ({
+    searchDv: async ({ notCallBoChiDinh, ...payload }, state) => {
+      const userId = state.auth.auth?.nhanVienId;
+      const { loaiDichVu } = payload;
+      const listDvKho = await cacheUtils.read(
+        userId,
+        `DATA_DICH_VU_KHAM_NGOAI_TRU_${loaiDichVu}`,
+        [],
+        false
+      );
+      dispatch.chiDinhDichVuVatTu.updateData({ listDvKho, loaiDichVu });
+      if (loaiDichVu && loaiDichVu === 150) {
+      } else {
+          dispatch.boChiDinh.getBoChiDinh({ dsLoaiDichVu: loaiDichVu, bacSiChiDinhId : userId });
+      }
+      return new Promise((resolve, reject) => {
+        dichVuKhoProvider
+          .searchAll({ ...payload, size: 9999 })
+          .then((s) => {
+            if (s?.code === 0) {
+              let data = s?.data || [];
+              if (JSON.stringify(data) !== JSON.stringify(listDvKho)) {
+                if (loaiDichVu === 150) {
+                  dispatch.chiDinhDichVuVatTu.updateData({
+                    listGoiDv: data,
+                  });
+                } else {
+                  dispatch.chiDinhDichVuVatTu.updateData({
+                    listDvKho: data,
+                  });
+                }
+              }
+              resolve(s);
+            } else {
+              reject(s);
+              message.error(s?.message);
+            }
+          })
+          .catch((e) => {
+            reject(e);
+            message.error(e?.message || "Xảy ra lỗi, vui lòng thử lại sau");
+          });
+      });
+    },
     getListDichVuVatTu: (payload) => {
       return new Promise((resolve, reject) => {
         nbDvVatTuProvider

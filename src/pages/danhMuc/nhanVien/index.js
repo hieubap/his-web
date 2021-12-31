@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import moment from "moment";
 import { Main } from "./styled";
 import { combineSort } from "utils";
@@ -47,6 +47,8 @@ import fileUpload from "data-access/file-provider";
 import fileUtils from "utils/file-utils";
 import { checkRole } from "app/Sidebar/constant";
 import { ROLES } from "constants/index";
+import stringUtils from "mainam-react-native-string-utils";
+
 let timer = null;
 
 const NhanVien = (props) => {
@@ -96,6 +98,17 @@ const NhanVien = (props) => {
     });
   };
   const [form] = Form.useForm();
+  const refAutoFocus = useRef();
+  const refLayerHotKey = useRef(stringUtils.guid());
+  const { onAddLayer, onRemoveLayer } = useDispatch().phimTat;
+
+  // register layerId
+  useEffect(() => {
+    onAddLayer({ layerId: refLayerHotKey.current });
+    return () => {
+      onRemoveLayer({ layerId: refLayerHotKey.current });
+    };
+  }, []);
 
   useEffect(() => {
     const sort = combineSort(dataSortColumn);
@@ -347,7 +360,7 @@ const NhanVien = (props) => {
   };
 
   const handleAdded = (e) => {
-    e.preventDefault();
+    if (e?.preventDefault) e.preventDefault();
     form
       .validateFields()
       .then(async (values) => {
@@ -396,6 +409,12 @@ const NhanVien = (props) => {
     updateData({ dataEditDefault: {} });
     setLogo(null);
     setAnhKy(null);
+
+    if (refAutoFocus.current) {
+      setTimeout(() => {
+        refAutoFocus.current.focus();
+      }, 50);
+    }
   };
 
   const handleCancel = () => {
@@ -434,12 +453,11 @@ const NhanVien = (props) => {
     let idDiff = dataEditDefault?.id;
     return record.id === idDiff ? "row-actived" : "";
   };
-  const refAutoFocus = useRef(null);
-  useEffect(() => {
-    if (refAutoFocus.current) {
-      refAutoFocus.current.focus();
-    }
-  }, [dataEditDefault]);
+  // useEffect(() => {
+  //   if (refAutoFocus.current) {
+  //     refAutoFocus.current.focus();
+  //   }
+  // }, [dataEditDefault]);
   const handleChangeshowTable = () => {
     setState({
       changeShowFullTbale: true,
@@ -482,7 +500,8 @@ const NhanVien = (props) => {
               checkRole([ROLES["QUAN_LY_TAI_KHOAN"].NHAN_VIEN_THEM])
                 ? [
                     {
-                      title: "Thêm mới",
+                      type: "create",
+                      title: "Thêm mới [F1]",
                       onClick: handleClickedBtnAdded,
                       buttonHeaderIcon: (
                         <img style={{ marginLeft: 5 }} src={IcCreate} alt="" />
@@ -535,7 +554,9 @@ const NhanVien = (props) => {
             columns={columns}
             dataSource={data}
             onRow={onRow}
-            rowClassName={setRowClassName}
+            layerId={refLayerHotKey.current}
+            dataEditDefault={dataEditDefault}
+            // rowClassName={setRowClassName}
           ></TableWrapper>
           {totalElements && (
             <Pagination
@@ -566,10 +587,11 @@ const NhanVien = (props) => {
               onCancel={handleCancel}
               cancelText="Hủy"
               onOk={handleAdded}
-              okText="Lưu"
+              okText="Lưu [F4]"
               roleSave={[ROLES["QUAN_LY_TAI_KHOAN"].NHAN_VIEN_THEM]}
               roleEdit={[ROLES["QUAN_LY_TAI_KHOAN"].NHAN_VIEN_SUA]}
               editStatus={editStatus}
+              layerId={refLayerHotKey.current}
             >
               <fieldset
                 disabled={

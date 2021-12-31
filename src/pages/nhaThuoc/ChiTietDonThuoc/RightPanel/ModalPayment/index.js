@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, useMemo } from "react";
+import React, { useCallback, useEffect, useState, useMemo, useRef } from "react";
 import { connect, useSelector, useDispatch } from "react-redux";
 import ModalCheckout from "components/ModalCheckout";
 import IconSave from "assets/images/thuNgan/icSave.png";
@@ -6,8 +6,10 @@ import { firstLetterWordUpperCase, formatDecimal } from "utils";
 import { Main, ButtonWrapper } from "./styled";
 import { Col, Row, Input, message } from "antd";
 import NumberFormat from 'react-number-format';
-import { GIOI_TINH_BY_VALUE, GIOI_TINH_VNI } from "../../../../../constants";
+import { GIOI_TINH_BY_VALUE } from "../../../../../constants";
 import moment from "moment";
+import stringUtils from "mainam-react-native-string-utils";
+
 const ModalPayment = ({ modalCheckoutRef }) => {
   const { dsPhuongThucTt, infoPatient, nguoiBenhId } = useSelector(state => state.thuocChiTiet)
   const {
@@ -16,6 +18,36 @@ const ModalPayment = ({ modalCheckoutRef }) => {
   const { thanhTien } = phieuThu || {}
   const { postThanhToan } = useDispatch().thuocChiTiet
 
+  const refLayerHotKey = useRef(stringUtils.guid());
+  const refF4 = useRef();
+  const { onAddLayer, onRemoveLayer, onRegisterHotkey } = useDispatch().phimTat;
+
+  useEffect(() => {
+    onAddLayer({ layerId: refLayerHotKey.current });
+    // đăng ký phím tắt
+    onRegisterHotkey({
+      layerId: refLayerHotKey.current,
+      hotKeys: [
+        {
+          keyCode: 115, //F4
+          onEvent: () => {
+            refF4.current && refF4.current();
+          },
+        },
+        {
+          keyCode: 27, //ESC
+          onEvent: () => {
+            if(modalCheckoutRef.current) 
+              modalCheckoutRef.current.close()
+          },
+        },
+      ],
+    });
+    return () => {
+      onRemoveLayer({ layerId: refLayerHotKey.current });
+    };
+  }, []);
+    
   const [state, _setState] = useState({ infoPrice: {} });
 
   const setState = (data = {}) => {
@@ -84,6 +116,8 @@ const ModalPayment = ({ modalCheckoutRef }) => {
 
 
   }
+  refF4.current = submitHandler;
+
   const totalPatientPayment = () => {
     let total = 0;
     Object.keys(state.infoPrice).forEach((ifp) => {
@@ -134,7 +168,7 @@ const ModalPayment = ({ modalCheckoutRef }) => {
       subTitleHeader={
         <>
           <span style={{ fontSize: 14, fontWeight: "normal" }}>
-            {infoPatient?.nbDotDieuTri?.tenNb}{` (${moment(infoPatient?.nbDotDieuTri?.ngaySinh).format("DD/MM/YYYY")} - ${infoPatient?.nbDotDieuTri?.tuoi ? `${infoPatient?.nbDotDieuTri?.tuoi} tuổi` : ""} - ${infoPatient?.nbDotDieuTri?.gioiTinh ? GIOI_TINH_VNI[infoPatient?.nbDotDieuTri?.gioiTinh] : ""})`}
+            {infoPatient?.nbDotDieuTri?.tenNb}{` (${moment(infoPatient?.nbDotDieuTri?.ngaySinh).format("DD/MM/YYYY")} - ${infoPatient?.nbDotDieuTri?.tuoi ? `${infoPatient?.nbDotDieuTri?.tuoi} tuổi` : ""} - ${infoPatient?.nbDotDieuTri?.gioiTinh ? GIOI_TINH_BY_VALUE[infoPatient?.nbDotDieuTri?.gioiTinh] : ""})`}
           </span>
         </>
       }

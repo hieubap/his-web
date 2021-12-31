@@ -1,3 +1,9 @@
+
+export const A4 = {
+  width: 804,
+  height: 1178,
+};
+
 export const PAGE_SIZE = 10;
 export const PAGE_DEFAULT = 0;
 export const SIZE_DEFAULT = 10;
@@ -187,6 +193,7 @@ export const LOAI_PHIEU_THU = {
   BAO_HIEM: 2,
 };
 
+//=========== Giới Tính
 export const GIOI_TINH = {
   NAM: 1,
   NU: 2,
@@ -196,6 +203,7 @@ export const GIOI_TINH_BY_VALUE = {
   1: "Nam",
   2: "Nu",
 };
+//===============================
 
 export const ROLES = {
   SUPER_ADMIN: "ROLE_AdminISofH",
@@ -356,7 +364,7 @@ export const ROLES = {
     BENH_PHAM_THEM: "0103302",
     PHUONG_PHAP_GAY_ME: "0103401",
     PHUONG_PHAP_GAY_ME_SUA: "0103403",
-    PHUONG_PHAP_GAY_ME_THEM: "0103502",
+    PHUONG_PHAP_GAY_ME_THEM: "0103402",
     PHUONG_PHAP_NHUOM: "0103501",
     PHUONG_PHAP_NHUOM_SUA: "0103503",
     PHUONG_PHAP_NHUOM_THEM: "0103502",
@@ -485,6 +493,12 @@ export const ROLES = {
     THUOC_KE_NGOAI: "0108301",
     THUOC_KE_NGOAI_THEM: "0108302",
     THUOC_KE_NGOAI_SUA: "0108303",
+    HDSD: "0108401",
+    HDSD_THEM: "0108402",
+    HDSD_SUA: "0108403",
+    HOI_DONG: "0108801",
+    HOI_DONG_THEM: "0108802",
+    HOI_DONG_SUA: "0108803",
     // end view
   },
   THIET_LAP_CHUNG: "0107201",
@@ -556,6 +570,24 @@ export const ROLES = {
     XEM: "0500101",
     GOI_NB_TIEP_THEO: "0500102",
     XEM_SO_TIEN: "0500103",
+  },
+  HE_THONG: {
+    DANH_MUC: "000101",
+    TIEP_DON: "000301",
+    THU_NGAN: "000401",
+    KIOSK: "000201",
+    KHAM_BENH: "000501",
+    XET_NGHIEM: "000601",
+    CDHA_TDCN: "000701",
+    KHO: "000801",
+    KY_SO: "000901",
+    HO_SO_BENH_AN: "001001",
+    NHA_THUOC: "001101",
+    THEO_DOI_DIEU_TRI: "001201",
+    QUAN_TRI_HE_THONG: "001301",
+    THIET_LAP: "001401",
+    BAO_CAO: "001501",
+    QUAN_LY_THONG_BAO: "001601",
   }
 };
 
@@ -606,11 +638,6 @@ export const DANH_CHO_THUOC = [
   { id: "false", ten: "Không dành cho thuốc" },
 ];
 
-export const A4 = {
-  width: 804,
-  height: 1178,
-};
-
 export const SORT_DEFAULT_DICH_VU = {
   active: 2,
   ["dichVu.ma"]: 1,
@@ -643,21 +670,28 @@ export const TRANG_THAI_DICH_VU = {
   DA_DUYET: 160,
 };
 
+//=================================== kho
 export const TRANG_THAI_PHIEU = [
   { label: "Tạo mới", value: 10 },
   { label: "Tạo mới, đã giữ chỗ", value: 15 },
   { label: "Chờ duyệt", value: 20 },
   { label: "Hoàn thành", value: 30 },
 ];
-export const TK_TRANG_THAI_PHIEU_XUAT = [
+export const LOAI_PHIEU_XUAT = [
+  { ten: "Xem phiếu duyệt dự trù", id: 1 },
+  { ten: "Xem phiếu xuất", id: 2 },
+];
+
+export const TK_TRANG_THAI_PHIEU_NHAP_DU_TRU = [
   { label: "Chờ duyệt", value: 20 },
   { label: "Hoàn thành", value: 30 },
 ];
-
-export const GIOI_TINH_VNI = {
-  1: "Nam",
-  2: "Nữ",
-};
+export const TK_TRANG_THAI_PHIEU_NHAP_XUAT = [
+  { label: "Tạo mới", value: 10 },
+  { label: "Tạo mới, đã giữ chỗ", value: 15 },
+  { label: "Chờ duyệt", value: 20 },
+  { label: "Hoàn thành", value: 30 },
+];
 
 export const TRANG_THAI_DON_THUOC = [
   // { label: "Tất cả", value: 10 },
@@ -694,7 +728,7 @@ export const LOAI_CHIET_KHAU = {
   TIEN: 2,
 };
 
-export const INNHANH_KYSO = [
+export const IN_NHANH_KYSO = [
   {
     id: "",
     ten: "Tất cả",
@@ -727,6 +761,22 @@ export const DATA_TIME_QMS = [
     value: "thoiGianChieuDen",
   },
 ];
+
+export const LOAI_QMS = [
+  {
+    id: 20,
+    ten: "QMS CĐHA - TDCN",
+  },
+  {
+    id: 30,
+    ten: "QMS khám bệnh",
+  },
+  {
+    id: 40,
+    ten: "QMS xét nghiệm",
+  },
+];
+
 export const TRANG_THAI_DIEU_TRI = [
   {
     ten: "Tất cả",
@@ -753,20 +803,6 @@ export const NHOM_DANH_MUC = {
   KHACH_HANG: 7,
 };
 
-export const LOAI_QMS = [
-  {
-    id: 20,
-    ten: "QMS CĐHA - TDCN",
-  },
-  {
-    id: 30,
-    ten: "QMS khám bệnh",
-  },
-  {
-    id: 40,
-    ten: "QMS xét nghiệm",
-  },
-];
 
 export const NHOM_BAO_CAO = {
   BAO_CAO_TAI_CHINH: 0,

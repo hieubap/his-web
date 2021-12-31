@@ -86,7 +86,6 @@ export default {
     });
   },
   searchTheoTaiKhoan: ({nhaThuoc}) => {
-    console.log('nhaThuoc: ', nhaThuoc);
     return new Promise((resolve, reject) => {
       client
         .get(combineUrlParams(`${dataPath}${DM_KHO}/theo-tai-khoan`,{nhaThuoc}))

@@ -189,10 +189,11 @@ const TableVatTu = (props) => {
     []
   );
   const renderEmptyTextLeftTable = () => {
-    if (boChiDinh?.data?.length <= 0 && state?.isBoChiDinh && state.keyWord) {
+    if (boChiDinh?.data?.length <= 0 && state?.isBoChiDinh) {
       return (
         <div style={{ marginTop: 130 }}>
           <div style={{ color: "#c3c3c3", fontSize: 14 }}>Không có dữ liệu phù hợp</div>
+          <Button style={{ borderRadius:"8px" }} onClick={() => openInNewTab(`/danh-muc/bo-chi-dinh`)}>Thêm mới bộ chỉ định</Button>
         </div>
       )
     } else if ((state?.isBoChiDinh && !state?.boChiDinhSelected) || (state?.isBoChiDinh && Object.keys(state?.boChiDinhSelected)?.length <= 0)) {

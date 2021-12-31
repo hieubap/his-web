@@ -74,7 +74,7 @@ export default {
     return new Promise((resolve, reject) => {
       client
         .get(
-          combineUrlParams(`${dataPath}${BC_PK}/pk-03-2`, {
+          combineUrlParams(`${dataPath}${BC_PK}/pk-01`, {
             ...payload,
           })
         )

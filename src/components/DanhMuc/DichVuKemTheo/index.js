@@ -19,6 +19,7 @@ function DichVuKemTheo(props) {
     active: false,
     data: [],
     services: [],
+    listthoiDiemChiDinh : []
   });
   const setState = (data = {}) => {
     _setState((state) => {
@@ -32,6 +33,7 @@ function DichVuKemTheo(props) {
       props.getAllDichVu({ dsLoaiDichVu: dsLoaiDichVu });
       props.getAllKhoTongHop({});
       props.getListAllLoaiDoiTuong();
+      props.getUtils({ name: "thoiDiemChiDinh" });
     }
   }, [dichVuId]);
   useEffect(() => {
@@ -42,6 +44,15 @@ function DichVuKemTheo(props) {
       ],
     });
   }, [props.listAllLoaiDoiTuong]);
+
+  useEffect(() => {
+    setState({
+      listthoiDiemChiDinh:[
+        { id: "", ten: "Tất cả" },
+        ...props.listthoiDiemChiDinh,
+      ],
+    });
+  }, [props.listthoiDiemChiDinh]);
 
   useEffect(() => {
     setState({ data: [...props.listData] });
@@ -134,42 +145,83 @@ function DichVuKemTheo(props) {
           title={
             <div
               className="pointer"
-              onClick={() => openInNewTab("/kho/quan-tri-kho")}
             >
-              Tên kho
+              Thời điểm chỉ định
             </div>
           }
-          sort_key="kho.ten"
+          sort_key="thoiDiemChiDinh"
           onClickSort={onClickSort}
-          dataSort={props.dataSortColumn["kho.ten"] || 0}
+          dataSort={props.dataSortColumn["thoiDiemChiDinh"] || 0}
           searchSelect={
             <Select
-              data={props.listAllKho}
-              placeholder="Chọn kho"
-              onChange={onSearchInput("khoId")}
+              data={state.listthoiDiemChiDinh}
+              placeholder="Chọn thời điểm chỉ định"
+              onChange={onSearchInput("thoiDiemChiDinh")}
             />
           }
         />
       ),
       width: "200px",
-      dataIndex: "kho",
-      key: "kho",
+      dataIndex: "thoiDiemChiDinh",
+      key: "thoiDiemChiDinh",
       render: (item, list, index) => {
         if (index == state.currentIndex) {
           return (
             <SelectLargeData
-              placeholder={"Chọn kho"}
-              data={props.listAllKho}
-              onChange={onChange("id", "kho")}
+              placeholder={"Chọn thời điểm chỉ định"}
+              data={state.listthoiDiemChiDinh}
+              onChange={onChange("thoiDiemChiDinh")}
               style={{ width: "100%" }}
               getValue={(item) => item?.id}
               renderText={(item) => item?.ten}
-              value={state.currentItem?.kho?.id}
+              value={state.currentItem?.thoiDiemChiDinh}
             />
           );
-        } else return item && item.ten;
+        } else return item && state.listthoiDiemChiDinh.find(itemFind => item === itemFind.id)?.ten;
       },
     },
+    // {
+    //   title: (
+    //     <HeaderSearch
+    //       title={
+    //         <div
+    //           className="pointer"
+    //           onClick={() => openInNewTab("/kho/quan-tri-kho")}
+    //         >
+    //           Tên kho
+    //         </div>
+    //       }
+    //       sort_key="kho.ten"
+    //       onClickSort={onClickSort}
+    //       dataSort={props.dataSortColumn["kho.ten"] || 0}
+    //       searchSelect={
+    //         <Select
+    //           data={props.listAllKho}
+    //           placeholder="Chọn kho"
+    //           onChange={onSearchInput("khoId")}
+    //         />
+    //       }
+    //     />
+    //   ),
+    //   width: "200px",
+    //   dataIndex: "kho",
+    //   key: "kho",
+    //   render: (item, list, index) => {
+    //     if (index == state.currentIndex) {
+    //       return (
+    //         <SelectLargeData
+    //           placeholder={"Chọn kho"}
+    //           data={props.listAllKho}
+    //           onChange={onChange("id", "kho")}
+    //           style={{ width: "100%" }}
+    //           getValue={(item) => item?.id}
+    //           renderText={(item) => item?.ten}
+    //           value={state.currentItem?.kho?.id}
+    //         />
+    //       );
+    //     } else return item && item.ten;
+    //   },
+    // },
     {
       title: (
         <HeaderSearch
@@ -381,7 +433,8 @@ function DichVuKemTheo(props) {
       .createOrEdit({
         id,
         dichVuChinhId: dichVuId,
-        khoId: state.currentItem?.kho?.id,
+        thoiDiemChiDinh: state?.currentItem?.thoiDiemChiDinh,
+        // khoId: state.currentItem?.kho?.id,
         loaiDoiTuongId: state.currentItem?.loaiDoiTuong?.id,
         dichVuKemTheoId: state.currentItem?.dichVuKemTheo?.id,
         soLuong: state.currentItem?.soLuong,
@@ -435,6 +488,7 @@ function DichVuKemTheo(props) {
           ></TableWrapper>
           {dichVuId && totalElements ? (
             <Pagination
+              listData={state?.data}
               onChange={onChangePage}
               current={props.page + 1}
               pageSize={props.size}
@@ -455,6 +509,7 @@ const mapStateToProps = (state) => {
     kho: { listAllKho = [] },
     dichVu: { listAllDichVu = [] },
     loaiDoiTuong: { listAllLoaiDoiTuong = [] },
+    utils: { listthoiDiemChiDinh = [] },
   } = state;
 
   return {
@@ -466,6 +521,7 @@ const mapStateToProps = (state) => {
     listAllKho,
     listAllDichVu,
     dataSortColumn: dataSortColumn || { active: 2, ["dichVu.ten"]: 1 },
+    listthoiDiemChiDinh
   };
 };
 
@@ -483,6 +539,7 @@ const mapDispatchToProps = ({
   dichVu: { getAllDichVu },
   kho,
   loaiDoiTuong: { getListAllLoaiDoiTuong },
+  utils: { getUtils },
 }) => {
   return {
     getData,
@@ -497,6 +554,7 @@ const mapDispatchToProps = ({
     updateData,
     getAllKhoTongHop: kho.getAllTongHop,
     getListAllLoaiDoiTuong,
+    getUtils
   };
 };
 

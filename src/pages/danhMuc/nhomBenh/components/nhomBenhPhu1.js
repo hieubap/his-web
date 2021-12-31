@@ -375,7 +375,7 @@ const NhomBenh1 = (props) => {
 };
 
 const mapDispatchToProps = ({
-  nhomBenh: { updateData, onSearchTongHop : onSearch, getAllNhomBenh },
+  nhomBenh: { updateData, onSearch : onSearch, getAllNhomBenh },
 }) => ({
   updateData,
   onSearch,

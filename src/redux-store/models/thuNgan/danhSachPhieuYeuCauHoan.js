@@ -4,7 +4,6 @@ import cacheUtils from "utils/cache-utils";
 import { message } from "antd";
 import { PAGE_DEFAULT } from "constants/index";
 import { combineSort } from "utils";
-import { reject } from "lodash";
 
 export default {
   state: {
@@ -15,9 +14,8 @@ export default {
     totalElements: 0,
     page: PAGE_DEFAULT,
     size: 10,
-    dataSearch: { dsTrangThai: 20 },
+    dataSearch: { dsTrangThai: [20] },
     dataSortColumn: {},
-    dsTrangThai: [20],
   },
   reducers: {
     updateData(state, payload = {}) {
@@ -35,18 +33,14 @@ export default {
           message.error(e?.message || "Xảy ra lỗi, vui lòng thử lại sau");
         });
     },
-    onSizeChange: ({ size, dataSearch, dataSortColumn }, state) => {
+    onSizeChange: ({ size }, state) => {
       dispatch.danhSachPhieuYeuCauHoan.updateData({
         size,
         page: 0,
-        dataSearch,
-        dataSortColumn,
       });
       dispatch.danhSachPhieuYeuCauHoan.onSearch({
         page: 0,
         size,
-        dataSearch,
-        dataSortColumn,
       });
     },
 
@@ -65,12 +59,10 @@ export default {
 
       const dataSearch =
         payload?.dataSearch || state?.danhSachPhieuYeuCauHoan?.dataSearch || {};
-      console.log(payload);
       return new Promise((resolve, reject) => {
         nbPhieuDoiTra
           .search({ page, size, sort, ...dataSearch, nbDotDieuTriId })
           .then((s) => {
-            debugger;
             dispatch.danhSachPhieuYeuCauHoan.updateData({
               listData: (s?.data || []).map((item, index) => {
                 item.stt = page * size + index + 1;
@@ -119,10 +111,9 @@ export default {
         ...(state.danhSachPhieuYeuCauHoan.dataSearch || {}),
         ...payload,
       };
-
       dispatch.danhSachPhieuYeuCauHoan.updateData({
         page: 0,
-        ...dataSearch,
+        dataSearch: dataSearch,
       });
       dispatch.danhSachPhieuYeuCauHoan.onSearch({
         page: 0,
@@ -140,7 +131,6 @@ export default {
             dispatch.danhSachPhieuYeuCauHoan({
               listTrangThai: trangThai,
             });
-            console.log(trangThai);
             resolve(trangThai);
           })
           .catch((e) => {
@@ -189,7 +179,6 @@ export default {
               });
               resolve(newData);
             } else {
-              console.log("hello");
               message.error(s.message, 5);
               resolve({});
             }
@@ -240,6 +229,22 @@ export default {
             } else {
               message.error(s?.message, 5);
               reject(s.message);
+            }
+          })
+          .catch((e) => {
+            message.error(e?.message);
+          });
+      });
+    },
+    getThongTinBenhNhan: ({ soPhieu, maHoSo }) => {
+      return new Promise((resolve, reject) => {
+        nbPhieuDoiTra
+          .search({ soPhieu, maHoSo })
+          .then((s) => {
+            if (s.code == 0) {
+              resolve(s.data[0]);
+            } else {
+              message.error(s.message, 5);
             }
           })
           .catch((e) => {

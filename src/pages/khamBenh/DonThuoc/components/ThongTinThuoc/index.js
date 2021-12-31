@@ -369,6 +369,7 @@ const ThongTinThuoc = (props, ref) => {
             onChange={onChangeInput("dotDung", index)}
             onKeyDown={blockInvalidChar2}
             min={1}
+            max={999}
           ></Input>
         );
       },
@@ -412,12 +413,15 @@ const ThongTinThuoc = (props, ref) => {
       message.error("Vui lòng nhập Lưu ý không quá 1000 ký tự!");
       return;
     }
+    console.log('data: ', data);
     let payload = data.map((item) => ({
       nbDotDieuTriId: item?.nbDotDieuTriId,
+      listLieuDung: item.listLieuDung,
       nbDichVu: {
         ghiChu: item?.ghiChu,
         soLuong: item?.nbDichVu.soLuong,
         dichVuId: item?.nbDichVu.dichVuId,
+        dichVu: item.nbDichVu.dichVu
       },
       nbDvKho: {
         khoId
@@ -439,9 +443,11 @@ const ThongTinThuoc = (props, ref) => {
             arrIsEligible.push(obj)
           }
         })
-        setData(arrIsNotEligible)
         if (arrIsNotEligible?.length <= 0) {
           onCancel()
+        } else {
+          let filter = data.filter(item1 => arrIsNotEligible.some(item2 => item2.nbDichVu.dichVuId === item1.nbDichVu.dichVuId))
+          setData(filter)
         }
         getListDichVuThuoc({ nbDotDieuTriId: s[0].nbDotDieuTriId });
       })

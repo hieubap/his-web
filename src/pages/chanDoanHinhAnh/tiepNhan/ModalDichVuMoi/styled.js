@@ -20,6 +20,7 @@ export const ModalStyled = styled(Modal)`
           height: 345px;
           & .header-table {
             padding: 8px 17px 8px 20px;
+            display: flex;
             & .header-table__left {
               font-style: italic;
               font-weight: bold;
@@ -27,16 +28,27 @@ export const ModalStyled = styled(Modal)`
               line-height: 24px;
               color: #ffffff;
             }
+            & .header-table__right {
+              font-weight: bold;
+              font-size: 16px;
+              line-height: 24px;
+              color: #ffffff;
+              margin-left: auto;
+            }
           }
           .main__container {
-            .ant-table-header {
-              .ant-table-thead {
-                .custome-header {
-                  min-height: 40px !important;
-                  .title-box {
+            .ant-table-container {
+              border: 2px dashed #049254;
+              border-top: 0;
+              .ant-table-header {
+                .ant-table-thead {
+                  .custome-header {
                     min-height: 40px !important;
-                    display: flex;
-                    justify-content: center;
+                    .title-box {
+                      min-height: 40px !important;
+                      display: flex;
+                      justify-content: center;
+                    }
                   }
                 }
               }

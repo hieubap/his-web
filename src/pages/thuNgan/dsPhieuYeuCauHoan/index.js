@@ -6,7 +6,7 @@ import { Main } from "./styled";
 import HeaderSearchPhieuHoan from "./components/headerSearch";
 import { HeaderSearch, TableWrapper } from "components";
 import { checkRole } from "app/Sidebar/constant";
-import { Checkbox, Input } from "antd";
+import { Checkbox, Input, Table } from "antd";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import viewItem from "assets/svg/thuNgan/viewItem.svg";
@@ -37,7 +37,7 @@ const DsPhieuYeuCauHoan = (props) => {
   useEffect(() => {
     onSizeChange({
       size: 10,
-      dataSearch: { dsTrangThai: 20 },
+      dataSearch: { dsTrangThai: [20] },
       dataSortColumn: {},
     });
     getUtils({ name: "trangThaiPhieuDoiTra" });
@@ -57,13 +57,13 @@ const DsPhieuYeuCauHoan = (props) => {
           return;
         const { maHoSo, id, nbDotDieuTriId, soPhieu } = record;
         history.push(
-          `/thu-ngan/chi-tiet-phieu-hoan-tra/${maHoSo}/${id}/${nbDotDieuTriId}`
+          `/thu-ngan/chi-tiet-phieu-hoan-tra/${maHoSo}/${soPhieu}/${nbDotDieuTriId}`
         );
       },
     };
   };
   const handleChangePage = (page) => {
-    onSearch({ page });
+    onSearch({ page: page - 1 });
   };
   const columnsGroup = [
     {
@@ -208,14 +208,7 @@ const DsPhieuYeuCauHoan = (props) => {
       key: "soPhieu",
       align: "center",
       render: (item) => {
-        return (
-          <Icon
-            component={viewItem}
-            onClick={() => {
-              console.log("soPhieu", item);
-            }}
-          ></Icon>
-        );
+        return <Icon component={viewItem} onClick={() => {}}></Icon>;
       },
     },
   ];
@@ -236,6 +229,7 @@ const DsPhieuYeuCauHoan = (props) => {
           columns={columnsGroup}
           dataSource={listData || []}
           onRow={onRow}
+          scroll={{ x: 400 }}
         />
         {totalElements ? (
           <Pagination

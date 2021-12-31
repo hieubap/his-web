@@ -130,11 +130,12 @@ const Header = (props) => {
             <div className="search">
               <img src={require("assets/images/his-core/iconSearch.png")}></img>
               <Select
+                id="nh-select-tim-kiem-ten-man-hinh"
                 onChange={(e) => gotoPage(e)}
                 showSearch
                 className="select"
                 placeholder="Tìm kiếm tên màn hình"
-                id={"link"}
+                // id={"link"}
                 ten={"title"}
                 filterOption={filterOption}
               >

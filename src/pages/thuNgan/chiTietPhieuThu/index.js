@@ -28,6 +28,7 @@ const ChiTietPhieuThu = (props) => {
       params: { phieuThuId, nbDotDieuTriId },
     },
     searchAll,
+    history
   } = props;
   useEffect(() => {
     searchAll({ nbDotDieuTriId, phieuThuId });
@@ -52,18 +53,18 @@ const ChiTietPhieuThu = (props) => {
     onRegisterHotkey({
       layerId: refLayerHotKey.current,
       hotKeys: [
-        {
-          keyCode: 121, //F10
-          onEvent: () => {
-            onClickChiaPhieuThu();
-          },
-        },
-        {
-          keyCode: 122, //F11
-          onEvent: () => {
-            onClickTaoMienGiam();
-          },
-        },
+        // {
+        //   keyCode: 121, //F10
+        //   onEvent: () => {
+        //     onClickChiaPhieuThu();
+        //   },
+        // },
+        // {
+        //   keyCode: 122, //F11
+        //   onEvent: () => {
+        //     onClickTaoMienGiam();
+        //   },
+        // },
       ],
     });
     return () => {
@@ -113,7 +114,7 @@ const ChiTietPhieuThu = (props) => {
               </Button> */}
                   <AuthWrapper accessRoles={[ROLES["THU_NGAN"].MIEN_GIAM]}>
                     <Button onClick={onClickTaoMienGiam}>
-                      Tạo miễn giảm{" "}
+                      Tạo miễn giảm
                       <img src={IconMienGiam} alt="icontaomiengiam" />
                     </Button>
                   </AuthWrapper>

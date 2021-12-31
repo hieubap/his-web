@@ -1,18 +1,18 @@
 import React from "react";
 import { Route } from "react-router-dom";
 import { Main } from "./styled";
-import { therapyAdmin } from "pages/constants";
+import { pageDanhMuc } from "pages/constants";
 
-const Therapy = (props) => {
+const SubPage = (props) => {
   return (
     <Main>
       <div className={"app-contain"}>
-        {Object.keys(therapyAdmin).map((key) => (
+        {Object.keys(pageDanhMuc).map((key) => (
           <Route
             key={key}
-            path={therapyAdmin[key].path}
-            component={therapyAdmin[key].component}
-            exact={therapyAdmin[key].exact}
+            path={pageDanhMuc[key].path}
+            component={pageDanhMuc[key].component}
+            exact={pageDanhMuc[key].exact}
           />
         ))}
       </div>
@@ -20,4 +20,4 @@ const Therapy = (props) => {
   );
 };
 
-export default Therapy;
+export default SubPage;

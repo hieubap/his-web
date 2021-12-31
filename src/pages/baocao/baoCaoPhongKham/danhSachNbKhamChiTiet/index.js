@@ -37,18 +37,18 @@ const Index = ({
     _setState((_state) => ({
       ..._state,
       ...data,
-    }))
-  }
-  const onChange = (type) => e => {
+    }));
+  };
+  const onChange = (type) => (e) => {
     const value = e?.hasOwnProperty("target")
       ? e?.target?.value
       : e?.hasOwnProperty("_d")
-        ? moment(e._d)
-        : e;
+      ? moment(e._d)
+      : e;
     setState({
       [type]: value,
     });
-  }
+  };
 
   const onOk = (isOk) => () => {
     if (isOk) {
@@ -65,8 +65,8 @@ const Index = ({
         khoaThucHienId: state.khoaThucHienId,
         phongThucHienId: state.phongThucHienId,
         doiTuong: state.doiTuong,
-        bacSiKhamId: state.bacSiKhamId
-      }
+        bacSiKhamId: state.bacSiKhamId,
+      };
       getBcDsNbKhamChiTiet(payload)
         .then((data) => {
           if (!data.dinhDang || data.dinhDang == 20) {
@@ -77,8 +77,7 @@ const Index = ({
                 type: 20,
               });
             }
-          }
-          else if (data.dinhDang == 10) {
+          } else if (data.dinhDang == 10) {
             // export xlsx
             setState({
               src: data.file?.doc,
@@ -86,9 +85,8 @@ const Index = ({
             });
           }
         })
-        .catch((e) => { });
-    }
-    else {
+        .catch((e) => {});
+    } else {
       setState({
         loaiThoiGian: 20,
         tuNgay: moment().set("hour", 0).set("minute", 0).set("second", 0),
@@ -100,57 +98,62 @@ const Index = ({
         doiTuong: null,
         listKhoaThucHienRender: state.listKhoaThucHien,
         isValidData: true,
-      })
+      });
     }
-  }
+  };
 
   useEffect(() => {
     if (state.src) {
-      fileUtils.getFromUrl({ url: fileUtils.absoluteFileUrl(state.src) }).then((s) => {
-        const blob = new Blob([new Uint8Array(s)], {
-          type: state.type ?
-            state.type == 20 ?
-              "application/pdf" :
-              state.type == 10 ?
-                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" :
-                "application/pdf" :
-            "application/ pdf",
+      fileUtils
+        .getFromUrl({ url: fileUtils.absoluteFileUrl(state.src) })
+        .then((s) => {
+          const blob = new Blob([new Uint8Array(s)], {
+            type: state.type
+              ? state.type == 20
+                ? "application/pdf"
+                : state.type == 10
+                ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                : "application/pdf"
+              : "application/ pdf",
+          });
+          const blobUrl = window.URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = blobUrl;
+          link.setAttribute("download", `${state.src}`); //or any other extension
+          document.body.appendChild(link);
+          link.click();
         });
-        const blobUrl = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = blobUrl;
-        link.setAttribute('download', `${state.src}`); //or any other extension
-        document.body.appendChild(link);
-        link.click();
-      });
     }
   }, [state.src]);
 
   useEffect(() => {
     if (listPhongThucHien) {
-      let listKhoaThucHien = listPhongThucHien?.filter(
-        (x1) => x1.khoaChiDinh
-      )?.map(
-        (x) => ({ ...x?.khoaChiDinh, phongThucHienId: x?.phong?.id })
-      )?.filter(
-        (x2, index, parent) => parent.findIndex(x3 => x3?.id == x2?.id) == index
-      );
-      let dsPhong = listPhongThucHien?.map(
-        (x) => ({ ...x?.phong })
-      )?.filter(
-        (x1, index, parent) => parent?.findIndex(x2 => x2?.id == x1?.id) == index
-      );
+      let listKhoaThucHien = listPhongThucHien
+        ?.filter((x1) => x1.khoaChiDinh)
+        ?.map((x) => ({ ...x?.khoaChiDinh, phongThucHienId: x?.phong?.id }))
+        ?.filter(
+          (x2, index, parent) =>
+            parent.findIndex((x3) => x3?.id == x2?.id) == index
+        );
+      let dsPhong = listPhongThucHien
+        ?.map((x) => ({ ...x?.phong }))
+        ?.filter(
+          (x1, index, parent) =>
+            parent?.findIndex((x2) => x2?.id == x1?.id) == index
+        );
       setState({
         listPhongThucHien: dsPhong,
         listKhoaThucHien,
         listKhoaThucHienRender: listKhoaThucHien,
-      })
+      });
     }
   }, [listPhongThucHien]);
 
   useEffect(() => {
     if (state.phongThucHienId) {
-      let dsKhoaThucHienRender = state.dsKhoaThucHienRender?.filter((x) => x?.phongThucHienId == state.phongThucHienId);
+      let dsKhoaThucHienRender = state.dsKhoaThucHienRender?.filter(
+        (x) => x?.phongThucHienId == state.phongThucHienId
+      );
       setState({ khoaThucHienId: null, dsKhoaThucHienRender });
     }
   }, [state.phongThucHienId]);
@@ -164,13 +167,13 @@ const Index = ({
     getDanhSachPhongThucHien({ page: 0, size: 9999 });
     searchAllNguoiGioiThieu({ page: 0, size: 9999, active: true });
     searchAllNguonNguoiBenh({ page: 0, size: 9999, active: true });
-    getListNhanVien({ page: 0, size: 9999,  active: true  });
+    getListNhanVien({ page: 0, size: 9999, active: true });
   }, []);
 
   return (
     <Main>
       <HomeWrapper title="Báo cáo">
-        <Wrapper title="PK03.2. Danh sách người bệnh khám chi tiết">
+        <Wrapper title="PK01. Danh sách người bệnh khám chi tiết">
           <div className="note">Chọn tiêu chí lọc cho báo cáo!</div>
           <Row>
             <Col md={8} xl={8} xxl={8}>
@@ -199,7 +202,11 @@ const Index = ({
               <div className="item-select">
                 <label
                   className="label pointer"
-                  onClick={() => openInNewTab(`/danh-muc/phong?active=1&khoaId=${state.khoaThucHienId}`)}
+                  onClick={() =>
+                    openInNewTab(
+                      `/danh-muc/phong?active=1&khoaId=${state.khoaThucHienId}`
+                    )
+                  }
                 >
                   Phòng thực hiện
                 </label>
@@ -216,7 +223,9 @@ const Index = ({
               <div className="item-select">
                 <label
                   className="label pointer"
-                  onClick={() => openInNewTab("/danh-muc/nguon-nguoi-benh?active=1&tab=2")}
+                  onClick={() =>
+                    openInNewTab("/danh-muc/nguon-nguoi-benh?active=1&tab=2")
+                  }
                 >
                   Nguồn giới thiệu
                 </label>
@@ -272,7 +281,11 @@ const Index = ({
               <div className="item-select">
                 <label
                   className="label pointer"
-                  onClick={() => openInNewTab(`/danh-muc/nguon-nguoi-benh?active=1&tab=1&nguonNbId=${state.nguonNbId}`)}
+                  onClick={() =>
+                    openInNewTab(
+                      `/danh-muc/nguon-nguoi-benh?active=1&tab=1&nguonNbId=${state.nguonNbId}`
+                    )
+                  }
                 >
                   Người giới thiệu
                 </label>
@@ -308,11 +321,7 @@ const Index = ({
             </Col>
             <Col md={8} xl={8} xxl={8}>
               <div className="item-select">
-                <label
-                  className="label"
-                >
-                  Bác sĩ khám
-                </label>
+                <label className="label">Bác sĩ khám</label>
                 <Select
                   onChange={onChange("bacSiKhamId")}
                   value={state.bacSiKhamId}
@@ -324,11 +333,7 @@ const Index = ({
             </Col>
             <Col md={8} xl={8} xxl={8}>
               <div className="item-select">
-                <label
-                  className="label"
-                >
-                  Đối tượng NB
-                </label>
+                <label className="label">Đối tượng NB</label>
                 <Select
                   onChange={onChange("doiTuong")}
                   value={state.doiTuong}
@@ -351,8 +356,8 @@ const Index = ({
         </Wrapper>
       </HomeWrapper>
     </Main>
-  )
-}
+  );
+};
 
 export default connect(
   (state) => ({
@@ -364,7 +369,7 @@ export default connect(
     listPhongThucHien: state.phongThucHien.listData || [],
     listAllNguonNguoiBenh: state.nguonNguoiBenh.listAllNguonNguoiBenh || [],
     listAllNguoiGioiThieu: state.nguoiGioiThieu.listAllNguoiGioiThieu || [],
-    listNhanVien: state.nhanVien.listNhanVien
+    listNhanVien: state.nhanVien.listNhanVien,
   }),
   ({
     utils: { getUtils },
@@ -379,6 +384,6 @@ export default connect(
     searchAllNguonNguoiBenh,
     searchAllNguoiGioiThieu,
     getBcDsNbKhamChiTiet,
-    getListNhanVien
-  }),
+    getListNhanVien,
+  })
 )(Index);

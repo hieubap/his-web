@@ -7,7 +7,7 @@ import { Col, Row, Input } from "antd";
 import { Main, PopoverWrapper, GlobalStyle, InputSearch } from "./styled";
 import IconSearch from "assets/images/xetNghiem/icSearch.png";
 import Checkbox from "antd/lib/checkbox/Checkbox";
-import { GIOI_TINH_VNI } from "../../../../../../constants";
+import { GIOI_TINH_BY_VALUE } from "../../../../../../constants";
 const ThongTinNguoiBenh = (props) => {
   const history = useHistory()
   const infoPatient = useSelector(state => state.thuocChiTiet.infoPatient)
@@ -38,7 +38,7 @@ const ThongTinNguoiBenh = (props) => {
             <Row className="">
               <div className="title" style={{ marginRight: 90 }}>Họ và tên:</div>
               <div className="detail" >
-                <b>{infoPatient?.nbDotDieuTri?.tenNb}{` (${moment(infoPatient?.nbDotDieuTri?.ngaySinh).format("DD/MM/YYYY")} - ${`${infoPatient?.nbDotDieuTri?.thangTuoi > 36 ? `${infoPatient?.nbDotDieuTri?.tuoi} tuổi` : `${infoPatient?.nbDotDieuTri?.thangTuoi} tháng`}`} - ${infoPatient?.nbDotDieuTri?.gioiTinh ? GIOI_TINH_VNI[infoPatient?.nbDotDieuTri?.gioiTinh] : ""})`}</b>
+                <b>{infoPatient?.nbDotDieuTri?.tenNb}{` (${moment(infoPatient?.nbDotDieuTri?.ngaySinh).format("DD/MM/YYYY")} - ${`${infoPatient?.nbDotDieuTri?.thangTuoi > 36 ? `${infoPatient?.nbDotDieuTri?.tuoi} tuổi` : `${infoPatient?.nbDotDieuTri?.thangTuoi} tháng`}`} - ${infoPatient?.nbDotDieuTri?.gioiTinh ? GIOI_TINH_BY_VALUE[infoPatient?.nbDotDieuTri?.gioiTinh] : ""})`}</b>
               </div>
             </Row>
           </Col>

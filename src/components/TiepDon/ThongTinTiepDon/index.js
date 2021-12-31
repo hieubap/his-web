@@ -612,13 +612,21 @@ const ThongTinTiepDon = (props) => {
                       onClick={() => onBack()}
                     >
                       <span>Hủy</span>
+                      <img
+                        src={require("assets/images/welcome/danger.png")}
+                        alt=""
+                      ></img>
                     </div>
                     <div
-                      className="button button-danger"
+                      className="button button-save"
                       style={{ marginLeft: "0" }}
                       onClick={() => onSubmit()}
                     >
                       <span>Lưu thay đổi</span>
+                      <img
+                        src={require("assets/images/welcome/save.png")}
+                        alt=""
+                      ></img>
                     </div>
                   </>
                 )}

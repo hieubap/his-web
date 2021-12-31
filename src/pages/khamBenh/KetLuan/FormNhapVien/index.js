@@ -1,9 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useMemo,
-  useRef
-} from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { Input, Row, Col, Select as SelectAntd } from "antd";
 import { PhieuChiDinhWrapper, SelectGroup } from "../styled";
 import { SelectGroupNhapVien } from "./styled";
@@ -15,16 +10,17 @@ import { DOI_TUONG, GIOI_TINH } from "constants/index";
 import { DivInfo } from "../../KhamCoBan/styled";
 import IcSave from "assets/images/khamBenh/icSave.svg";
 import { useSelector } from "react-redux";
-import { join } from "lodash";
+// import { join } from "lodash";
 
 const { Option } = SelectAntd;
 
-function FormNhapVien(props) {
+const FormNhapVien = (props) => {
   const selectFirstRef = useRef();
+  const { dataTIEU_DE_TRAI_1 } = useSelector((state) => state.thietLap);
   const infoNb = useSelector((state) => state.khamBenh.infoNb || {});
   const thongTinChiTiet = useSelector(
     (state) => state.khamBenh.thongTinChiTiet || {}
-    );
+  );
   const { benhVien = {} } = useSelector((state) => state.auth.auth || {});
   const listAllKhoa = useSelector((state) => state.khoa.listAllKhoa || []);
   const listAllNgheNghiep = useSelector(
@@ -32,11 +28,11 @@ function FormNhapVien(props) {
   );
   const { nbChiSoSong, nbHoiBenh, nbDvKyThuat, nbNhapVien, nbKhamXet } =
     thongTinChiTiet;
-  const { dataTIEU_DE_TRAI_1, handleSetData, updateChiSoSong } = props;
+  const { handleSetData, updateChiSoSong } = props;
 
-  const listAllNhomBenhChinh = useSelector(
-    (state) => state.nhomBenh.listAllNhomBenhChinh || []
-  );
+  // const listAllNhomBenhChinh = useSelector(
+  //   (state) => state.nhomBenh.listAllNhomBenhChinh || []
+  // );
   const listAllMaBenhChinh = useSelector(
     (state) => state.maBenh.listAllMaBenhChinh || []
   );
@@ -76,14 +72,14 @@ function FormNhapVien(props) {
   const [dataSelect, setDataSelect] = useState(() => ({
     ...thongTinChiTiet?.nbChanDoan,
     ...thongTinChiTiet?.nbNhapVien,
-    ...infoNb
+    ...infoNb,
   }));
   const [highlight, setHighlight] = useState(true);
 
   const dateTimeFormat = (value) => {
     return `${value.hours()} giờ ${value.minutes()} phút         ngày ${value.date()} tháng ${
       value.month() + 1
-      } năm ${value.year()}`;
+    } năm ${value.year()}`;
   };
 
   useEffect(() => {
@@ -100,28 +96,28 @@ function FormNhapVien(props) {
 
   useEffect(() => {
     // if (thongTinChiTiet?.nbNhapVien) {
-      setDataSelect({
-        ...thongTinChiTiet?.nbChanDoan,
-        ...thongTinChiTiet?.nbNhapVien,
-        ...infoNb
-      });
+    setDataSelect({
+      ...thongTinChiTiet?.nbChanDoan,
+      ...thongTinChiTiet?.nbNhapVien,
+      ...infoNb,
+    });
     // }
   }, [thongTinChiTiet]);
 
-  let { tenChanDoan } = useMemo(() => {
-    // let listFilter =  listAllNhomBenhChinh.filter(o1 =>  props.thongTinChiTiet?.nbChanDoan?.dsCdChinhId.some(o2 => o1.id === o2))
-    let listFilter = listAllMaBenhChinh.filter((o1) =>
-      props.thongTinChiTiet?.nbChanDoan?.dsCdChinhId.some((o2) => o1.id === o2)
-    );
-    let tenChanDoan = join(
-      listFilter.map((element) => {
-        return element.ten;
-      })
-    );
-    return {
-      tenChanDoan,
-    };
-  }, [props.thongTinChiTiet, listAllMaBenhChinh]);
+  // let { tenChanDoan } = useMemo(() => {
+  //   // let listFilter =  listAllNhomBenhChinh.filter(o1 =>  props.thongTinChiTiet?.nbChanDoan?.dsCdChinhId.some(o2 => o1.id === o2))
+  //   let listFilter = listAllMaBenhChinh.filter((o1) =>
+  //     props.thongTinChiTiet?.nbChanDoan?.dsCdChinhId.some((o2) => o1.id === o2)
+  //   );
+  //   let tenChanDoan = join(
+  //     listFilter.map((element) => {
+  //       return element.ten;
+  //     })
+  //   );
+  //   return {
+  //     tenChanDoan,
+  //   };
+  // }, [props.thongTinChiTiet, listAllMaBenhChinh]);
 
   const optionCd = useMemo(
     () =>
@@ -159,7 +155,7 @@ function FormNhapVien(props) {
   const customFormat = (value) => {
     return `giờ ${value.hour()}h ngày ${value.date()} tháng ${
       value.month() + 1
-      } năm ${value.year()}`;
+    } năm ${value.year()}`;
   };
 
   const children = listAllKhoa.map((khoa) => {
@@ -181,7 +177,7 @@ function FormNhapVien(props) {
       <div className="form-detail">
         <div className="flex-center">
           <div style={{ width: "100%", textAlign: "center" }}>
-            <span style={{ width: "100%" }}>BUỒNG KHÁM BỆNH: </span>{" "}
+            <span style={{ width: "100%" }}>BUỒNG KHÁM BỆNH: </span>
             {phongThucHien.ten
               ? phongThucHien.ten
               : "..........................."}
@@ -384,7 +380,7 @@ function FormNhapVien(props) {
                 thoiGianVaoVien
               ).get("minute")} phút 
               ngày ${moment(thoiGianVaoVien).get("date")} tháng ${
-              moment(thoiGianVaoVien).get("month") + 1
+                moment(thoiGianVaoVien).get("month") + 1
               } năm ${moment(thoiGianVaoVien).get("year")}`
             }
             disabled={true}
@@ -556,6 +552,6 @@ function FormNhapVien(props) {
       </div>
     </PhieuChiDinhWrapper>
   );
-}
+};
 
 export default FormNhapVien;

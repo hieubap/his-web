@@ -109,6 +109,9 @@ export const DM_TEMPLATE = "/dm-mau-qms";
 export const DM_THUOC_CHI_DINH_NGOAI = "/dm-thuoc-chi-dinh-ngoai";
 export const DM_THUOC_CHI_DINH_NGOAI_LIEU_DUNG =
   "/dm-thuoc-chi-dinh-ngoai-lieu-dung";
+export const DM_HUONG_DAN_SU_DUNG = "/dm-tai-lieu-hdsd";
+export const DM_MAU_KET_QUA_CDHA = "/dm-mau-kq-cdha-tdcn-pt-tt";
+export const DM_HOI_DONG_KIEM_KE = "/dm-hoi-dong-kiem-ke";
 
 //setting print
 export const SETTING_PRINT = "/thong-tin-may-tinh";
@@ -123,6 +126,8 @@ export const NB_TACH_PHIEU_THU = "/nb-phieu-thu/tach-phieu-thu";
 export const NB_PHIEU_THU_PHIEU_THU = "/nb-phieu-thu/phieu-thu";
 export const NB_PHIEU_DOI_TRA = "/nb-phieu-doi-tra/tong-hop";
 export const PHIEU_NB_PHIEU_DOI_TRA = "/nb-phieu-doi-tra";
+export const NB_HOA_DON = "/nb-hoa-don/tong-hop";
+export const NB_DV_XUAT_HOA_DON = "/nb-dich-vu/xuat-hoa-don";
 
 // Xet nghiem
 export const NB_DICH_VU_XET_NGHIEM = "/nb-dv-xet-nghiem";
@@ -139,6 +144,7 @@ export const DM_NHAN_VIEN = "/dm-nhan-vien";
 
 // Quan ly tai khoa
 export const DM_TAI_KHOAN = "/dm-tai-khoan";
+export const RESET_MAT_KHAU = "/reset-mat-khau";
 
 // Quan ly thong bao
 export const NV_THONG_BAO = "/nv-thong-bao";

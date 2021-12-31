@@ -21,12 +21,13 @@ export default {
     },
   },
   effects: (dispatch) => ({
-    onSizeChange: ({ size, loaiDichVu }, state) => {
+    onSizeChange: ({ size, loaiDichVu, dataSortColumn}, state) => {
       dispatch.dichVuKyThuat.updateData({
         size,
         page: 0,
+        dataSortColumn
       });
-      dispatch.dichVuKyThuat.onSearch({ page: 0, size, loaiDichVu });
+      dispatch.dichVuKyThuat.onSearch({ page: 0, size, loaiDichVu, dataSortColumn });
     },
     onSearch: ({ page = 0, ...payload }, state) => {
       let newState = { isLoading: true, page };
@@ -289,7 +290,6 @@ export default {
                 };
               });
               if (JSON.stringify(data) !== JSON.stringify(list)) {
-                console.log(dataName);
                 dispatch.dichVuKyThuat.updateData({
                   [`listAll${dataName}`]: data,
                 });

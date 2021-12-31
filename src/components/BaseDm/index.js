@@ -50,6 +50,7 @@ const BaseDm = ({
   customOnSearchInput, // function
   setDefaultForm = () => {},
   autoFocus = true,
+  afterSubmit = () => {},
   ...props
 }) => {
   const [state, _setState] = useState({
@@ -164,6 +165,7 @@ const BaseDm = ({
             form.resetFields();
           }
           getData(params);
+          afterSubmit();
         });
       })
       .catch((error) => {});
@@ -175,18 +177,20 @@ const BaseDm = ({
       })
     : (data = {}) => form.setFieldsValue(data);
 
+  const _onShowData = (data = {}) => {
+    setState({ editStatus: true });
+    updateData({ _dataEdit: data, dataEditDefault: data });
+    setFieldsValue(data);
+  };
   const onShowAndHandleUpdate = customShowUpdate
     ? customShowUpdate({
         form,
         updateData,
         setEditStatus: (editStatus) => setState({ editStatus }),
         setFieldsValue,
+        callback: _onShowData,
       })
-    : (data = {}) => {
-        setState({ editStatus: true });
-        updateData({ dataEditDefault: data });
-        setFieldsValue(data);
-      };
+    : _onShowData;
 
   const onRow = (record, index) => {
     return {
@@ -200,7 +204,7 @@ const BaseDm = ({
     setState({ editStatus: false });
     form.resetFields();
     setDefaultForm({ form });
-    updateData({ dataEditDefault: {} });
+    updateData({ dataEditDefault: {}, _dataEdit: {} });
   };
 
   const handleCancel = () => {

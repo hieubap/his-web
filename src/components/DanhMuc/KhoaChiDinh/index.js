@@ -12,6 +12,8 @@ import { openInNewTab } from "utils";
 import { checkRole } from "app/Sidebar/constant";
 import { ROLES } from "constants/index";
 function KhoaChiDinh(props) {
+  console.log('render ... 4');
+  
   const { size, page, dichVuId, totalElements, refCallbackSave = {} } = props;
   const [state, _setState] = useState({
     active: false,
@@ -67,6 +69,7 @@ function KhoaChiDinh(props) {
         } else value = e;
         props.onChangeInputSearch({
           [key]: value,
+          dichVuId
         });
       },
       500,
@@ -248,12 +251,12 @@ function KhoaChiDinh(props) {
       roleEdit={props.roleEdit}
       editStatus={state?.pressButtonAdded ? false : editStatus}
       forceShowButtonSave={
-        (state?.pressedRow && checkRole(props.roleEdit) && true) || false
+        (state?.pressedRow && checkRole(props.roleEdit) && true) || (state.pressButtonAdded && checkRole(props.roleEdit) && true) || false
       }
       forceShowButtonCancel={
-        (state?.pressedRow && checkRole(props.roleEdit) && true) || false
+        (state?.pressedRow && checkRole(props.roleEdit) && true) || (state.pressButtonAdded && checkRole(props.roleEdit) && true) || false
       }
-      // isHiddenButtonAdd={true}
+      isEditAndPressRow={dichVuId && checkRole(props.roleEdit)}
     >
       <fieldset disabled={state?.pressButtonAdded ? false : editStatus}>
         <div>

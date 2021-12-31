@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { LOAI_DICH_VU } from "constants/index";
 import { openInNewTab } from "utils";
 import { checkRole } from "app/Sidebar/constant";
-function FormServiceInfo(props) {
+function FormServiceInfo({ hiddenField = [], optionalField = [], ...props }) {
   // const [state, _setState] = useState({});
   // const setState = (data = {}) => {
   //   _setState((state) => {
@@ -329,9 +329,11 @@ function FormServiceInfo(props) {
           <Form.Item label="Giá nhập" name="giaNhap">
             <Input className="input-option" placeholder="Nhập giá nhập" />
           </Form.Item>
-          <Form.Item label="Giá trần" name="giaTran">
-            <Input className="input-option" placeholder="Nhập giá trần" />
-          </Form.Item>
+          {!hiddenField.includes("giaTran") && (
+            <Form.Item label="Giá trần" name="giaTran">
+              <Input className="input-option" placeholder="Nhập giá trần" />
+            </Form.Item>
+          )}
           <Form.Item label="Trần bảo hiểm" name="tranBaoHiem">
             <Input className="input-option" placeholder="Nhập trần bảo hiểm" />
           </Form.Item>
@@ -407,12 +409,16 @@ function FormServiceInfo(props) {
               </div>
             }
             name="nhomDichVuCap2Id"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng chọn dịch vụ cấp 2",
-              },
-            ]}
+            rules={
+              optionalField.includes("nhomDichVuCap2Id")
+                ? []
+                : [
+                    {
+                      required: true,
+                      message: "Vui lòng chọn dịch vụ cấp 2",
+                    },
+                  ]
+            }
           >
             <Select
               data={listNhomDvCap2}

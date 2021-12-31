@@ -10,7 +10,6 @@ export default {
     neededUpdateRecord: [],
     listGoiDv: [],
     listDvVatTu: [],
-    listDanhSachPhong: []
   },
   reducers: {
     updateData(state, payload = {}) {

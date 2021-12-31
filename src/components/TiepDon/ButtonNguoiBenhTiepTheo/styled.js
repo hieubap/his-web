@@ -19,12 +19,14 @@ export const Main = styled.div`
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+   
     .title {
       display: flex;
       align-items: center;
       justify-content: space-between;
       height: 100%;
       width: 100%;
+
       span {
         font-weight: bold;
         color: #fff;
@@ -54,7 +56,21 @@ export const Main = styled.div`
       font-size: 18px;
       line-height: 24px;
     }
-  }
+    :hover {
+      background: linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0.25),
+          rgba(0, 0, 0, 0.25)
+        ),
+        #0762f7 !important;
+      border: none !important;
+    }
+    :active {
+      background: #0762f7 !important;
+      border: none;
+      box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.5);
+    }
+  
   &.service {
     display: flex !important;
     justify-content: space-evenly;

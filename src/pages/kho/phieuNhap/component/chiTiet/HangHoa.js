@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { DatePicker, Input, Popover, Select, Table } from "antd";
 import empty from "assets/images/kho/empty.png";
@@ -7,6 +7,7 @@ import { PopoverWrapper, GlobalStyles } from "../ThongTinHangHoa/styled";
 import HeaderSearch from "components/TableWrapper/headerSearch";
 import moment from "moment";
 import { formatNumber } from "utils";
+import { useDispatch } from "react-redux";
 
 const HangHoa = ({
   dataSortColumn,
@@ -20,91 +21,98 @@ const HangHoa = ({
   const styleInput = {
     border: "none",
   };
-
+  const updateData = useDispatch().phieuNhapChiTiet.updateData
+  useEffect(() => {
+    return () => {
+      updateData({
+        dsNhapXuatChiTiet: []
+      })
+    }
+  }, [])
   const contentPopover = (item) => () =>
-  (
-    <div className="dd-flex fd-col">
-      <div className="text text-bold">{`${item?.dichVu?.ma} - ${item?.dichVu?.ten}`}</div>
-      <div className="info dd-flex fd-row space-between">
-        <div className="_col">
-          {item?.loNhap?.xuatXu?.ten &&
-            <div className="_row">
-              <span>Xuất xứ: </span>
-              {item?.loNhap?.xuatXu?.ten}
-            </div>
-          }
-          {item?.loNhap?.nhaSanXuat?.ten &&
-            <div className="_row">
-              <span>Nhà sản xuất: </span>
-              {item?.loNhap?.nhaSanXuat?.ten}
-            </div>
-          }
-          {item?.loNhap?.nhaSanXuat &&
-            <div className="_row">
-              <span>Hãng sãn xuất: </span>
-              {item?.loNhap?.nhaSanXuat}
-            </div>
-          }
-          {item?.loNhap?.soVisa &&
-            <div className="_row">
-              <span>Số visa: </span>
-              {item?.loNhap?.soVisa}
-            </div>
-          }
-          {item?.dichVu?.quyCach &&
-            <div className="_row">
-              <span>Quy cách: </span>
-              {item?.dichVu?.quyCach}
-            </div>
-          }
-          {item?.dichVu?.tenDuongDung &&
-            <div className="_row">
-              <span>Đường dùng: </span>
-              {item?.dichVu?.tenDuongDung}
-            </div>
-          }
-        </div>
-        <div className="_col">
-          {detail?.quyetDinhThau?.goiThau &&
-            <div className="_row">
-              <span>Gói thầu: </span>
-              {detail?.quyetDinhThau?.goiThau}
-            </div>
-          }
-          {item?.chiTietThau?.soLuongThau &&
-            <div className="_row">
-              <span>Số lượng thầu: </span>
-              {item?.chiTietThau?.soLuongThau}
-            </div>
-          }
-          {item?.chiTietThau?.soLuongConLai &&
-            <div className="_row">
-              <span>Số lượng còn lại: </span>
-              {item?.chiTietThau?.soLuongConLai}
-            </div>
-          }
-          {item?.dichVu?.maHoatChat &&
-            <div className="_row">
-              <span>Mã hoạt chất: </span>
-              {item?.dichVu?.maHoatChat}
-            </div>
-          }
-          {item?.dichVu?.tenHoatChat &&
-            <div className="_row">
-              <span>Tên hoạt chất: </span>
-              {item?.dichVu?.tenHoatChat}
-            </div>
-          }
-          {item?.dichVu?.hamLuong &&
-            <div className="_row">
-              <span>Hàm lượng: </span>
-              {item?.dichVu?.hamLuong}
-            </div>
-          }
+    (
+      <div className="dd-flex fd-col">
+        <div className="text text-bold">{`${item?.dichVu?.ma} - ${item?.dichVu?.ten}`}</div>
+        <div className="info dd-flex fd-row space-between">
+          <div className="_col">
+            {item?.loNhap?.xuatXu?.ten &&
+              <div className="_row">
+                <span>Xuất xứ: </span>
+                {item?.loNhap?.xuatXu?.ten}
+              </div>
+            }
+            {item?.loNhap?.nhaSanXuat?.ten &&
+              <div className="_row">
+                <span>Nhà sản xuất: </span>
+                {item?.loNhap?.nhaSanXuat?.ten}
+              </div>
+            }
+            {item?.loNhap?.nhaSanXuat &&
+              <div className="_row">
+                <span>Hãng sãn xuất: </span>
+                {item?.loNhap?.nhaSanXuat}
+              </div>
+            }
+            {item?.loNhap?.soVisa &&
+              <div className="_row">
+                <span>Số visa: </span>
+                {item?.loNhap?.soVisa}
+              </div>
+            }
+            {item?.dichVu?.quyCach &&
+              <div className="_row">
+                <span>Quy cách: </span>
+                {item?.dichVu?.quyCach}
+              </div>
+            }
+            {item?.dichVu?.tenDuongDung &&
+              <div className="_row">
+                <span>Đường dùng: </span>
+                {item?.dichVu?.tenDuongDung}
+              </div>
+            }
+          </div>
+          <div className="_col">
+            {detail?.quyetDinhThau?.goiThau &&
+              <div className="_row">
+                <span>Gói thầu: </span>
+                {detail?.quyetDinhThau?.goiThau}
+              </div>
+            }
+            {item?.chiTietThau?.soLuongThau &&
+              <div className="_row">
+                <span>Số lượng thầu: </span>
+                {item?.chiTietThau?.soLuongThau}
+              </div>
+            }
+            {item?.chiTietThau?.soLuongConLai &&
+              <div className="_row">
+                <span>Số lượng còn lại: </span>
+                {item?.chiTietThau?.soLuongConLai}
+              </div>
+            }
+            {item?.dichVu?.maHoatChat &&
+              <div className="_row">
+                <span>Mã hoạt chất: </span>
+                {item?.dichVu?.maHoatChat}
+              </div>
+            }
+            {item?.dichVu?.tenHoatChat &&
+              <div className="_row">
+                <span>Tên hoạt chất: </span>
+                {item?.dichVu?.tenHoatChat}
+              </div>
+            }
+            {item?.dichVu?.hamLuong &&
+              <div className="_row">
+                <span>Hàm lượng: </span>
+                {item?.dichVu?.hamLuong}
+              </div>
+            }
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
 
   const columns = [
     {
@@ -230,8 +238,8 @@ const HangHoa = ({
             },
           }
         ) : (
-          <div style={{ marginTop: "-20px" }}>{parseInt(index / 2) + 1}</div>
-        ),
+            <div style={{ marginTop: "-20px" }}>{parseInt(index / 2) + 1}</div>
+          ),
     },
     {
       title: (
@@ -253,21 +261,21 @@ const HangHoa = ({
             },
           }
         ) : (
-          <>
-            <GlobalStyles />
-            <PopoverWrapper
-              trigger="hover"
-              overlayClassName="wide"
-              overlayInnerStyle={{ width: "650px" }}
-              content={contentPopover(data)}
-              placement="rightTop"
-            >
-              <div className="text-blue" style={{ marginTop: "-20px", width: "fit-content" }}>
-                {data.dichVu?.ma}
-              </div>
-            </PopoverWrapper>
-          </>
-        ),
+            <>
+              <GlobalStyles />
+              <PopoverWrapper
+                trigger="hover"
+                overlayClassName="wide"
+                overlayInnerStyle={{ width: "650px" }}
+                content={contentPopover(data)}
+                placement="rightTop"
+              >
+                <div className="text-blue" style={{ marginTop: "-20px", width: "fit-content" }}>
+                  {data.dichVu?.ma}
+                </div>
+              </PopoverWrapper>
+            </>
+          ),
     },
     {
       title: (
@@ -289,24 +297,24 @@ const HangHoa = ({
             },
           }
         ) : (
-          <>
-            <div>
-              <GlobalStyles />
-              <PopoverWrapper
-                trigger="hover"
-                overlayClassName="wide"
-                overlayInnerStyle={{ width: "650px" }}
-                content={contentPopover(data)}
-                placement="rightTop"
-              >
-                <div className="text-blue" style={{ width: "fit-content" }}>{data.dichVu?.ten}</div>
-              </PopoverWrapper>
-              <div style={{ fontWeight: "normal" }}>
-                Ghi chú: {data.loNhap?.ghiChu}
+            <>
+              <div>
+                <GlobalStyles />
+                <PopoverWrapper
+                  trigger="hover"
+                  overlayClassName="wide"
+                  overlayInnerStyle={{ width: "650px" }}
+                  content={contentPopover(data)}
+                  placement="rightTop"
+                >
+                  <div className="text-blue" style={{ width: "fit-content" }}>{data.dichVu?.ten}</div>
+                </PopoverWrapper>
+                <div style={{ fontWeight: "normal" }}>
+                  Ghi chú: {data.loNhap?.ghiChu}
+                </div>
               </div>
-            </div>
-          </>
-        ),
+            </>
+          ),
     },
     {
       title: (
@@ -330,8 +338,8 @@ const HangHoa = ({
             },
           }
         ) : (
-          <div>{formatNumber(item) + " " + (data.dichVu?.tenDonViTinh || "")}</div>
-        ),
+            <div>{formatNumber(item) + " " + (data.dichVu?.tenDonViTinh || "")}</div>
+          ),
     },
     {
       title: (
@@ -355,53 +363,53 @@ const HangHoa = ({
             },
           }
         ) : (
-          <Popover
-            placement="right"
-            overlayInnerStyle={{ borderRadius: "5px", borderColor: "" }}
-            content={
-              <div style={{ textAlign: "right" }}>
-                <label>Giá nhập trước VAT</label>
-                <label>
-                  {formatNumber(data?.loNhap?.giaNhapTruocVat || 0)}
-                </label>
+            <Popover
+              placement="right"
+              overlayInnerStyle={{ borderRadius: "5px", borderColor: "" }}
+              content={
+                <div style={{ textAlign: "right" }}>
+                  <label>Giá nhập trước VAT</label>
+                  <label>
+                    {formatNumber(data?.loNhap?.giaNhapTruocVat || 0)}
+                  </label>
 
-                <hr
-                  style={{
-                    borderTop: "1px solid #c5cad3",
-                    marginLeft: "-12px",
-                    marginRight: "-12px",
-                  }}
-                />
-                <label>VAT</label>
-                <label>{formatNumber(data?.loNhap?.vat || 0)}</label>
-                <hr
-                  style={{
-                    borderTop: "1px solid #c5cad3",
-                    marginLeft: "-12px",
-                    marginRight: "-12px",
-                  }}
-                />
-                <label>Giá nhập sau VAT</label>
-                <label>
-                  {(formatNumber(data?.loNhap?.giaNhapSauVat || 0))}
-                </label>
-                <hr
-                  style={{
-                    borderTop: "1px solid #c5cad3",
-                    marginLeft: "-12px",
-                    marginRight: "-12px",
-                  }}
-                />
-                <label>Thặng số bán lẻ</label>
-                <p>{(formatNumber(data?.loNhap?.thangSoBanLe || 0))}</p>
+                  <hr
+                    style={{
+                      borderTop: "1px solid #c5cad3",
+                      marginLeft: "-12px",
+                      marginRight: "-12px",
+                    }}
+                  />
+                  <label>VAT</label>
+                  <label>{formatNumber(data?.loNhap?.vat || 0)}</label>
+                  <hr
+                    style={{
+                      borderTop: "1px solid #c5cad3",
+                      marginLeft: "-12px",
+                      marginRight: "-12px",
+                    }}
+                  />
+                  <label>Giá nhập sau VAT</label>
+                  <label>
+                    {(formatNumber(data?.loNhap?.giaNhapSauVat || 0))}
+                  </label>
+                  <hr
+                    style={{
+                      borderTop: "1px solid #c5cad3",
+                      marginLeft: "-12px",
+                      marginRight: "-12px",
+                    }}
+                  />
+                  <label>Thặng số bán lẻ</label>
+                  <p>{(formatNumber(data?.loNhap?.thangSoBanLe || 0))}</p>
+                </div>
+              }
+            >
+              <div className="pointer">
+                {(formatNumber(data?.loNhap?.giaNhapSauVat || 0))}
               </div>
-            }
-          >
-            <div className="pointer">
-              {(formatNumber(data?.loNhap?.giaNhapSauVat || 0))}
-            </div>
-          </Popover>
-        ),
+            </Popover>
+          ),
     },
     {
       title: (
@@ -425,67 +433,67 @@ const HangHoa = ({
             },
           }
         ) : (
-          <Popover
-            placement="right"
-            overlayInnerStyle={{ borderRadius: "5px", borderColor: "" }}
-            content={
-              <div style={{ textAlign: "right" }}>
-                <label>Tổng tiền</label>
-                <p>
-                  {formatNumber(
-                    ((data?.loNhap?.giaNhapSauVat || 0) * (data?.soLuong || 0) || 0)
-                  )}
-                </p>
-                <hr
-                  style={{
-                    borderTop: "1px solid #c5cad3",
-                    marginLeft: "-12px",
-                    marginRight: "-12px",
-                  }}
-                />
-                <label>Chiết khấu</label>
-                <div
-                  className=""
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "flex-end",
-                    alignItems: "center",
-                  }}
-                >
-                  <span>{formatNumber(data?.loNhap?.tyLeChietKhau || 0)} </span>
-                  {data?.loNhap?.tyLeChietKhau != null
-                    ? (<span>%</span>)
-                    : data?.loNhap?.tienChietKhau != null
-                      ? (<span>VNĐ</span>)
-                      : (<span>%</span>)}
+            <Popover
+              placement="right"
+              overlayInnerStyle={{ borderRadius: "5px", borderColor: "" }}
+              content={
+                <div style={{ textAlign: "right" }}>
+                  <label>Tổng tiền</label>
+                  <p>
+                    {formatNumber(
+                      ((data?.loNhap?.giaNhapSauVat || 0) * (data?.soLuong || 0) || 0)
+                    )}
+                  </p>
+                  <hr
+                    style={{
+                      borderTop: "1px solid #c5cad3",
+                      marginLeft: "-12px",
+                      marginRight: "-12px",
+                    }}
+                  />
+                  <label>Chiết khấu</label>
+                  <div
+                    className=""
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "flex-end",
+                      alignItems: "center",
+                    }}
+                  >
+                    <span>{formatNumber(data?.loNhap?.tyLeChietKhau || 0)} </span>
+                    {data?.loNhap?.tyLeChietKhau != null
+                      ? (<span>%</span>)
+                      : data?.loNhap?.tienChietKhau != null
+                        ? (<span>VNĐ</span>)
+                        : (<span>%</span>)}
+                  </div>
+                  <hr
+                    style={{
+                      borderTop: "1px solid #c5cad3",
+                      marginLeft: "-12px",
+                      marginRight: "-12px",
+                    }}
+                  />
+                  <label>Thành tiền</label>
+                  <p>{formatNumber(data?.thanhTien || 0)}</p>
+                  <hr
+                    style={{
+                      borderTop: "1px solid #c5cad3",
+                      marginLeft: "-12px",
+                      marginRight: "-12px",
+                    }}
+                  />
+                  <label>Thành tiền sửa đổi</label>
+                  <p>{formatNumber(data?.thanhTienSuaDoi || 0)}</p>
                 </div>
-                <hr
-                  style={{
-                    borderTop: "1px solid #c5cad3",
-                    marginLeft: "-12px",
-                    marginRight: "-12px",
-                  }}
-                />
-                <label>Thành tiền</label>
-                <p>{formatNumber(data?.thanhTien || 0)}</p>
-                <hr
-                  style={{
-                    borderTop: "1px solid #c5cad3",
-                    marginLeft: "-12px",
-                    marginRight: "-12px",
-                  }}
-                />
-                <label>Thành tiền sửa đổi</label>
-                <p>{formatNumber(data?.thanhTienSuaDoi || 0)}</p>
+              }
+            >
+              <div className="pointer">
+                {formatNumber(data?.thanhTien || 0)}
               </div>
-            }
-          >
-            <div className="pointer">
-              {formatNumber(data?.thanhTien || 0)}
-            </div>
-          </Popover>
-        ),
+            </Popover>
+          ),
     },
     // {
     //   title: "",

@@ -50,7 +50,20 @@ const Content = styled.div`
     }
   }
 `;
-
+const blockInvalidChar = (e) => {
+  if (
+    (e.keyCode >= 48 && e.keyCode <= 57) ||
+    (e.keyCode >= 96 && e.keyCode <= 105) || // các số trên bàn phím
+    e.keyCode === 9 || // tab
+    e.which === 8 || // dấu -
+    e.keyCode === 37 || // mũi tên trái
+    e.keyCode === 39 || // mũi tên phải
+    e.keyCode === 190 // dấu .
+  ) {
+  } else {
+    return e.preventDefault();
+  }
+};
 const ThongTinHangHoa = (
   { edit = false, onChangeData = () => {}, trangThai },
   ref
@@ -211,6 +224,7 @@ const ThongTinHangHoa = (
           <InputTimeout
             data={item}
             onChange={(sl) => changeData(data.id, "soLuong", sl)}
+            onKeyDown={blockInvalidChar}
           />
         ) : (
           item

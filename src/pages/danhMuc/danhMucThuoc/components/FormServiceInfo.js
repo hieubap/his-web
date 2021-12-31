@@ -8,7 +8,7 @@ import { InputNumberFormat } from "components/common";
 import { openInNewTab } from "utils";
 import { normalizeNumber } from "../../../../utils";
 import { checkRole } from "app/Sidebar/constant";
-function FormServiceInfo(props) {
+function FormServiceInfo({ hiddenField = [], optionalField = [], ...props }) {
   const {
     listHoatChat,
     listNhomThuoc,
@@ -421,18 +421,22 @@ function FormServiceInfo(props) {
             placeholder="Nhập giá nhập sau VAT"
           />
         </Form.Item>
-        <Form.Item label="Giá trần" name="giaTran">
-          <InputNumberFormat
-            className="input-option"
-            placeholder="Nhập giá trần"
-          />
-        </Form.Item>
-        <Form.Item label="Trần bảo hiểm" name="tranBaoHiem">
-          <InputNumberFormat
-            className="input-option"
-            placeholder="Nhập trần bảo hiểm"
-          />
-        </Form.Item>
+        {!hiddenField.includes("giaTran") && (
+          <Form.Item label="Giá trần" name="giaTran">
+            <InputNumberFormat
+              className="input-option"
+              placeholder="Nhập giá trần"
+            />
+          </Form.Item>
+        )}
+        {!hiddenField.includes("tranBaoHiem") && (
+          <Form.Item label="Trần bảo hiểm" name="tranBaoHiem">
+            <InputNumberFormat
+              className="input-option"
+              placeholder="Nhập trần bảo hiểm"
+            />
+          </Form.Item>
+        )}
         <Form.Item
           label="Tỷ lệ BH thanh toán"
           name="tyLeBhTt"
@@ -509,12 +513,16 @@ function FormServiceInfo(props) {
             </div>
           }
           name="nhomDichVuCap2Id"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng chọn dịch vụ cấp II",
-            },
-          ]}
+          rules={
+            optionalField.includes("nhomDichVuCap2Id")
+              ? []
+              : [
+                  {
+                    required: true,
+                    message: "Vui lòng chọn dịch vụ cấp II",
+                  },
+                ]
+          }
         >
           <Select
             data={listNhomDvCap2}
@@ -537,9 +545,11 @@ function FormServiceInfo(props) {
             placeholder="Chọn nhóm dịch vụ cấp IIII"
           />
         </Form.Item>
-        <Form.Item label="Mã tương đương" name="maTuongDuong">
-          <Input className="input-option" placeholder="Nhập mã tương đương" />
-        </Form.Item>
+        {!hiddenField.includes("maTuongDuong") && (
+          <Form.Item label="Mã tương đương" name="maTuongDuong">
+            <Input className="input-option" placeholder="Nhập mã tương đương" />
+          </Form.Item>
+        )}
         <Form.Item label="Tên tương đương" name="tenTuongDuong">
           <Input className="input-option" placeholder="Nhập tên tương đương" />
         </Form.Item>

@@ -55,13 +55,15 @@ const ChuongTrinh = ({
         {
           keyCode: 38, //up
           onEvent: (e) => {
-            refSelectRow.current && refSelectRow.current(-1);
+            if (refSelectRow.current && e?.target?.nodeName != "INPUT")
+              refSelectRow.current(-1);
           },
         },
         {
           keyCode: 40, //down
           onEvent: (e) => {
-            refSelectRow.current && refSelectRow.current(1);
+            if (refSelectRow.current && e?.target?.nodeName != "INPUT")
+              refSelectRow.current(1);
           },
         },
       ],
@@ -255,7 +257,7 @@ const ChuongTrinh = ({
                   ),
                 },
                 {
-                  title: "Thêm mới",
+                  title: "Thêm mới [F1]",
                   onClick: onReset,
                   buttonHeaderIcon: (
                     <img style={{ marginLeft: 5 }} src={IcCreate} alt="" />
@@ -298,11 +300,13 @@ const ChuongTrinh = ({
         columns={columns}
         dataSource={data}
         onRow={onRow}
-        rowClassName={(record, index) =>
-          dataEditDefault?.id === record.id
-            ? "row-actived row-id-2-" + record.id
-            : "row-id-2-" + record.id
-        }
+        layerId={layerId}
+        dataEditDefault={dataEditDefault}
+        // rowClassName={(record, index) =>
+        //   dataEditDefault?.id === record.id
+        //     ? "row-actived row-id-2-" + record.id
+        //     : "row-id-2-" + record.id
+        // }
       />
       {total && (
         <Pagination

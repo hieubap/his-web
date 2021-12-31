@@ -204,5 +204,54 @@ export default {
           });
       });
     },
+    getNhomBenh: async ({ loaiNhomBenh, ...payload }, state) => {
+      let userId = state.auth.auth?.id;
+      let list = [];
+      let DataCache = "";
+      let DataStore = "";
+      switch (loaiNhomBenh) {
+        case 10:
+          DataCache = "NHOM_CHINH";
+          DataStore = "NhomBenhChinh";
+          break;
+        case 20:
+          DataCache = "NHOM_PHU_1";
+          DataStore = "NhomBenhPhu1";
+          break;
+        default:
+          DataCache = "NHOM_PHU_2";
+          DataStore = "NhomBenhPhu2";
+          break;
+      }
+      list = await cacheUtils.read(userId, `DATA_${DataCache}`, [], false);
+      dispatch.nhomBenh.updateData({ [`list${DataStore}`]: list });
+      return new Promise((resolve, reject) => {
+        nhomBenhProvider
+          .search({
+            loaiNhomBenh,
+            ...payload,
+          })
+          .then((s) => {
+            if (s?.code === 0) {
+              let { data } = s;
+              data = orderBy(data, "ten", "asc");
+              if (JSON.stringify(data) !== JSON.stringify(list)) {
+                dispatch.nhomBenh.updateData({
+                  [`list${DataStore}`]: data,
+                });
+                cacheUtils.save(userId, `DATA_${DataCache}`, data, false);
+              }
+              resolve(s);
+            } else {
+              reject(s);
+              message.error(s?.message);
+            }
+          })
+          .catch((e) => {
+            reject(e);
+            message.error(e?.message || "Xảy ra lỗi, vui lòng thử lại sau");
+          });
+      });
+    },
   }),
 };

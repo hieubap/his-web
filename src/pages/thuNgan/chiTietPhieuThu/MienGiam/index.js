@@ -215,9 +215,10 @@ const MienGiam = ({
       }
       ref={modalCheckoutRef}
       disabledBtnNext={thongTinPhieuThu.thanhToan || state.disabledBtnNext}
+      titleBtnBack="Trở lại [ESC]"
       titleBtnNext={
         <ButtonWrapper>
-          Lưu <img src={IconSave} alt="saveicon" />
+          Lưu [F4] <img src={IconSave} alt="saveicon" />
         </ButtonWrapper>
       }
       width={800}

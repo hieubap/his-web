@@ -2,7 +2,6 @@ import styled from "styled-components";
 export const Main = styled.div`
   height: 100%;
   width: 100%;
-  padding: 20px 15px 0;
   .title {
     display: flex;
     width: 100%;
@@ -48,15 +47,15 @@ export const Main = styled.div`
       display: flex;
       img {
         object-fit: contain;
-        margin-left:auto;
+        margin-left: auto;
       }
     }
   }
 `;
 export const SearchKho = styled.div`
+  border-radius: 0;
   .filter {
     height: 40px;
-    border-radius: 4px 0px 0px 4px;
     background: rgba(105, 120, 140, 0.1);
     width: 100%;
     span {
@@ -69,9 +68,12 @@ export const SearchKho = styled.div`
     }
   }
   .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    border-radius: 0;
     height: 40px;
     background: rgba(255, 255, 255, 0.1);
     padding: 0px 11px !important;
+    border-left: 0.5px;
+    border-right: 0.5px;
   }
   .ant-select-selection-placeholder {
     height: 40px;
@@ -102,7 +104,6 @@ export const InputSearch = styled.div`
   margin-right: 36px;
   width: 100%;
   height: 40px;
-  border-radius: 0px 4px 4px 0px;
 
   input {
     padding: 0 1em 0 8.5px !important;
@@ -132,7 +133,6 @@ export const InputSearch2 = styled.div`
   margin-right: 36px;
   width: 100%;
   height: 40px;
-  border-radius: 0px 4px 4px 0px;
 
   input {
     padding: 0 1em 0 8.5px !important;
@@ -143,11 +143,9 @@ export const InputSearch2 = styled.div`
     color: #172b4d;
     background: rgba(255, 255, 255, 0.1);
     height: 100%;
-    border:none;
-    
+    border: none;
   }
   .ic-down {
     margin: 10px;
-
   }
 `;

@@ -5,45 +5,53 @@ import React, {
   useEffect,
 } from "react";
 import { ModalStyled, Main } from "./styled";
-import { Col, Row, Form, Input, Radio, Button, Checkbox } from "antd";
+import { Row, Input, Button } from "antd";
 import { connect } from "react-redux";
 import TableWrapper from "components/TableWrapper";
 import HeaderSearch from "components/TableWrapper/headerSearch";
 import Pagination from "components/Pagination";
 import imgSearch from "assets/images/template/icSearch.png";
+import { useDispatch } from "react-redux";
 
 const ModalDichVuMoi = (props, ref) => {
   const {
     listDichVuKyThuat,
     onSizeChange,
     onChangeInputSearch,
-    onSortChange,
     onSearch,
     totalElements,
     page,
     size,
-    onChangeService
+    onChangeService,
   } = props;
   const [state, _setState] = useState({
     show: false,
     hoanThuoc: 1,
   });
+
+  const {
+    chiDinhDichVuCls: { tamTinhTien },
+  } = useDispatch();
   const setState = (data) => {
     _setState({
       ...state,
       ...data,
     });
   };
-  const [form] = Form.useForm();
 
   useEffect(() => {
-    onSearch({});
-  }, []);
+    if (state.nhomDichVuCap2Id)
+      onChangeInputSearch({ nhomDichVuCap2Id: state?.nhomDichVuCap2Id });
+  }, [state.nhomDichVuCap2Id]);
 
   useImperativeHandle(ref, () => ({
-    show: () => {
+    show: (data = {}) => {
       setState({
         show: true,
+        parentService: data,
+        nhomDichVuCap2Id: data?.nhomDichVuCap2Id,
+        thanhTien: 0,
+        selectedRowKeys : data.dichVuMoiId ? Array(data.dichVuMoiId)  : undefined,
       });
     },
   }));
@@ -56,15 +64,44 @@ const ModalDichVuMoi = (props, ref) => {
   };
 
   const onSelectChange = (selectedRowKeys, data) => {
-    setState({ selectedRowKeys });
-    onChangeService(data)
+    onChangeService(data);
+    onTamTinhTien(data, selectedRowKeys);
   };
 
   const rowSelection = {
     columnTitle: <HeaderSearch title="Chọn" />,
     columnWidth: 25,
     onChange: onSelectChange,
-    selectedRowKeys: state.selectedRowKeys,
+    selectedRowKeys: state?.selectedRowKeys,
+  };
+
+  const onTamTinhTien = (data, selectedRowKeys) => {
+    const payload = data.map((item) => ({
+      nbDotDieuTriId: state?.parentService?.nbDotDieuTriId,
+      nbDichVu: {
+        dichVu: {
+          ten: item?.dichVu.ten,
+          ma: item?.dichVu.ma,
+        },
+        dichVuId: item?.dichVu.id,
+        soLuong: 1,
+        loaiDichVu: item?.dichVu.loaiDichVu,
+      },
+      chiDinhTuDichVuId: state?.parentService?.id,
+      chiDinhTuLoaiDichVu: state?.parentService?.loaiDichVu,
+    }));
+    tamTinhTien(payload).then((s) => {
+      const thanhTien = (s || []).reduce(
+        (accumulator, currentValue) =>
+          accumulator + currentValue.nbDichVu.thanhTien,
+        0
+      );
+
+      setState({
+        thanhTien: thanhTien,
+        selectedRowKeys,
+      });
+    });
   };
 
   const columns = [
@@ -97,6 +134,10 @@ const ModalDichVuMoi = (props, ref) => {
     onChangeInputSearch({ [key]: e?.target?.value });
   };
 
+  const handleSizeChange = (size) => {
+    onSizeChange({ size: size });
+  };
+
   return (
     <ModalStyled
       width={860}
@@ -118,6 +159,9 @@ const ModalDichVuMoi = (props, ref) => {
             <div className="table-service">
               <Row className="header-table">
                 <div className="header-table__left">{`Đã chọn`}</div>
+                <div className="header-table__right">
+                  Tổng tiền: {(state?.thanhTien || 0).formatPrice()} đ
+                </div>
               </Row>
               <TableWrapper
                 columns={columns}
@@ -132,7 +176,7 @@ const ModalDichVuMoi = (props, ref) => {
                   current={page + 1}
                   pageSize={size}
                   total={totalElements}
-                  onShowSizeChange={onSizeChange}
+                  onShowSizeChange={handleSizeChange}
                   stylePagination={{ flex: 1, justifyContent: "flex-start" }}
                 />
               ) : null}
@@ -158,7 +202,6 @@ const mapStateToProps = (state) => {
   } = state;
   return {
     listgioiTinh: state.utils.listgioiTinh,
-    listLyDo: state.lyDoDoiTra.listLyDo,
     listDichVuKyThuat: state.dichVuKyThuat.listData,
     totalElements,
     page,
@@ -166,13 +209,10 @@ const mapStateToProps = (state) => {
   };
 };
 const mapDispatchToProps = ({
-  lyDoDoiTra: { getListLyDo },
   dichVuKyThuat: { onSizeChange, onChangeInputSearch, onSortChange, onSearch },
 }) => ({
-  getListLyDo,
   onChangeInputSearch,
   onSizeChange,
-  onChangeInputSearch,
   onSortChange,
   onSearch,
 });

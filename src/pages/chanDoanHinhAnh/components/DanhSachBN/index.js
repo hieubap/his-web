@@ -188,6 +188,10 @@ function DanhSachBN({ layerId }) {
     return record.id === idDiff ? "row-actived" : "";
   };
 
+  const handleSizeChange = (size) => {
+    onSizeChange({ size: size });
+  };
+  
   return (
     <MainTable
       contentHeaderLeft="Danh sách người bệnh"
@@ -206,8 +210,9 @@ function DanhSachBN({ layerId }) {
           onChange={onChangePage}
           current={page + 1}
           pageSize={size}
+          listData={listData}
           total={totalElements}
-          onShowSizeChange={onSizeChange}
+          onShowSizeChange={handleSizeChange}
           stylePagination={{ flex: 1, justifyContent: "flex-start" }}
         />
       ) : null}

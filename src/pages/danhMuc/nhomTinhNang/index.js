@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { Checkbox, Col, Input, Form } from "antd";
 import HomeWrapper from "components/HomeWrapper";
 import TableWrapper from "components/TableWrapper";
@@ -25,6 +25,8 @@ import { Main } from "./styled";
 import { SORT_DEFAULT } from "./configs";
 import { checkRole } from "app/Sidebar/constant";
 import FormWraper from "components/FormWraper";
+import stringUtils from "mainam-react-native-string-utils";
+
 let timer = null;
 
 const FunctionalityGroup = ({
@@ -55,17 +57,34 @@ const FunctionalityGroup = ({
       return { ...state, ...data };
     });
   };
+  const refAutoFocus = useRef();
+  const refLayerHotKey = useRef(stringUtils.guid());
+  const { onAddLayer, onRemoveLayer } = useDispatch().phimTat;
+
+  // register layerId
+  useEffect(() => {
+    onAddLayer({ layerId: refLayerHotKey.current });
+    return () => {
+      onRemoveLayer({ layerId: refLayerHotKey.current });
+    };
+  }, []);
 
   useEffect(() => {
     onSizeChange({ size: 10 });
   }, []);
 
   const handleClickedBtnAdded = () => {
+    debugger;
     setState({
       editStatus: false,
     });
     updateData({ dataEditDefault: null });
     form.resetFields();
+    if (refAutoFocus.current) {
+      setTimeout(() => {
+        refAutoFocus.current.focus();
+      }, 50);
+    }
   };
 
   const onShowAndHandleUpdate = (data = {}) => {
@@ -121,7 +140,7 @@ const FunctionalityGroup = ({
   };
 
   const handleAdded = (e) => {
-    e.preventDefault();
+    if (e?.preventDefault) e.preventDefault();
     form
       .validateFields()
       .then((values) => {
@@ -238,12 +257,11 @@ const FunctionalityGroup = ({
       },
     },
   ];
-  const refAutoFocus = useRef(null);
-  useEffect(() => {
-    if (refAutoFocus.current) {
-      refAutoFocus.current.focus();
-    }
-  }, [dataEditDefault]);
+  // useEffect(() => {
+  //   if (refAutoFocus.current) {
+  //     refAutoFocus.current.focus();
+  //   }
+  // }, [dataEditDefault]);
   const handleChangeshowTable = () => {
     setState({
       changeShowFullTbale: true,
@@ -289,7 +307,8 @@ const FunctionalityGroup = ({
               checkRole([ROLES["QUAN_LY_TAI_KHOAN"].NHOM_TINH_NANG_THEM])
                 ? [
                     {
-                      title: "Thêm mới",
+                      type: "create",
+                      title: "Thêm mới [F1]",
                       onClick: handleClickedBtnAdded,
                       buttonHeaderIcon: (
                         <img style={{ marginLeft: 5 }} src={IcCreate} alt="" />
@@ -344,7 +363,9 @@ const FunctionalityGroup = ({
             columns={columns}
             dataSource={listData}
             onRow={onRow}
-            rowClassName={setRowClassName}
+            layerId={refLayerHotKey.current}
+            dataEditDefault={dataEditDefault}
+            // rowClassName={setRowClassName}
           />
           {!!totalElements ? (
             <Pagination
@@ -375,10 +396,11 @@ const FunctionalityGroup = ({
               onCancel={handleCancel}
               cancelText="Hủy"
               onOk={handleAdded}
-              okText="Lưu"
+              okText="Lưu [F4]"
               roleSave={[ROLES["QUAN_LY_TAI_KHOAN"].NHOM_TINH_NANG_THEM]}
               roleEdit={[ROLES["QUAN_LY_TAI_KHOAN"].NHOM_TINH_NANG_SUA]}
               editStatus={state.editStatus}
+              layerId={refLayerHotKey.current}
             >
               <FormWraper
                 disabled={

@@ -23,10 +23,9 @@ function Header(props) {
       }
     })
   };
-  console.log("props",listDvVatTu[0]?.soPhieu)
   return (
     <HeaderWrapper>
-      {`${props.title || ""}  ${listDvVatTu.length ? listDvVatTu[0]?.soPhieu : ""}`}
+      {props.title && `${props.title} - ${props?.listDvVatTu ? props?.listDvVatTu[0]?.soPhieu : ""}`}
       <img
         src={IconPrinter}
         alt="IconEdit"

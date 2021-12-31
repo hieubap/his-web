@@ -8,6 +8,12 @@ export const Main = styled.div`
     box-shadow: 0 3px 0 #444;
   }
   &.container {
+    & .first-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 10px 0px 10px;
+    }
     font-family: "Nunito Sans" !important;
     .second-row {
       position: relative;
@@ -48,6 +54,23 @@ export const Main = styled.div`
           border: 1px solid #03317c;
           color: #000;
           font-weight: 600;
+          :hover {
+            background: linear-gradient(
+                0deg,
+                rgba(255, 255, 255, 0.9),
+                rgba(255, 255, 255, 0.9)
+              ),
+              #0762f7;
+          }
+          :active {
+            background: linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.25),
+                rgba(0, 0, 0, 0.25)
+              ),
+              #0762f7;
+            color: #fff;
+          }
         }
         .elipsis {
           color: #7a869a;
@@ -58,18 +81,21 @@ export const Main = styled.div`
       }
     }
     .btn-thong-ke {
-      float: right;
-      padding-right: 16px;
-      padding-top: 10px;
       font-weight: 600;
       font-size: 16px;
       color: #0762f7;
       &:hover {
         cursor: pointer;
+        text-decoration: underline;
       }
       svg {
         margin-left: 10px;
       }
+    }
+    .label {
+      font-weight: 600;
+      font-size: 16px;
+      color: #172b4d;
     }
   }
 `;

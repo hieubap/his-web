@@ -14,37 +14,44 @@ export const Main = styled.div`
     font-size: 16px;
     line-height: 24px;
     font-weight: 700;
-    color: #172B4D;
-  }
-  .container {  
-    padding: 10px;
-    width: 100%;
-    .action {
-      margin-top: 100px;
-      justify-content: flex-end;
-      display: flex;
-      align-items: center;
-      & .btn {
+    color: #172b4d;
+    .right {
+      margin-left: auto;
+      .action {
+        justify-content: flex-end;
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        color: #172B4D;
-        font-size: 14px;
-        line-height: 20px;
-        font-weight: 600;
-        padding: 5px 8px;
-        border-radius: 8px;
-        border: 1px solid #7A869A;
-        cursor: pointer;
-        & img {
-          margin-left: 3px;
+        & .btn {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          color: #172b4d;
+          font-size: 14px;
+          line-height: 20px;
+          font-weight: 600;
+          padding: 5px 8px;
+          border-radius: 8px;
+          border: 1px solid #7a869a;
+          cursor: pointer;
+          & img {
+            margin-left: 3px;
+          }
+        }
+        & .btn-blue {
+          margin-left: 10px;
+          color: #ffffff;
+          background-color: #0762f7;
+        }
+        & .btn-red {
+          margin-left: 10px;
+          color: #ffffff;
+          background-color: #ed1c24;
         }
       }
-      & .btn-blue {
-        margin-left: 10px;
-        color: #ffffff;
-        background-color: #0762F7;
-      }
     }
+  }
+  .container {
+    padding: 10px;
+    width: 100%;
   }
 `;

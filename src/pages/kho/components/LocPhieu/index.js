@@ -56,8 +56,8 @@ const CustomPopover = (props, ref) => {
   const onChangeDate = (key) => (e) => {
     const [value1, value2] = e || [];
     setState({
-      [`tuThoiGian${key}`]: value1?.format("YYYY-MM-DD"),
-      [`denThoiGian${key}`]: value2?.format("YYYY-MM-DD"),
+      [`tuNgay${key}`]: value1?.format("YYYY-MM-DD"),
+      [`denNgay${key}`]: value2?.format("YYYY-MM-DD"),
     });
   };
 
@@ -67,10 +67,10 @@ const CustomPopover = (props, ref) => {
       dsQuyetDinhThauId,
       soPhieu,
       soHoaDon,
-      tuThoiGianTaoPhieu,
-      denThoiGianTaoPhieu,
-      tuThoiGianDuyet,
-      denThoiGianDuyet,
+      tuNgayTaoPhieu,
+      denNgayTaoPhieu,
+      tuNgayDuyet,
+      denNgayDuyet,
       thangDuTru,
       hinhThucNhapXuatId,
       khoaChiDinhId,
@@ -80,10 +80,10 @@ const CustomPopover = (props, ref) => {
       dsQuyetDinhThauId,
       soPhieu,
       soHoaDon,
-      tuThoiGianTaoPhieu,
-      denThoiGianTaoPhieu,
-      tuThoiGianDuyet,
-      denThoiGianDuyet,
+      tuNgayTaoPhieu,
+      denNgayTaoPhieu,
+      tuNgayDuyet,
+      denNgayDuyet,
       thangDuTru,
       hinhThucNhapXuatId,
       khoaChiDinhId,

@@ -6,25 +6,33 @@ import React, {
   useRef,
 } from "react";
 import { ModalStyled, Main } from "./styled";
-import { Col, Row, Form, Input, Radio, Button } from "antd";
+import { Row, Form, Input, Radio, Button } from "antd";
 import Select from "components/Select";
-import { connect } from "react-redux";
 import ModalDichVuMoi from "../ModalDichVuMoi";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 const ModalDoiDichVu = (props, ref) => {
   const {
-    listgioiTinh,
-    getListLyDo,
-    listLyDo,
-    onChangeInputSearch,
-    doiDichVu,
-    listDanhSachPhong,
-    getListPhongTheoDichVu,
-    khoaId
-  } = props;
+    utils: { listgioiTinh },
+    lyDoDoiTra: { listLyDo },
+    chiDinhDichVuVatTu: { listDvVatTu },
+    chiDinhDichVuTuTruc: { listDvThuoc },
+    dsBenhNhan: { khoaId },
+    phongThucHien: { listDanhSachPhong },
+    auth: { auth },
+  } = useSelector((state) => state);
+  const {
+    dichVuKyThuat: { onChangeInputSearch },
+    nbDvHoan: { doiDichVu },
+    phongThucHien: { getListPhongTheoDichVu },
+    chiDinhDichVuVatTu: { getListDichVuVatTu },
+    chiDinhDichVuTuTruc: { getListDichVuThuoc },
+  } = useDispatch();
+
   const serviceRef = useRef(null);
   const [state, _setState] = useState({
     show: false,
-    hoanThuoc: 1
+    hoanThuoc: 1,
   });
   const setState = (data) => {
     _setState({
@@ -35,9 +43,7 @@ const ModalDoiDichVu = (props, ref) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    getListLyDo({});
     onChangeInputSearch({});
-    
   }, []);
 
   useImperativeHandle(ref, () => ({
@@ -45,9 +51,20 @@ const ModalDoiDichVu = (props, ref) => {
       setState({ show: true, currentItem: data });
     },
   }));
+  useEffect(() => {
+    if (state.currentItem) {
+      getListDichVuVatTu({
+        nbDotDieuTriId: state.currentItem?.nbDotDieuTriId,
+      });
+      getListDichVuThuoc({
+        nbDotDieuTriId: state.currentItem?.nbDotDieuTriId,
+      });
+    }
+  }, [state?.currentItem]);
 
   const onCancel = () => {
-    setState({ show: false });
+    setState({ show: false, dichVuMoiId: null });
+    form.resetFields();
   };
 
   const onOk = () => {
@@ -56,30 +73,33 @@ const ModalDoiDichVu = (props, ref) => {
 
   const onChangeRadio = (e) => {
     setState({ hoanThuoc: e.target.value });
-
   };
 
   const onHandleSubmit = (values) => {
-    const { lyDoDoiTraId, phongId  } = values;
-    let dsDichVu = [{
-      nbDichVuCuId : state?.currentItem?.id,
-      dichVuMoiId: state?.dichVuMoiId,
-      phongThucHienId: phongId
-    }]
+    const { lyDoDoiTraId, phongId } = values;
+    let dsDichVu = [
+      {
+        nbDichVuCuId: state?.currentItem?.id,
+        dichVuMoiId: state?.dichVuMoiId,
+        phongThucHienId: phongId,
+      },
+    ];
     let data = {
-      hoanThuocVatTu: state?.hoanThuoc == 1 ? true : false,
+      hoanThuocVatTu: state?.hoanThuoc === 1 ? true : false,
       dsDichVu,
       lyDoDoiTraId,
+      nguoiYeuCauId: auth?.id,
     };
     doiDichVu(data);
   };
-  const onShowModalService = () => {
-    serviceRef.current && serviceRef.current.show();
+  const onShowModalService = (data, dichVuMoiId) => {
+    const values = { dichVuMoiId,...data};
+    serviceRef.current && serviceRef.current.show(values);
   };
   const onChangeService = (data) => {
-    setState({ dichVuMoiId: data[0]?.id, tenDichVuMoi: data[0]?.dichVu?.ten });
-    getListPhongTheoDichVu({dsDichVuId : data[0]?.id, khoaChiDinhId: khoaId});
-
+    setState({ dichVuMoiId: data[0]?.id });
+    getListPhongTheoDichVu({ dsDichVuId: data[0]?.id, khoaChiDinhId: khoaId });
+    form.setFieldsValue({ tenDichVuMoi: data[0]?.dichVu?.ten });
   };
   const disabled = state?.dichVuMoiId ? false : true;
   return (
@@ -100,16 +120,17 @@ const ModalDoiDichVu = (props, ref) => {
             <span style={{ color: "#7A869A", fontWeight: "bold" }}>{`${
               state?.currentItem?.tenNb
             } - ${
-              listgioiTinh?.find((x) => x.id == state?.currentItem?.gioiTinh)
+              listgioiTinh?.find((x) => x.id === state?.currentItem?.gioiTinh)
                 ?.ten
             } - ${state?.currentItem?.tuoi} tuổi`}</span>
           </div>
         </Row>
         <Row style={{ background: "#fff", padding: "20px" }}>
-          <span style={{ color: "#FC3B3A", fontWeight: "bold" }}>
-            {" "}
-            Cảnh báo tồn tại thuốc / vật tư kèm theo
-          </span>
+          {(listDvVatTu?.length > 0 || listDvThuoc?.length > 0) && (
+            <span style={{ color: "#FC3B3A", fontWeight: "bold" }}>
+              Cảnh báo tồn tại thuốc / vật tư kèm theo
+            </span>
+          )}
           <Form
             form={form}
             layout="vertical"
@@ -117,19 +138,44 @@ const ModalDoiDichVu = (props, ref) => {
             style={{ width: "100%" }}
             onFinish={onHandleSubmit}
           >
-            <Form.Item>
-            <Radio.Group onChange={onChangeRadio} defaultValue={state?.hoanThuoc}>
-                <Radio value={1}>Hoàn thuốc / vật tư kèm theo</Radio>
-                <Radio value={2}>Không hoàn thuốc / vật tư kèm theo</Radio>
-              </Radio.Group>
-            </Form.Item>
+            {(listDvVatTu?.length > 0 || listDvThuoc?.length > 0) && (
+              <Form.Item>
+                <Radio.Group
+                  onChange={onChangeRadio}
+                  defaultValue={state?.hoanThuoc}
+                >
+                  <Radio value={1}>Hoàn thuốc / vật tư kèm theo</Radio>
+                  <Radio value={2}>Không hoàn thuốc / vật tư kèm theo</Radio>
+                </Radio.Group>
+              </Form.Item>
+            )}
             <Form.Item label="Dịch vụ cũ">
               <Input value={state?.currentItem?.tenDichVu} disabled></Input>
             </Form.Item>
-            <Form.Item label="Dịch vụ mới" >
-              <Input onClick={onShowModalService} value={state?.tenDichVuMoi}></Input>
+            <Form.Item
+              label="Dịch vụ mới"
+              name="tenDichVuMoi"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng chọn dịch vụ mới",
+                },
+              ]}
+            >
+              <Input
+                onClick={() => onShowModalService(state?.currentItem, state?.dichVuMoiId)}
+              ></Input>
             </Form.Item>
-            <Form.Item label="Phòng thực hiện" name="phongId">
+            <Form.Item
+              label="Phòng thực hiện"
+              name="phongId"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng chọn phòng",
+                },
+              ]}
+            >
               <Select disabled={disabled} data={listDanhSachPhong}></Select>
             </Form.Item>
             <Form.Item
@@ -160,26 +206,4 @@ const ModalDoiDichVu = (props, ref) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    listgioiTinh: state.utils.listgioiTinh,
-    listLyDo: state.lyDoDoiTra.listLyDo,
-    listDichVuKyThuat: state.dichVuKyThuat.listData,
-    listDanhSachPhong: state.nbDvHoan.listDanhSachPhong,
-    khoaId : state.dsBenhNhan.khoaId
-  };
-};
-const mapDispatchToProps = ({
-  lyDoDoiTra: { getListLyDo },
-  dichVuKyThuat: { onChangeInputSearch },
-  nbDvHoan: { doiDichVu },
-  phongThucHien: { getListPhongTheoDichVu }
-}) => ({
-  getListLyDo,
-  onChangeInputSearch,
-  doiDichVu,
-  getListPhongTheoDichVu
-});
-export default connect(mapStateToProps, mapDispatchToProps, null, {
-  forwardRef: true,
-})(forwardRef(ModalDoiDichVu));
+export default forwardRef(ModalDoiDichVu);

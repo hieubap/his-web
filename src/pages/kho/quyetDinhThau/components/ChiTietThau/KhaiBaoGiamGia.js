@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Form } from "antd";
 import TableWrapper from "components/TableWrapper";
 import EditWrapper from "components/MultiLevelTab/EditWrapper";
 import HeaderSearch from "components/TableWrapper/headerSearch";
 import { Main } from "./styled";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 
-const KhaiBaoGiamGia = (props) => {
+const KhaiBaoGiamGia = ({layerId, ...props}) => {
   const [form] = Form.useForm();
 
   const [state, _setState] = useState({
@@ -21,6 +21,22 @@ const KhaiBaoGiamGia = (props) => {
       return { ...state, ...data };
     });
   };
+  const { onRegisterHotkey } = useDispatch().phimTat;
+  const refClickBtnSave = useRef();
+  useEffect(() => {
+    onRegisterHotkey({
+      layerId,
+      hotKeys: [
+        {
+          keyCode: 115, //F4
+          onEvent: (e) => {
+            refClickBtnSave.current && refClickBtnSave.current(e);
+          },
+        },
+      ],
+    });
+  }, []);
+
   const onSave = () => {
     form
       .validateFields()
@@ -29,6 +45,7 @@ const KhaiBaoGiamGia = (props) => {
       })
       .catch((error) => {});
   };
+  refClickBtnSave.current = onSave;
 
   const onRow = (record = {}, index) => {
     return {

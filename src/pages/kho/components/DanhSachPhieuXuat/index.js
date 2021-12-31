@@ -1,61 +1,41 @@
+import React, { useEffect, useMemo } from "react";
 import Pagination from "components/Pagination";
 import TableWrapper from "components/TableWrapper";
 import HeaderSearch from "components/TableWrapper/headerSearch";
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { ContentTable, Main } from "./styled";
-import { TK_TRANG_THAI_PHIEU_XUAT } from "constants/index";
+import { TK_TRANG_THAI_PHIEU_NHAP_DU_TRU } from "constants/index";
+import Card from "../Card";
 
-let timer = null;
+const DanhSachPhieuXuat = (props) => {
+  const history = useHistory();
 
-const DanhSach = (props) => {
   const {
-    dataSortColumn,
-    getListPhieuXuat,
-    onSizeChange,
-    listPhieuXuat,
-    getUtils,
-    listTrangThaiPhieuNhapXuat,
-    totalElements,
-    page,
-    size,
-    updateDataNhapKho,
-    phieuNhapXuatId,
-    onChangeInputSearch,
-    listNhaSanXuat,
-    listNguonNhapKho,
-    listAllQuyetDinhThau,
-    updateData,
-    sort = {},
-  } = props;
+    xuatKho: { sort = {}, listPhieuXuat, totalElements, page, size },
+    utils: { listTrangThaiPhieuNhapXuat = [] },
+    nhapKhoChiTiet: { phieuNhapXuatId },
+  } = useSelector((state) => state);
+
+  const {
+    xuatKho: { getListPhieuXuat, onSizeChange },
+    utils: { getUtils },
+    nhapKhoChiTiet: { updateData: updateDataNhapKho },
+  } = useDispatch();
+
   useEffect(() => {
-    onSizeChange({
-      page,
-      size,
-      dataSearch: {
-        dsTrangThai: TK_TRANG_THAI_PHIEU_XUAT.map((item) => item.value),
-      },
-    });
     getUtils({ name: "TrangThaiPhieuNhapXuat" });
   }, []);
+
   const onClickSort = (key, value) => {
     getListPhieuXuat({ sort: { key, value } });
   };
   const onChangePage = (page) => {
-    updateData({ page });
     getListPhieuXuat({ page: page - 1 });
   };
 
   const handleSizeChange = (size) => {
     onSizeChange({ size });
   };
-
-  const showChiTiet = () => {
-    updateData({ chiTiet: false });
-  };
-
-  const history = useHistory();
 
   const onRow = (record) => {
     return {
@@ -76,17 +56,6 @@ const DanhSach = (props) => {
     return record.id === idDiff ? "row-actived" : "";
   };
 
-  const onSearchInput = (key) => (e) => {
-    let value = "";
-    if (e?.target) {
-      value = e.target.value;
-    } else if (e?._d) value = e.format("YYYY-MM-DD");
-    else value = e;
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      onChangeInputSearch({ [key]: value });
-    }, 300);
-  };
   const columns = [
     {
       title: <HeaderSearch title="STT" />,
@@ -185,59 +154,25 @@ const DanhSach = (props) => {
     },
   ];
   return (
-    <Main>
-      <ContentTable>
-        <TableWrapper
-          columns={columns}
-          dataSource={listPhieuXuat}
-          onRow={onRow}
-          rowKey={(record) => `${record.id}`}
-          rowClassName={setRowClassName}
-        />
-        <Pagination
-          onChange={onChangePage}
-          current={page + 1}
-          pageSize={size}
-          total={totalElements}
-          onShowSizeChange={handleSizeChange}
-          stylePagination={{ flex: 1, justifyContent: "flex-start" }}
-        />
-      </ContentTable>
-    </Main>
+    <Card noPadding={true} top={8}>
+      <TableWrapper
+        columns={columns}
+        dataSource={listPhieuXuat}
+        onRow={onRow}
+        rowKey={(record) => `${record.id}`}
+        rowClassName={setRowClassName}
+      />
+      <Pagination
+        onChange={onChangePage}
+        current={page + 1}
+        pageSize={size}
+        listData={listPhieuXuat}
+        total={totalElements}
+        onShowSizeChange={handleSizeChange}
+        stylePagination={{ flex: 1, justifyContent: "flex-start" }}
+      />
+    </Card>
   );
 };
-const mapStateToProps = (state) => {
-  const {
-    xuatKho: { sort, listPhieuXuat, totalElements, page, size },
-    utils: { listTrangThaiPhieuNhapXuat = [] },
-    nhapKhoChiTiet: { phieuNhapXuatId },
-    nguonNhapKho: { listData: listNguonNhapKho },
-    quyetDinhThau: { listAllQuyetDinhThau },
-    nhaSanXuat: { listNhaSanXuat },
-  } = state;
-  return {
-    listPhieuXuat,
-    listTrangThaiPhieuNhapXuat,
-    totalElements,
-    sort,
-    page,
-    size,
-    phieuNhapXuatId,
-    listNguonNhapKho,
-    listAllQuyetDinhThau,
-    listNhaSanXuat,
-  };
-};
-const mapDispatchToProps = ({
-  xuatKho: { getListPhieuXuat, onSizeChange, updateData, onChangeInputSearch },
-  utils: { getUtils },
-  nhapKhoChiTiet: { updateData: updateDataNhapKho },
-}) => ({
-  getListPhieuXuat,
-  getUtils,
-  onSizeChange,
-  updateDataNhapKho,
-  updateData,
-  onChangeInputSearch,
-});
-export default connect(mapStateToProps, mapDispatchToProps)(DanhSach);
+
+export default DanhSachPhieuXuat;

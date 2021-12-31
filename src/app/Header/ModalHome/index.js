@@ -1,6 +1,6 @@
 import React, { useState, useRef, useImperativeHandle, forwardRef } from 'react';
 import { Main } from './styled';
-import PageHome from "pages/home/pageHome";
+import PageHome from "pages/home/subPage/Home";
 import { useHistory } from 'react-router-dom';
 
 const ModalHome = (props, ref) => {

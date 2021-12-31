@@ -58,6 +58,36 @@ export default {
           });
         });
     },
+    // onSearch2: ({ page = 0, ...payload }, state) => {
+    //   let newState = { isLoading: true, page };
+    //   dispatch.baoCao.updateData({dataSearch: {...state.baoCao.}});
+    //   let size = payload.size || state.baoCao.size || 10;
+    //   const sort = combineSort(
+    //     payload.dataSortColumn || state.baoCao.dataSortColumn || {}
+    //   );
+    //   const dataSearch = payload.dataSearch || state.baoCao.dataSearch || {};
+
+    //   baoCaoProvider
+    //     .search({ page, size, sort, ...dataSearch })
+    //     .then((s) => {
+    //       dispatch.baoCao.updateData({
+    //         listData: (s?.data || []).map((item, index) => {
+    //           item.index = page * size + index + 1;
+    //           return item;
+    //         }),
+    //         isLoading: false,
+    //         totalElements: s?.totalElements || 0,
+    //         page,
+    //       });
+    //     })
+    //     .catch((e) => {
+    //       message.error(e?.message || "Xảy ra lỗi, vui lòng thử lại sau");
+    //       dispatch.baoCao.updateData({
+    //         listData: [],
+    //         isLoading: false,
+    //       });
+    //     });
+    // },
     onSortChange: ({ ...payload }, state) => {
       const dataSortColumn = {
         ...state.baoCao.dataSortColumn,

@@ -5,7 +5,6 @@ import { checkRole } from "app/Sidebar/constant";
 import { CloseOutlined } from "@ant-design/icons";
 import IcCreate from "assets/images/kho/IcCreate.png";
 import { useDispatch } from "react-redux";
-
 function EditWrapper(props) {
   const {
     title,
@@ -18,24 +17,29 @@ function EditWrapper(props) {
     isShowSaveButton,
     isShowCancelButton,
     layerId,
+    isEditAndPressRow,
   } = props;
-  const { onRegisterHotkey } = useDispatch().phimTat;
   const refClickBtnSave = useRef();
-  useEffect(() => {
-    onRegisterHotkey({
-      layerId,
-      hotKeys: [
-        {
-          keyCode: 115, //F4
-          onEvent: (e) => {
-            refClickBtnSave.current && refClickBtnSave.current(e);
-          },
-        },
-      ],
-    });
-  }, []);
+  const refClickBtnAdd = useRef();
+  const { onRegisterHotkey } = useDispatch().phimTat;
 
+  // register layerId
+  useEffect(() => {
+    if (layerId)
+      onRegisterHotkey({
+        layerId,
+        hotKeys: [
+          {
+            keyCode: 115, //F4
+            onEvent: (e) => {
+              refClickBtnSave.current && refClickBtnSave.current(e);
+            },
+          },
+        ],
+      });
+  }, []);
   refClickBtnSave.current = onSave;
+  refClickBtnAdd.current = onAddNewRow;
 
   const hanldeHiddenCancel = () => {
     if (props.forceShowButtonCancel) {
@@ -70,6 +74,9 @@ function EditWrapper(props) {
     if (props.isHiddenButtonAdd) {
       return true;
     }
+    if (props.isEditAndPressRow) { // hiển thị thêm mới button khi chọn 1 row , (đã xác nhận với Vân chuyên viên)
+      return false;
+    } 
     if (props.roleSave) {
       return !checkRole(props.roleSave);
     } else {

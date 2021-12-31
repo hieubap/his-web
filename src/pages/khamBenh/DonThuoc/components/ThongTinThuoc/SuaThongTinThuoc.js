@@ -39,7 +39,7 @@ const SuaThongTinThuoc = (props, ref) => {
   useImperativeHandle(ref, () => ({
     show: async (options = {}) => {
       const { newTable } = options;
-      const table = await Promise.all(newTable.map(async(x) => {
+      const table = await Promise.all(newTable.map(async (x) => {
         const listLieuDungDependDichVu = await lieuDungProvider.searchAll({ bacSiId: nhanVienId, dichVuId: x.dichVuId }).then((s) => {
           return s?.data
         })
@@ -48,7 +48,7 @@ const SuaThongTinThuoc = (props, ref) => {
           lieuDungId: x?.lieuDungId || null,
           ngayThucHienTu: null,
           ngayThucHienDen: null,
-          listLieuDung : listLieuDungDependDichVu
+          listLieuDung: listLieuDungDependDichVu
         });
       }));
       setData(table);
@@ -57,7 +57,13 @@ const SuaThongTinThuoc = (props, ref) => {
   }));
   const blockInvalidChar = (e) =>
     ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
+  const blockInvalidChar2 = (e) => {
+    if (e.key === 'Backspace' || e.keyCode === 37 || e.keyCode === 39) {
 
+    } else if (["e", "E", "+", "-"].includes(e.key) || e.target.value.length >= 3) {
+      return e.preventDefault()
+    }
+  };
   const onChangeInput = (type, index) => (e) => {
     let value = "";
     if (e?.target) {
@@ -195,7 +201,9 @@ const SuaThongTinThuoc = (props, ref) => {
             type="number"
             defaultValue={item}
             onChange={onChangeInput("dotDung", index)}
-            onKeyDown={blockInvalidChar}
+            onKeyDown={blockInvalidChar2}
+            min={1}
+            max={999}
           ></Input>
         );
       },

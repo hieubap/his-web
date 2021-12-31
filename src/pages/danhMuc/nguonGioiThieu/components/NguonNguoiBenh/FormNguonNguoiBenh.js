@@ -9,7 +9,7 @@ import { Checkbox, Input, Form, Col, Row } from "antd";
 import { CreatedWrapper } from "components";
 import { ROLES } from "constants/index";
 import { checkRole } from "app/Sidebar/constant";
-import {useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 const CreateOrUpdate = (
   { handleSubmit, onCancel, editStatus, layerId },
   ref
@@ -54,7 +54,9 @@ const CreateOrUpdate = (
   refClickBtnAdd.current = () => {
     form.resetFields();
     setDataEdit(null);
-    if (refAutoFocus.current) refAutoFocus.current.focus();
+    if (refAutoFocus.current) {
+      refAutoFocus.current.focus();
+    }
   };
 
   useImperativeHandle(
@@ -72,15 +74,20 @@ const CreateOrUpdate = (
       resetFields: (data) => {
         form.resetFields();
         setDataEdit(null);
+        if (refAutoFocus.current) {
+          setTimeout(() => {
+            refAutoFocus.current.focus();
+          }, 50);
+        }
       },
     }),
     []
   );
-  useEffect(() => {
-    if (refAutoFocus.current) {
-      refAutoFocus.current.focus();
-    }
-  }, [dataEdit]);
+  // useEffect(() => {
+  //   if (refAutoFocus.current) {
+  //     refAutoFocus.current.focus();
+  //   }
+  // }, [dataEdit]);
   return (
     <>
       <CreatedWrapper
@@ -88,7 +95,7 @@ const CreateOrUpdate = (
         onCancel={onCancel}
         cancelText="Hủy"
         onOk={handleAddNew}
-        okText="Lưu"
+        okText="Lưu [F4]"
         roleSave={[ROLES["DANH_MUC"].NGUON_NGUOI_BENH_THEM]}
         roleEdit={[ROLES["DANH_MUC"].NGUON_NGUOI_BENH_SUA]}
         editStatus={editStatus}

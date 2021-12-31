@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
+import React, { useEffect, useRef, useState } from "react";
+import { connect, useDispatch } from "react-redux";
 import TableWrapper from "components/TableWrapper";
 import Pagination from "components/Pagination";
 import HeaderSearch from "components/TableWrapper/headerSearch";
@@ -22,6 +22,9 @@ const Kho = (props) => {
     classNameRow,
     styleMain,
     styleContainerButtonHeader,
+
+    layerId,
+    currentItem,
   } = props;
 
   const [state, _setState] = useState({});
@@ -35,6 +38,11 @@ const Kho = (props) => {
     createdAt: 2,
   });
 
+  const refSelectRow = useRef();
+  const refAutoFocus = useRef(null);
+  const { onRegisterHotkey } = useDispatch().phimTat;
+
+  // register layerId
   useEffect(() => {
     props.onSizeChange({ size: 10 });
     props.getUtils({ name: "loaiDichVuKho" });
@@ -42,8 +50,42 @@ const Kho = (props) => {
     props.getUtils({ name: "CoCheDuTru" });
     props.getUtils({ name: "GiuTonKhaDung" });
     props.getListKhoa({});
+
+    onRegisterHotkey({
+      layerId,
+      hotKeys: [
+        {
+          keyCode: 38, //up
+          onEvent: (e) => {
+            refSelectRow.current && refSelectRow.current(-1);
+          },
+        },
+        {
+          keyCode: 40, //down
+          onEvent: (e) => {
+            refSelectRow.current && refSelectRow.current(1);
+          },
+        },
+      ],
+    });
   }, []);
 
+  refSelectRow.current = (index) => {
+    const { listData } = props;
+    const indexNextItem =
+      (listData?.findIndex((item) => item.id === currentItem?.id) || 0) + index;
+    if (-1 < indexNextItem && indexNextItem < listData.length) {
+      props.updateData({
+        currentItem: listData[indexNextItem],
+      });
+      setTimeout(() => {
+        document
+          .getElementsByClassName("row-id-" + listData[indexNextItem]?.id)[0]
+          .scrollIntoView({ block: "end", behavior: "smooth" });
+      }, 1);
+    }
+  };
+  console.log("render");
   const YES_NO = [
     { id: "", ten: "Tất cả" },
     { id: true, ten: "Có" },
@@ -339,7 +381,7 @@ const Kho = (props) => {
     {
       title: (
         <HeaderSearch
-          title="TH trừ tồn ngay khi kê"
+          title="Giữ chỗ ngay khi kê"
           sort_key="dsGiuTonKhaDung"
           onClickSort={onClickSort}
           dataSort={dataSortColumn.dsGiuTonKhaDung}
@@ -347,7 +389,7 @@ const Kho = (props) => {
             <Select
               data={[{ id: "", ten: "Tất cả" }, ...(listGiuTonKhaDung || [])]}
               defaultValue=""
-              placeholder="Chọn TH trừ tồn ngay khi kê"
+              placeholder="Chọn giữ chỗ ngay khi kê"
               onChange={onSearchInput("dsGiuTonKhaDung")}
             />
           }
@@ -395,6 +437,14 @@ const Kho = (props) => {
       },
     };
   };
+
+  const setRowClassName = (record) => {
+    let idDiff = currentItem?.id;
+    return record.id === idDiff
+      ? "row-actived row-id-" + record.id
+      : "row-id-" + record.id;
+  };
+
   return (
     <Main>
       <TableWrapper
@@ -410,6 +460,7 @@ const Kho = (props) => {
         dataSource={props.listData}
         onRow={onRow}
         rowKey={(record) => record?.id}
+        rowClassName={setRowClassName}
       ></TableWrapper>
 
       <Pagination

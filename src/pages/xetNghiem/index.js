@@ -1,16 +1,16 @@
 import React from "react";
 import { Route } from "react-router-dom";
-import { xetNghiemPages } from "pages/constants";
+import { pageXetNghiem } from "pages/constants";
 
 const XetNghiemPages = (props) => {
   return (
     <div className={"app-contain"}>
-      {Object.keys(xetNghiemPages).map((key) => (
+      {Object.keys(pageXetNghiem).map((key) => (
         <Route
           key={key}
-          path={xetNghiemPages[key].path}
-          component={xetNghiemPages[key].component}
-          exact={xetNghiemPages[key].exact}
+          path={pageXetNghiem[key].path}
+          component={pageXetNghiem[key].component}
+          exact={pageXetNghiem[key].exact}
         />
       ))}
     </div>

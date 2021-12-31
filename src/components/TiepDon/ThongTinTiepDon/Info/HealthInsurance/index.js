@@ -134,6 +134,7 @@ const Index = (props) => {
     }
   };
   useEffect(() => {
+    debugger;
     props.getThietLap({ ma: TAI_KHOAN_BHXH });
     document.addEventListener("keydown", (e) => {
       if (e.code === "F7") {

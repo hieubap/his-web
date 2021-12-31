@@ -3,24 +3,7 @@ import styled from "styled-components";
 const Main = styled("div")`
   display: flex;
   width: 100%;
-  position: relative;
-  // min-height: calc(100vh - 60px);
-
-  & .app-contain {
-    width: 100%;
-    //   height: 100%;
-    //   flex: 1;
-    //   overflow: hidden;
-    //   @media (max-width: 1300px) {
-    //     margin-right: 80px;
-    //   }
-    //   @media (max-width: 600px) {
-    //     margin-right: 60px;
-    //   }
-    //   @media (max-width: 450px) {
-    //     margin-right: 50px;
-    //   }
-  }
+  height: 100%;
   .textError {
     color: red;
     font-size: 14px;
@@ -28,11 +11,11 @@ const Main = styled("div")`
     color: #ff4d4f;
   }
   .ant-table-body {
-    max-height: calc(100vh - 345px) !important;
+    max-height: calc(100vh - 375px) !important;
     /* .row-edit {
       background: #c1f0db !important;
     } */
-    min-height: calc(100vh - 345px) !important;
+    min-height: calc(100vh - 375px) !important;
   }
 
   // danh muc da cap

@@ -127,7 +127,9 @@ const ThongTinDichVu = ({
   const refAutoFocus = useRef(null);
   useEffect(() => {
     if (refAutoFocus.current) {
-      refAutoFocus.current.focus();
+      setTimeout(() => {
+        refAutoFocus.current.focus();
+      }, 50);
     }
   }, [dataEditDefault]);
   return (

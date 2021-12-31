@@ -19,6 +19,7 @@ import { openInNewTab } from "../../../utils";
 import { checkRole } from "app/Sidebar/constant";
 import { ROLES } from "constants/index";
 function FormServiceInfo(props, ref) {
+  console.log('render ... 2');
   const { currentItem, layerId, refCallbackSave = {} } = props;
   const [state, _setState] = useState({});
   const setState = (data = {}) => {

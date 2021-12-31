@@ -27,14 +27,7 @@ export const Main = styled.div`
       padding: 10px;
       height: 215px;
       overflow-y: scroll;
-      .ant-form-item-control-input-content {
-        display: flex;
-        input {
-          width: 70%;
-          margin-left: 10px;
-          border: none;
-        }
-      }
+      
     }
 
     .footer {

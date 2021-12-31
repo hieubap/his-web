@@ -15,7 +15,7 @@ const ChanDoanHinhAnh = (props) => {
     getDsNguoiBenhCLSQms,
     listNbCls,
     listNhanVien,
-    getListNhanVien,
+    getListNhanVienTongHop,
     listKhoa,
     listRoom,
     getListKhoa,
@@ -39,7 +39,7 @@ const ChanDoanHinhAnh = (props) => {
     });
   };
   useEffect(() => {
-    getListNhanVien({});
+    getListNhanVienTongHop({});
     getListKhoa({});
     getListPhong({});
     getByIdKiosk(kioskId);
@@ -132,6 +132,7 @@ const ChanDoanHinhAnh = (props) => {
         dsTiepTheo={state?.dsTiepTheo}
         dsChoXacNhan={state?.dsChoXacNhan}
         dsGoiNho={state?.dsGoiNho}
+        currentKiosk={currentKiosk}
       />
       <QrCode onChangeQr={handleChangeQr} inputValue={state.inputValue} />
       {webSocket}
@@ -163,7 +164,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = ({
   qms: { checkInCLS, getDsNguoiBenhCLSQms },
-  nhanVien: { getListNhanVien },
+  nhanVien: { getListNhanVienTongHop },
   phong: { getListPhong, getById },
   khoa: { getListKhoa },
   kiosk: { getById : getByIdKiosk },
@@ -171,7 +172,7 @@ const mapDispatchToProps = ({
 }) => ({
   checkInCLS,
   getDsNguoiBenhCLSQms,
-  getListNhanVien,
+  getListNhanVienTongHop,
   getListPhong,
   getListKhoa,
   getByIdKiosk,

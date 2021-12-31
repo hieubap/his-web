@@ -8,8 +8,9 @@ import Checkbox from "antd/lib/checkbox/Checkbox";
 import { Space, Image, message } from "antd";
 import { openInNewTab } from "utils";
 import { isEqual } from "lodash";
+import { connect } from "react-redux";
 
-const ThongTinKhoaPhong = (props) => {
+const ThongTinKhoaPhong = ({getListAllPhong, ...props}) => {
     const [data, setData] = useState([]);
     const [showRow, setShowRow] = useState(false);
     const [newRecord, setNewRecord] = useState({ khoaQuanLy: true });
@@ -106,6 +107,7 @@ const ThongTinKhoaPhong = (props) => {
     const onChangeSelect = (value, option, name) => {
         if ("khoa" === name) {
             newRecord.khoa = option ? option.lists : {};
+            getListAllPhong({khoaId: option?.value})
         } else if ("dsToaNha" === name) {
             newRecord.dsToaNha = option ? option : [];
         } else if ("dsPhong" === name) {
@@ -361,4 +363,4 @@ const ThongTinKhoaPhong = (props) => {
     )
 
 }
-export default ThongTinKhoaPhong;
+export default connect(() => ({}),({phong: {getListAllPhong}}) => ({getListAllPhong}))(ThongTinKhoaPhong);

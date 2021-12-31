@@ -1,10 +1,11 @@
 import styled, { css } from "styled-components";
 import bgPage from "assets/images/pagehome/bgPage.png";
-import bgPageFunc from "assets/images/pagehome/bgTiepDon.png";
 
 const Main = styled.div`
   font-family: Nunito Sans, sans-serif;
-  margin: 30px;
+  padding: 30px;
+  height: 100%;
+  overflow: auto;
   @media (max-width: 1414px) {
     margin: 1.5em;
   }
@@ -209,6 +210,7 @@ const MainNotifi = styled.div`
   }
 `;
 const Mainfunc = styled.div`
+
   .list-func {
     margin: 0 30px 40px;
     padding-bottom: 10px;

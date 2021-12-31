@@ -11,4 +11,7 @@ export const Main = styled.div`
       max-height: calc(100vh - 218px) !important;
     }
   }
+  .row-actived {
+    background: #c1f0db !important;
+  }
 `;

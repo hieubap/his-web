@@ -223,10 +223,10 @@ function ModalContentService(props) {
       onClickBack={handleClickBack}
       onClickNext={handleClickNext}
       disabledBtnBack={checkNccKhacBv}
-      titleBtnBack="Quay lại"
+      titleBtnBack="Quay lại [ESC]"
       titleBtnNext={
         <span className="btn-checkout">
-          <span className="btn-checkout__text">Xác nhận</span>
+          <span className="btn-checkout__text">Xác nhận [F4]</span>
           <IconCheckout className="btn-checkout__icon" />
         </span>
       }

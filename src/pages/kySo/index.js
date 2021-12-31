@@ -1,18 +1,18 @@
 import React from "react";
 import { Route } from "react-router-dom";
 import { Main } from "./styled";
-import { kySoPages } from "pages/constants";
+import { pageKySo } from "pages/constants";
 
 const KySoPages = (props) => {
   return (
     <Main>
       <div className={"app-contain"}>
-        {Object.keys(kySoPages).map((key) => (
+        {Object.keys(pageKySo).map((key) => (
           <Route
             key={key}
-            path={kySoPages[key].path}
-            component={kySoPages[key].component}
-            exact={kySoPages[key].exact}
+            path={pageKySo[key].path}
+            component={pageKySo[key].component}
+            exact={pageKySo[key].exact}
           />
         ))}
       </div>

@@ -159,10 +159,10 @@ function ModalContentMethod(props) {
           )}
         </>
       }
-      titleBtnBack="Quay lại"
+      titleBtnBack="Quay lại [ESC]"
       titleBtnNext={
         <span className="btn-checkout">
-          <span className="btn-checkout__text">Xác nhận</span>
+          <span className="btn-checkout__text">Xác nhận [F4]</span>
           <IconMoney className="btn-checkout__icon" />
         </span>
       }

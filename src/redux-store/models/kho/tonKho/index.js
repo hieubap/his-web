@@ -19,7 +19,7 @@ export default {
     },
   },
   effects: (dispatch) => ({
-    onSizeChange: ({ size, khoQuanLyId }, state) => {
+    onSizeChange: ({ size, khoQuanLyId, fromTongHop }, state) => {
       dispatch.tonKho.updateData({
         size,
         page: 0,
@@ -28,48 +28,52 @@ export default {
         page: 0,
         size,
         khoQuanLyId,
+        fromTongHop,
       });
     },
 
-    onSearch: ({ page = 0, khoQuanLyId, ...payload }, state) => {
-      let newState = { isLoading: true, page };
-      dispatch.tonKho.updateData(newState);
-      let size = payload.size || state.tonKho.size || 10;
-      // let page = state.kho.page || 0;
-      const sort = combineSort(
-        payload.dataSortColumn || state.tonKho.dataSortColumn || {}
-      );
-      const dataSearch = payload.dataSearch || state.tonKho.dataSearch || {};
+    onSearch: ({ page = 0, khoQuanLyId, fromTongHop, ...payload }, state) => {
+      return new Promise((resolve, reject) => {
+        let newState = { isLoading: true, page };
+        dispatch.tonKho.updateData(newState);
+        let size = payload.size || state.tonKho.size || 10;
+        // let page = state.kho.page || 0;
+        const sort = combineSort(
+          payload.dataSortColumn || state.tonKho.dataSortColumn || {}
+        );
+        const dataSearch = payload.dataSearch || state.tonKho.dataSearch || {};
 
-      tonKhoProvider
-        .search({
+        tonKhoProvider[fromTongHop ? "searchAll" : "search"]({
           page,
           size,
           sort,
           khoQuanLyId,
           ...dataSearch,
         })
-        .then((s) => {
-          dispatch.tonKho.updateData({
-            listData: (s?.data || []).map((item, index) => {
-              item.index = page * size + index + 1;
-              return item;
-            }),
-            isLoading: false,
-            totalElements: s?.totalElements || 0,
-            page,
+          .then((s) => {
+            dispatch.tonKho.updateData({
+              listData: (s?.data || []).map((item, index) => {
+                item.index = page * size + index + 1;
+                return item;
+              }),
+              isLoading: false,
+              totalElements: s?.totalElements || 0,
+              page,
+            });
+            resolve(s?.data || []);
+          })
+          .catch((e) => {
+            message.error(e?.message || "Xảy ra lỗi, vui lòng thử lại sau");
+            dispatch.tonKho.updateData({
+              listData: [],
+              isLoading: false,
+            });
+            reject(e);
           });
-        })
-        .catch((e) => {
-          message.error(e?.message || "Xảy ra lỗi, vui lòng thử lại sau");
-          dispatch.tonKho.updateData({
-            listData: [],
-            isLoading: false,
-          });
-        });
+      });
     },
 
-    onSortChange: ({ ...payload }, state, khoQuanLyId) => {
+    onSortChange: ({ fromTongHop, ...payload }, state, khoQuanLyId) => {
       const dataSortColumn = {
         ...state.tonKho.dataSortColumn,
         ...payload,
@@ -82,25 +86,11 @@ export default {
         page: 0,
         dataSortColumn,
         khoQuanLyId,
+        fromTongHop,
       });
     },
 
-    onSortChangeGetAll: ({ ...payload }, state) => {
-      const dataSortColumn = {
-        ...state.tonKho.dataSortColumn,
-        ...payload,
-      };
-      dispatch.tonKho.updateData({
-        page: 0,
-        dataSortColumn,
-      });
-      dispatch.tonKho.onSearchAllDichVuTonKho({
-        page: 0,
-        dataSortColumn,
-      });
-    },
-
-    onChangeInputSearch: ({ ...payload }, state, khoQuanLyId) => {
+    onChangeInputSearch: ({ fromTongHop, ...payload }, state, khoQuanLyId) => {
       const dataSearch = {
         ...(state.kho.dataSearch || {}),
         ...payload,
@@ -114,6 +104,7 @@ export default {
         page: 0,
         dataSearch,
         khoQuanLyId,
+        fromTongHop,
       });
     },
 

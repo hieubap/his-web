@@ -1,5 +1,6 @@
 import nbDotDieuTriProvider from "data-access/nb-dot-dieu-tri-provider";
 import { message } from "antd";
+import resolve from "resolve";
 
 const initialState = {
   data: {},
@@ -46,6 +47,7 @@ export default {
           dispatch.nbDotDieuTri.updateData({
             thongTinBenhNhan: s?.data,
           });
+          resolve(s);
         })
         .catch((e) => {
           message.error(e?.message || "Xảy ra lỗi, vui lòng thử lại sau");
@@ -86,6 +88,24 @@ export default {
       return new Promise((resolve, reject) => {
         nbDotDieuTriProvider
           .searchNBDotDieuTri(payload)
+          .then((s) => {
+            dispatch.nbDotDieuTri.updateData({
+              dataNBDotDieuTri: s?.data,
+            });
+            resolve(s);
+          })
+          .catch((e) => {
+            message.error(e?.message || "Xảy ra lỗi, vui lòng thử lại sau");
+            dispatch.nbDotDieuTri.updateData({
+              dataNBDotDieuTri: [],
+            });
+          });
+      });
+    },
+    searchNBDotDieuTriTongHop: (payload, state) => {
+      return new Promise((resolve, reject) => {
+        nbDotDieuTriProvider
+          .searchNBDotDieuTriTongHop(payload)
           .then((s) => {
             dispatch.nbDotDieuTri.updateData({
               dataNBDotDieuTri: s?.data,

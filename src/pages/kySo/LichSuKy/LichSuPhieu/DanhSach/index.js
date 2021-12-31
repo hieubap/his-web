@@ -11,12 +11,14 @@ import ModalLichSuKy from "../ModalLichSuKy";
 let timer = null;
 
 const DanhSach = (props) => {
-  const refModalLichSuKy = useRef(null)
-  const { dsKhoId, dsTrangThai, tenNb, dataSortColumn } = useSelector(state => state.lichSuKyLichSuPhieu)
-  const { listtrangThaiKy } = useSelector(state => state.utils)
-  const { listKhoUser } = useSelector(state => state.kho)
-  const { searchByParams, onSortChange } = useDispatch().lichSuKyLichSuPhieu
-  const { getFilePdf } = useDispatch().lichSuKyLichSuPhieu
+  const refModalLichSuKy = useRef(null);
+  const { dsKhoId, dsTrangThai, tenNb, dataSortColumn } = useSelector(
+    (state) => state.lichSuKyLichSuPhieu
+  );
+  const { listtrangThaiKy } = useSelector((state) => state.utils);
+  const { listKhoUser } = useSelector((state) => state.kho);
+  const { searchByParams, onSortChange } = useDispatch().lichSuKyLichSuPhieu;
+  const { getFilePdf } = useDispatch().lichSuKyLichSuPhieu;
   const {
     getListPhieuNhap,
     onSizeChange,
@@ -37,8 +39,11 @@ const DanhSach = (props) => {
   } = props;
 
   useEffect(() => {
-    getUtils({ name: "trangThaiKy" })
-    onSizeChange({ nbDotDieuTriId: props?.match?.params?.id, soPhieu: props?.match?.params?.lichSuPhieuId });
+    getUtils({ name: "trangThaiKy" });
+    onSizeChange({
+      nbDotDieuTriId: props?.match?.params?.id,
+      soPhieu: props?.match?.params?.lichSuPhieuId,
+    });
     // onSizeChange({nbDotDieuTriId : props?.match?.params?.id , soPhieu : 74});
   }, []);
   const onClickSort = (key, value) => {
@@ -64,7 +69,7 @@ const DanhSach = (props) => {
         const { id } = record;
         refModalLichSuKy.current.show({
           fileLink: record?.fileSauKy || record?.fileTruocKy,
-          item: record
+          item: record,
         });
       },
     };
@@ -108,8 +113,8 @@ const DanhSach = (props) => {
       dataIndex: "tenNguoiKy",
       key: "tenNguoiKy",
       render: (item) => {
-        return item
-      }
+        return item;
+      },
     },
     {
       title: (
@@ -124,8 +129,8 @@ const DanhSach = (props) => {
       dataIndex: "loaiKy",
       key: "loaiKy",
       render: (item) => {
-        return item === 0 ? "Ký số" : "Ký điện tử" 
-      }
+        return item === 0 ? "Ký số" : "Ký điện tử";
+      },
     },
     {
       title: (
@@ -140,8 +145,8 @@ const DanhSach = (props) => {
       dataIndex: "thoiGianKy",
       key: "thoiGianKy",
       render: (item) => {
-        return item && moment(item)?.format("DD/MM/YYYY")
-      }
+        return item && moment(item)?.format("DD/MM/YYYY");
+      },
     },
     {
       title: (
@@ -157,8 +162,8 @@ const DanhSach = (props) => {
       key: "thoiGianTrinhKy",
       align: "left",
       render: (item) => {
-        return item && moment(item)?.format("DD/MM/YYYY")
-      }
+        return item && moment(item)?.format("DD/MM/YYYY");
+      },
     },
     {
       title: (
@@ -177,9 +182,9 @@ const DanhSach = (props) => {
       title: (
         <HeaderSearch
           title="Xem phiếu"
-        // sort_key="diaChi"
-        // onClickSort={onClickSort}
-        // dataSort={dataSortColumn["soPhieu"] || ""}
+          // sort_key="diaChi"
+          // onClickSort={onClickSort}
+          // dataSort={dataSortColumn["soPhieu"] || ""}
         />
       ),
       width: "30px",
@@ -187,12 +192,18 @@ const DanhSach = (props) => {
       // key: "diaChi",
       align: "center",
       render: (item) => {
-        return <img src={require("assets/images/utils/eye.png")} alt="" onClick={() => {
-          refModalLichSuKy.current.show({
-            fileLink: item?.fileSauKy || item?.fileTruocKy,
-            item: item
-          });
-        }} />;
+        return (
+          <img
+            src={require("assets/images/utils/eye.png")}
+            alt=""
+            onClick={() => {
+              refModalLichSuKy.current.show({
+                fileLink: item?.fileSauKy || item?.fileTruocKy,
+                item: item,
+              });
+            }}
+          />
+        );
       },
     },
   ];
@@ -208,8 +219,6 @@ const DanhSach = (props) => {
         />
         <Pagination
           listData={listData}
-          styleVersion={2}
-          styleVersion={2}
           onChange={onChangePage}
           current={page + 1}
           pageSize={size}
@@ -239,12 +248,13 @@ const mapDispatchToProps = ({
   lichSuKyLichSuPhieu: { getList, updateData, onSizeChange },
   thuocChiTiet: { updateData: updateDataThuocChiTiet },
   utils: { getUtils },
-
 }) => ({
   getList,
   updateData,
   onSizeChange,
   getUtils,
-  updateDataThuocChiTiet
+  updateDataThuocChiTiet,
 });
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DanhSach));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(DanhSach)
+);

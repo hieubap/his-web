@@ -38,7 +38,9 @@ const DanhSachDichVu = ({ layerId }) => {
   const { listServices = [], nbDotDieuTriId } = useSelector(
     (state) => state.choTiepDonDV
   );
-  const { listtrangThaiDichVu = [] } = useSelector((state) => state.utils);
+  const { listtrangThaiDichVu = [], listtrangThaiHoan = [] } = useSelector(
+    (state) => state.utils
+  );
 
   const {
     choTiepDonDV: {
@@ -107,7 +109,15 @@ const DanhSachDichVu = ({ layerId }) => {
   };
 
   const onDoiDichVu = (data) => {
-    if (DoiDichVuRef.current) DoiDichVuRef.current.show(data);
+    if (
+      TRANG_THAI["CHO_TIEP_NHAN"].includes(data?.trangThai) &&
+      data.trangThaiHoan &&
+      data.trangThaiHoan === 0
+    ) {
+      if (DoiDichVuRef.current) DoiDichVuRef.current.show(data);
+    } else {
+      return null;
+    }
   };
 
   const onHoanDichVu = (data, selectedRowKeys) => {
@@ -130,6 +140,7 @@ const DanhSachDichVu = ({ layerId }) => {
   useEffect(() => {
     updateData({ dsTrangThai: [25, 35, 43] });
     getUtils({ name: "trangThaiDichVu" });
+    getUtils({ name: "trangThaiHoan" });
   }, []);
 
   useEffect(() => {
@@ -186,14 +197,20 @@ const DanhSachDichVu = ({ layerId }) => {
       children: value,
       props: {},
     };
+
     if (type === "thoiGianChiDinh") {
       obj.children = moment(value).format("DD/MM/YYYY");
     }
 
     if (type === "trangThai") {
-      const currentStatus = listtrangThaiDichVu.find(
-        (item) => item.id === value
-      );
+      let currentStatus = "";
+      if (row.trangThaiHoan && row.trangThaiHoan !== 0) {
+        currentStatus = listtrangThaiHoan.find(
+          (item) => item.id === row.trangThaiHoan
+        );
+      } else {
+        currentStatus = listtrangThaiDichVu.find((item) => item.id === value);
+      }
       obj.children = currentStatus?.ten;
     }
 
@@ -403,7 +420,9 @@ const DanhSachDichVu = ({ layerId }) => {
       <div onClick={() => onDoiDichVu(data)}>
         <img
           src={
-            TRANG_THAI["CHO_TIEP_NHAN"].includes(data?.trangThai)
+            TRANG_THAI["CHO_TIEP_NHAN"].includes(data?.trangThai) &&
+            data.trangThaiHoan &&
+            data.trangThaiHoan === 0
               ? IcChangeService
               : IcChangeServiceHide
           }
@@ -412,7 +431,9 @@ const DanhSachDichVu = ({ layerId }) => {
           style={{
             paddingLeft: "10px",
             color: `${
-              TRANG_THAI["CHO_TIEP_NHAN"].includes(data?.trangThai)
+              TRANG_THAI["CHO_TIEP_NHAN"].includes(data?.trangThai) &&
+              data.trangThaiHoan &&
+              data.trangThaiHoan === 0
                 ? ""
                 : "#a6a6a6"
             }`,
@@ -603,11 +624,23 @@ const DanhSachDichVu = ({ layerId }) => {
       },
     },
   ];
+  console.log("state.selectedBtn", state.selectedBtn);
+  console.log(
+    "state.data",
+    (data || []).find((x) => x.trangThaiHoan && x.trangThaiHoan !== 0)
+  );
+  console.log("state.selectedRowKeys", state.selectedRowKeys);
 
   const renderHeaderRight = () => (
     <>
       {state.selectedBtn.length > 0 &&
-        (state.selectedBtn.find(
+        ((data || []).find(
+          (x) =>
+            x.trangThaiHoan &&
+            x.trangThaiHoan !== 0 &&
+            state?.selectedRowKeys.includes(x.id)
+        ) ||
+        state.selectedBtn.find(
           (item) => !TRANG_THAI["CHO_TIEP_NHAN"].includes(item)
         ) ? (
           ""
@@ -647,6 +680,12 @@ const DanhSachDichVu = ({ layerId }) => {
       {state.selectedBtn.some((item) =>
         TRANG_THAI["TIEP_NHAN"].includes(item)
       ) &&
+        !(data || [])?.find(
+          (x) =>
+            x.trangThaiHoan &&
+            x.trangThaiHoan !== 0 &&
+            state?.selectedRowKeys.includes(x.id)
+        ) &&
         checkRole([ROLES["CHAN_DOAN_HINH_ANH"].TIEP_NHAN_DICH_VU]) && (
           <>
             <Button

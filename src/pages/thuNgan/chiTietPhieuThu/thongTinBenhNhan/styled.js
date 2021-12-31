@@ -38,31 +38,38 @@ export const PatientInfoWrapper = styled("div")`
         color: #172b4d;
       }
     }
-    .info-content {
+    .flex {
       display: flex;
+    }
+
+    .w150 {
+      width: 150px;
+      min-width: 150px;
+    }
+    .w60 {
+      width: 60px;
+      min-width: 60px;
+    }
+    .info-content {
       .custom-col {
-        flex: 4;
-        table {
-          tr {
-            td {
-              padding-right: 10px;
-            }
-            .info {
-              font-weight: bold;
-              color: #172b4d;
-              max-width: 240px;
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              &__highlight {
-                background: #c1f0db;
-              }
-            }
+        .info {
+          font-weight: bold;
+          color: #172b4d;
+          /* max-width: 240px; */
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          &__highlight {
+            background: #c1f0db;
           }
         }
       }
-      .col-2 {
-        flex: 2;
+    }
+    .col-3 {
+      margin-top: -25px;
+      padding-bottom: 20px;
+      @media (max-width: 1366px) {
+        margin-top: 5px;
       }
     }
   }

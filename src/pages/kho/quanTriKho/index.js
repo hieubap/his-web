@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import HomeWrapper from "components/HomeWrapper";
 import ThietLapChonKho from "components/DanhMuc/ThietLapChonKho";
 import KhoTrucThuoc from "components/DanhMuc/KhoTrucThuoc";
@@ -21,6 +21,8 @@ import {
   TABLE_LAYOUT,
 } from "constants/index";
 import { Col } from "antd";
+import stringUtils from "mainam-react-native-string-utils";
+
 const QuanTriKho = (props) => {
   const [collapseStatus, setCollapseStatus] = useState(false);
   const [state, _setState] = useState({
@@ -31,12 +33,40 @@ const QuanTriKho = (props) => {
       return { ...state, ...data };
     });
   };
+  const refLayerHotKey = useRef(stringUtils.guid());
+  const refClickBtnAdd = useRef();
+  const { onAddLayer, onRemoveLayer, onRegisterHotkey } = useDispatch().phimTat;
+
+  // register layerId
+  useEffect(() => {
+    onAddLayer({ layerId: refLayerHotKey.current });
+    onRegisterHotkey({
+      layerId: refLayerHotKey.current,
+      hotKeys: [
+        {
+          keyCode: 112, //F1
+          onEvent: () => {
+            refClickBtnAdd.current && refClickBtnAdd.current();
+          },
+        },
+      ],
+    });
+    return () => {
+      onRemoveLayer({ layerId: refLayerHotKey.current });
+    };
+  }, []);
+
   const listPanel = [
     {
       title: "Thông tin kho",
       key: 1,
       render: () => {
-        return <ThongTinKho currentItem={props.currentItem} />;
+        return (
+          <ThongTinKho
+            currentItem={props.currentItem}
+            layerId={refLayerHotKey.current}
+          />
+        );
       },
     },
     {
@@ -67,6 +97,8 @@ const QuanTriKho = (props) => {
       currentItem: {},
     });
   };
+  refClickBtnAdd.current = handleClickedBtnAdded;
+
   const handleChangeshowTable = () => {
     setState({
       changeShowFullTbale: true,
@@ -134,6 +166,7 @@ const QuanTriKho = (props) => {
                 onClick: handleCollapsePane,
               },
             ]}
+            layerId={refLayerHotKey.current}
           />
         </Col>
         {!state.showFullTable && (

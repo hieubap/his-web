@@ -9,7 +9,8 @@ function Body(props) {
     dsDaXacNhan,
     dsTiepTheo,
     dsChoXacNhan,
-    dsGoiNho
+    dsGoiNho,
+    currentKiosk
   } = props;
 
   return (
@@ -25,6 +26,7 @@ function Body(props) {
         dsDaXacNhan={dsDaXacNhan}
         dsChoXacNhan={dsChoXacNhan}
         dsGoiNho={dsGoiNho}
+        currentKiosk={currentKiosk}
       />
     </StyleBody>
   );

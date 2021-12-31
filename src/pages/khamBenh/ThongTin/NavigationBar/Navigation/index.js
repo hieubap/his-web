@@ -112,7 +112,7 @@ const Navigation = (
         onSetActive={onSetActive}
         onClick={onClick}
       >
-        <Main padding={padding} ref={refLink} color={color} onClick={onClick}>
+        <Main padding={padding}  color={color} onClick={onClick}>
           {icon}
           <div className="content">
             <div className="content--title">{title}</div>

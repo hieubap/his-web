@@ -396,6 +396,32 @@ export default {
         });
     });
   },
+  getPhieuChiDinhKetLuan: ({
+    nbDotDieuTriId,
+    soPhieuId,
+    phieuChiDinhId,
+    id,
+    ...payload
+  }) => {
+    return new Promise((resolve, reject) => {
+      client
+        .get(
+          combineUrlParams(`${dataPath}${NB_DV_KHAM_BENH}/phieu-ket-luan/${id}`, {
+            nbDotDieuTriId,
+            soPhieuId,
+            phieuChiDinhId,
+            ...payload,
+          })
+        )
+        .then((s) => {
+          if (s?.data?.code == 0) resolve(s.data);
+          reject(s?.data);
+        })
+        .catch((e) => {
+          reject(e);
+        });
+    });
+  },
   getNbTiepTheo: ({ phongThucHienId, nbTiepTheoId, ...payload }) => {
     return new Promise((resolve, reject) => {
       client

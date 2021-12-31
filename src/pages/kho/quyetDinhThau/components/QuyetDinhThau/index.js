@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Checkbox, DatePicker, Input, Form, Button } from "antd";
 import {
   Pagination,
@@ -9,7 +9,7 @@ import {
 } from "components";
 import { PAGE_DEFAULT, HIEU_LUC } from "constants/index";
 import { combineSort } from "utils";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import moment from "moment";
 import showFull from "assets/svg/showFull.svg";
 import thuNho from "assets/svg/thuNho.svg";
@@ -43,7 +43,51 @@ const QuyetDinhThau = ({
   showFullTable,
   collapseStatus,
   handleCollapsePane,
+
+  layerId
 }) => {
+  const { onRegisterHotkey } = useDispatch().phimTat;
+  const refClickBtnAdd = useRef();
+  const refSelectRow = useRef();
+  useEffect(() => {
+    onRegisterHotkey({
+      layerId,
+      hotKeys: [
+        {
+          keyCode: 112, //F1
+          onEvent: (e) => {
+            refClickBtnAdd.current && refClickBtnAdd.current(e);
+          },
+        },
+        {
+          keyCode: 38, //up
+          onEvent: (e) => {
+            refSelectRow.current && refSelectRow.current(-1);
+          },
+        },
+        {
+          keyCode: 40, //down
+          onEvent: (e) => {
+            refSelectRow.current && refSelectRow.current(1);
+          },
+        },
+      ],
+    });
+  }, []);
+
+  refSelectRow.current = (index) => {
+    const indexNextItem =
+      (data?.findIndex((item) => item.id === dataEditDefault?.id) || 0) + index;
+    if (-1 < indexNextItem && indexNextItem < data.length) {
+      onEdit(data[indexNextItem]);
+      document
+        .getElementsByClassName("row-id-" + data[indexNextItem]?.id)[0]
+        .scrollIntoView({ block: "end", behavior: "smooth" });
+    }
+  };
+
+  refClickBtnAdd.current = onReset;
+
   const onClickSort = (key, value) => {
     const sort = { ...dataSort, [key]: value };
     updateData({ dataSort: sort });
@@ -415,7 +459,9 @@ const QuyetDinhThau = ({
         dataSource={data}
         onRow={onRow}
         rowClassName={(record, index) =>
-          dataEditDefault?.id === record.id ? "row-edit" : ""
+          dataEditDefault?.id === record.id
+            ? "row-actived row-id-" + record.id
+            : "row-id-" + record.id
         }
       />
       {total && (

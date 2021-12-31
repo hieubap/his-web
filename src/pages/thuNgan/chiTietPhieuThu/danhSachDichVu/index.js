@@ -513,6 +513,7 @@ const DanhsachDichVu = ({
             onChange={handleChangePage}
             current={page + 1}
             pageSize={size}
+            listData={listData}
             total={totalElements}
             onShowSizeChange={handleSizeChange}
             style={{ flex: 1, justifyContent: "flex-end" }}

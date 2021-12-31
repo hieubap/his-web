@@ -1,17 +1,11 @@
-import { Button, DatePicker, Dropdown, Input, Menu, Select, Table } from "antd";
+import { Input } from "antd";
 import Checkbox from "antd/lib/checkbox/Checkbox";
-import empty from "assets/images/kho/empty.png";
-import IconSearch from "assets/images/xetNghiem/icSearch.png";
 import Pagination from "components/Pagination";
 import TableWrapper from "components/TableWrapper";
 import HeaderSearch from "components/TableWrapper/headerSearch";
-import React, { useRef, useState } from "react";
-// import InputSearch from "../../../components/InputSearch";
-// import { trangThaiDV } from "../../constant";
-import AddIcon from "assets/svg/chuanDoanHinhAnh/add.svg";
+import React, { useEffect, useRef, useState } from "react";
 import { Main } from "./styled";
 import { checkRole } from "app/Sidebar/constant";
-import { searchString } from "utils";
 import showFull from "assets/svg/showFull.svg";
 import thuNho from "assets/svg/thuNho.svg";
 import extendTable from "assets/svg/extendTable.svg";
@@ -19,409 +13,253 @@ import extendChiTiet from "assets/svg/extendChiTiet.svg";
 import Icon from "@ant-design/icons";
 import { ROLES } from "constants/index";
 import IcCreate from "assets/images/kho/IcCreate.png";
-const { Option } = Select;
+import { useDispatch, useSelector } from "react-redux";
+import Select from "components/Select";
+import { HIEU_LUC } from "constants/index";
+
+let timer = null;
 
 const DsMauKetQua = (props) => {
-  const [state, setState] = useState({});
-  const handleSort = () => {};
-  const refSearch = useRef(null);
   const {
     handleChangeshowTable,
     handleCollapsePane,
     showFullTable,
     collapseStatus,
   } = props;
-  const [dataEdit, setDataEdit] = useState({});
-  // TODO: data test tính năng search bỏ khi ghép api
-  const [dataSearch, setDataSearch] = useState([
-    { ten: "Phòng 1", id: 1, checked: true },
-    { ten: "Phòng phẫu thuật", id: 2 },
-    { ten: "Phòng bảo vệ", id: 3 },
-    { ten: "Phòng nghỉ dưỡng", id: 4 },
-    { ten: "Phòng hồi sức", id: 5, checked: true },
-    { ten: "Phòng cứu thương", id: 6, checked: true },
-    { ten: "Phòng cấp cứu", id: 7 },
-    { ten: "Phòng 8", id: 8 },
-    { ten: "Phòng 9", id: 9 },
-  ]);
 
-  // TODO: data test tính năng search bỏ đi khi ghép api
-  const maNBTest = [
-    { ten: "123456", id: 1 },
-    { ten: "456789", id: 2 },
-    { ten: "789123", id: 3 },
-    { ten: "456123", id: 4 },
-  ];
+  const {
+    mauKetQuaCDHA: { totalElements, page, size, listData, dataSortColumn, currentItem },
+  } = useSelector((state) => state);
+  const {
+    mauKetQuaCDHA: {
+      onSizeChange,
+      onSearch,
+      onSortChange,
+      onChangeInputSearch,
+      updateData,
+    },
+  } = useDispatch();
 
-  // TODO: data test bỏ khi ghép api
-  const [data, setData] = useState([
-    {
-      ma: "202105280004",
-      tenMau: "Mẫu KQ5464654-5461",
-      kyThuat: "Kỹ thuật A",
-      moTa: "mô tả mẫu",
-      ketLuan: "Kết luận về mẫu",
-      khuyenNghi: "nội dung khuyến nghị",
-      tenDichVuCLS: "Dịch vụ ABCD",
-      user: "Ngô Quang Hiếu",
-      hieuLuc: true,
-    },
-    {
-      ma: "202105280004",
-      tenMau: "Mẫu KQ5464654-5461",
-      kyThuat: "Kỹ thuật A",
-      moTa: "mô tả mẫu",
-      ketLuan: "Kết luận về mẫu",
-      khuyenNghi: "nội dung khuyến nghị",
-      tenDichVuCLS: "Dịch vụ ABCD",
-      user: "Ngô Quang Hiếu",
-      hieuLuc: false,
-    },
-    {
-      ma: "202105280004",
-      tenMau: "Mẫu KQ5464654-5461",
-      kyThuat: "Kỹ thuật A",
-      moTa: "mô tả mẫu",
-      ketLuan: "Kết luận về mẫu",
-      khuyenNghi: "nội dung khuyến nghị",
-      tenDichVuCLS: "Dịch vụ ABCD",
-      user: "Ngô Quang Hiếu",
-      hieuLuc: true,
-    },
-    {
-      ma: "202105280004",
-      tenMau: "Mẫu KQ5464654-5461",
-      kyThuat: "Kỹ thuật A",
-      moTa: "mô tả mẫu",
-      ketLuan: "Kết luận về mẫu",
-      khuyenNghi: "nội dung khuyến nghị",
-      tenDichVuCLS: "Dịch vụ ABCD",
-      user: "Ngô Quang Hiếu",
-      hieuLuc: false,
-    },
-    {
-      ma: "202105280004",
-      tenMau: "Mẫu KQ5464654-5461",
-      kyThuat: "Kỹ thuật A",
-      moTa: "mô tả mẫu",
-      ketLuan: "Kết luận về mẫu",
-      khuyenNghi: "nội dung khuyến nghị",
-      tenDichVuCLS: "Dịch vụ ABCD",
-      user: "Ngô Quang Hiếu",
-      hieuLuc: true,
-    },
-    {
-      ma: "202105280004",
-      tenMau: "Mẫu KQ5464654-5461",
-      kyThuat: "Kỹ thuật A",
-      moTa: "mô tả mẫu",
-      ketLuan: "Kết luận về mẫu",
-      khuyenNghi: "nội dung khuyến nghị",
-      tenDichVuCLS: "Dịch vụ ABCD",
-      user: "Ngô Quang Hiếu",
-      hieuLuc: false,
-    },
-    {
-      ma: "202105280004",
-      tenMau: "Mẫu KQ5464654-5461",
-      kyThuat: "Kỹ thuật A",
-      moTa: "mô tả mẫu",
-      ketLuan: "Kết luận về mẫu",
-      khuyenNghi: "nội dung khuyến nghị",
-      tenDichVuCLS: "Dịch vụ ABCD",
-      user: "Ngô Quang Hiếu",
-      hieuLuc: true,
-    },
-    {
-      ma: "202105280004",
-      tenMau: "Mẫu KQ5464654-5461",
-      kyThuat: "Kỹ thuật A",
-      moTa: "mô tả mẫu",
-      ketLuan: "Kết luận về mẫu",
-      khuyenNghi: "nội dung khuyến nghị",
-      tenDichVuCLS: "Dịch vụ ABCD",
-      user: "Ngô Quang Hiếu",
-      hieuLuc: false,
-    },
-    {
-      ma: "202105280004",
-      tenMau: "Mẫu KQ5464654-5461",
-      kyThuat: "Kỹ thuật A",
-      moTa: "mô tả mẫu",
-      ketLuan: "Kết luận về mẫu",
-      khuyenNghi: "nội dung khuyến nghị",
-      tenDichVuCLS: "Dịch vụ ABCD",
-      user: "Ngô Quang Hiếu",
-      hieuLuc: true,
-    },
-    {
-      ma: "202105280004",
-      tenMau: "Mẫu KQ5464654-5461",
-      kyThuat: "Kỹ thuật A",
-      moTa: "mô tả mẫu",
-      ketLuan: "Kết luận về mẫu",
-      khuyenNghi: "nội dung khuyến nghị",
-      tenDichVuCLS: "Dịch vụ ABCD",
-      user: "Ngô Quang Hiếu",
-      hieuLuc: true,
-    },
-    {
-      ma: "202105280004",
-      tenMau: "Mẫu KQ5464654-5461",
-      kyThuat: "Kỹ thuật A",
-      moTa: "mô tả mẫu",
-      ketLuan: "Kết luận về mẫu",
-      khuyenNghi: "nội dung khuyến nghị",
-      tenDichVuCLS: "Dịch vụ ABCD",
-      user: "Ngô Quang Hiếu",
-      hieuLuc: true,
-    },
-  ]);
+  useEffect(() => {
+    onSizeChange(10);
+  }, []);
 
-  const onCheck = (value, index) => {
-    const newData = Object.assign([], data);
-    newData[index].hieuLuc = value;
-    setData(newData);
+  const onClickSort = (key, value) => {
+    onSortChange({
+      [key]: value,
+    });
   };
+
+  const onSearchInput = (key) => (e) => {
+    let value = "";
+    if (e?.target) {
+      if (e.target.hasOwnProperty("checked")) value = e.target.checked;
+      else value = e.target.value;
+    } else value = e;
+
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      onChangeInputSearch({
+        [key]: value,
+      });
+    }, 300);
+  };
+
   const columns = [
     {
-      title: (
-        <HeaderSearch
-          title="STT"
-          dataSort={state.sortKey === "stt" ? state.sortValue : 0}
-          sort_key="stt"
-          onClickSort={handleSort("stt")}
-          noSearch={true}
-        />
-      ),
-      key: "stt",
+      title: <HeaderSearch title="STT" />,
+      key: "index",
       width: 60,
       align: "center",
-      render: (_, __, index) => index + 1,
     },
     {
       title: (
         <HeaderSearch
           title="Mã"
-          dataSort={state.sortKey === "ma" ? state.sortValue : 0}
+          dataSort={dataSortColumn["ma"] || 0}
           sort_key="ma"
+          onClickSort={onClickSort}
           search={
             <Input
               placeholder="Tìm kiếm"
-              // onChange={(e) => {
-              //   onSearchInput(e.target.value, "ten");
-              // }}
+              onChange={onSearchInput("ma")}
             />
           }
-          // onClickSort={handleSort("ma", "ten")}
         />
       ),
       dataIndex: "ma",
       key: "ma",
       width: 150,
-      // render: (item) =>
-      //   item && (
-      //     <div style={{ display: "flex", alignItems: "center" }}>
-      //       {trangThaiDV[item - 1].icon}
-      //       <span style={{ marginLeft: "5px" }}>
-      //         {trangThaiDV[item - 1].ten}
-      //       </span>
-      //     </div>
-      //   ),
     },
     {
       title: (
         <HeaderSearch
           title="Tên mẫu"
-          dataSort={state.sortKey === "tenMau" ? state.sortValue : 0}
-          sort_key="tenMau"
-          onClickSort={handleSort("tenMau", "tenDonViTinh")}
+          dataSort={dataSortColumn["ten"] || 0}
+          sort_key="ten"
+          onClickSort={onClickSort}
           search={
             <Input
               placeholder="Tìm kiếm"
-              // onChange={(e) => {
-              //   onSearchInput(e.target.value, "ten");
-              // }}
+              onChange={onSearchInput("ten")}
             />
           }
         />
       ),
-      dataIndex: "tenMau",
-      key: "tenMau",
+      dataIndex: "ten",
+      key: "ten",
       width: 200,
     },
     {
       title: (
         <HeaderSearch
           title="Kết quả"
-          dataSort={state.sortKey === "kyThuat" ? state.sortValue : 0}
-          sort_key="kyThuat"
-          onClickSort={handleSort("kyThuat", "hamLuong")}
+          dataSort={dataSortColumn["ketQua"] || 0}
+          sort_key="ketQua"
+          onClickSort={onClickSort}
           search={
             <Input
               placeholder="Tìm kiếm"
-              // onChange={(e) => {
-              //   onSearchInput(e.target.value, "ten");
-              // }}
+              onChange={onSearchInput("ketQua")}
             />
           }
         />
       ),
-      dataIndex: "kyThuat",
-      key: "kyThuat",
+      dataIndex: "ketQua",
+      key: "ketQua",
       width: 150,
     },
     {
       title: (
         <HeaderSearch
           title="Kết luận"
-          dataSort={state.sortKey === "moTa" ? state.sortValue : 0}
-          sort_key="moTa"
-          onClickSort={handleSort("moTa")}
+          dataSort={dataSortColumn["ketLuan"] || 0}
+          sort_key="ketLuan"
+          onClickSort={onClickSort}
           search={
             <Input
               placeholder="Tìm kiếm"
-              // onChange={(e) => {
-              //   onSearchInput(e.target.value, "ten");
-              // }}
+              onChange={onSearchInput("ketLuan")}
             />
           }
         />
       ),
-      dataIndex: "moTa",
-      key: "moTa",
+      dataIndex: "ketLuan",
+      key: "ketLuan",
       width: 250,
     },
     {
       title: (
         <HeaderSearch
           title="Cách thức can thiệp"
-          dataSort={state.sortKey === "ketLuan" ? state.sortValue : 0}
-          sort_key="ketLuan"
-          onClickSort={handleSort("ketLuan")}
+          dataSort={dataSortColumn["cachThucCanThiep"] || 0}
+          sort_key="cachThucCanThiep"
+          onClickSort={onClickSort}
           search={
             <Input
               placeholder="Tìm kiếm"
-              // onChange={(e) => {
-              //   onSearchInput(e.target.value, "ten");
-              // }}
+              onChange={onSearchInput("cachThucCanThiep")}
             />
           }
         />
       ),
-      key: "ketLuan",
-      dataIndex: "ketLuan",
+      key: "cachThucCanThiep",
+      dataIndex: "cachThucCanThiep",
       width: 150,
     },
     {
       title: (
         <HeaderSearch
           title="Phương thức can thiệp"
-          dataSort={state.sortKey === "khuyenNghi" ? state.sortValue : 0}
-          sort_key="khuyenNghi"
-          onClickSort={handleSort("khuyenNghi", "soLo")}
+          dataSort={dataSortColumn["phuongThucCanThiep"] || 0}
+          sort_key="phuongThucCanThiep"
+          onClickSort={onClickSort}
           search={
             <Input
               placeholder="Tìm kiếm"
-              // onChange={(e) => {
-              //   onSearchInput(e.target.value, "ten");
-              // }}
+              onChange={onSearchInput("phuongThucCanThiep")}
             />
           }
         />
       ),
-      dataIndex: "khuyenNghi",
-      key: "khuyenNghi",
+      dataIndex: "phuongThucCanThiep",
+      key: "phuongThucCanThiep",
       width: 200,
     },
     {
       title: (
         <HeaderSearch
-          title="Tên dịch vụ CLS"
-          dataSort={state.sortKey === "tenDichVuCLS" ? state.sortValue : 0}
-          sort_key="tenDichVuCLS"
+          title="Tên dịch vụ"
           search={
             <Input
               placeholder="Tìm kiếm"
-              // onChange={(e) => {
-              //   onSearchInput(e.target.value, "ten");
-              // }}
+              onChange={onSearchInput("ten")}
             />
           }
-          // onClickSort={handleSort("loNhap", "tenDichVuCLS")}
         />
       ),
-      dataIndex: "tenDichVuCLS",
-      key: "tenDichVuCLS",
-      align: "right",
+      dataIndex: "dsDichVu",
+      key: "dsDichVu",
+      align: "left",
       width: 150,
+      render: (item) => {
+        let list = item?.map((x) => x.ten);
+        return list.join(",");
+      },
     },
     {
       title: (
         <HeaderSearch
-          title="User"
-          dataSort={state.sortKey === "user" ? state.sortValue : 0}
-          sort_key="user"
-          search={
-            <Input
-              placeholder="Tìm kiếm"
-              // onChange={(e) => {
-              //   onSearchInput(e.target.value, "ten");
-              // }}
+          searchSelect={
+            <Select
+              data={HIEU_LUC}
+              placeholder="Chọn hiệu lực"
+              defaultValue=""
+              onChange={onSearchInput("active")}
             />
           }
-          // onClickSort={handleSort("user", "user")}
-        />
-      ),
-      dataIndex: "user",
-      key: "user",
-      align: "right",
-      width: 170,
-    },
-    {
-      title: (
-        <HeaderSearch
+          sort_key="active"
+          onClickSort={onClickSort}
+          dataSort={dataSortColumn.active || 0}
           title="Có hiệu lực"
-          dataSort={state.sortKey === "hieuLuc" ? state.sortValue : 0}
-          sort_key="hieuLuc"
-          noSearch={true}
-          // onClickSort={handleSort("loNhap", "ngayHanSuDung")}
         />
       ),
-      dataIndex: "hieuLuc",
-      key: "hieuLuc",
       width: 120,
+      dataIndex: "active",
+      key: "active",
       align: "center",
-      render: (item, _, index) => (
-        <Checkbox
-          checked={item}
-          onChange={(e) => onCheck(e.target.checked, index)}
-        />
-      ),
+      render: (item) => {
+        return <Checkbox checked={item} />;
+      },
     },
   ];
   const onRow = (record) => {
     return {
-      onClick: (event) => {
-        setDataEdit(record);
+      onClick: () => {
+        updateData({ currentItem: record });
       },
     };
   };
   const handleClickedBtnAdded = () => {
-    // form.resetFields();
-    // updateData({ currentItem: null });
-    // setStateParent({
-    //   editStatus: false,
-    // });
+    updateData({ currentItem: null });
   };
   const setRowClassName = (record) => {
-    let idDiff = dataEdit?.id;
+    let idDiff = currentItem?.id;
     return record.id === idDiff ? "row-actived" : "";
   };
+
+  const onChangePage = (page) => {
+    onSearch({ page: page - 1 });
+  };
+
+  const handleSizeChange = (size) => {
+    onSizeChange({ size: size });
+  };
+
   return (
     <Main>
       <TableWrapper
-        title="Danh mục mẫu kết quả CLS"
+        title="Danh mục mẫu kết quả CĐHA - TDCN"
         scroll={{ x: 1000 }}
         classNameRow={"custom-header"}
         styleMain={{ marginTop: 0 }}
@@ -475,7 +313,7 @@ const DsMauKetQua = (props) => {
               ]
         }
         columns={columns}
-        dataSource={data}
+        dataSource={listData}
         onRow={onRow}
         rowKey={(record) => record.id}
         rowClassName={setRowClassName}
@@ -483,9 +321,12 @@ const DsMauKetQua = (props) => {
 
       <div className="content">
         <Pagination
-          current={1}
-          listData={data}
-          total={200}
+          onChange={onChangePage}
+          current={page + 1}
+          pageSize={size}
+          listData={listData}
+          total={totalElements}
+          onShowSizeChange={handleSizeChange}
           stylePagination={{
             flex: 1,
             paddingBottom: "5px",

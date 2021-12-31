@@ -81,6 +81,7 @@ export default {
   },
   searchNBDotDieuTriTongHop: ({ page = 0, sort, size = 500, ...payload }) => {
     return new Promise((resolve, reject) => {
+      console.log(size);
       client
         .get(
           combineUrlParams(`${dataPath}${NB_DOT_DIEU_TRI}/tong-hop`, {
@@ -106,6 +107,23 @@ export default {
     return new Promise((resolve, reject) => {
       client
         .patch(`${dataPath}${NB_DOT_DIEU_TRI}/${data.id}`, data)
+        .then((s) => {
+          resolve(s.data);
+        })
+        .catch((e) => {
+          reject(e);
+        });
+    });
+  },
+  getPhieuIn: ({ nbDotDieuTriId, maManHinh, maViTri }) => {
+    return new Promise((resolve, reject) => {
+      client
+        .get(
+          combineUrlParams(
+            `${dataPath}${NB_DOT_DIEU_TRI}/phieu-in/${nbDotDieuTriId}`,
+            { maManHinh, maViTri }
+          )
+        )
         .then((s) => {
           resolve(s.data);
         })

@@ -53,7 +53,6 @@ export const StyledHeader = styled.div`
     &__second {
       max-width: 600px;
       line-height: 56px;
-      text-align: center;
       font-family: Nunito Sans;
       font-style: normal;
       font-weight: normal;
@@ -68,8 +67,6 @@ export const StyledHeader = styled.div`
 
   .sub-logo {
     display: flex;
-    width: 101.94px;
-    height: 101.94px;
     align-items: center;
     justify-content: center;
     background: #082a55;
@@ -80,6 +77,9 @@ export const StyledHeader = styled.div`
       display: block;
       width: auto;
       height: 90%;
+      border-radius: 50%;
+      width: 101.94px;
+      height: 101.94px;
     }
     @media (max-width: 750px) {
       width: 67.96px;

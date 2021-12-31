@@ -6,8 +6,8 @@ import React, {
   useRef,
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Row, Input } from "antd";
-import { Main, ContentTable, ModalStyled } from "./styled";
+import { Row, Input, DatePicker } from "antd";
+import { Main, ContentTable, ModalStyled, SearchDate } from "./styled";
 import IconCancel from "assets/images/khamBenh/iconCancel.png";
 import TableWrapper from "components/TableWrapper";
 import HeaderSearch from "components/TableWrapper/headerSearch";
@@ -16,15 +16,23 @@ import Select from "components/Select";
 import { TRANG_THAI_KHAM_BN } from "../../configs";
 import { TRANG_THAI_DICH_VU } from "constants/index";
 import stringUtils from "mainam-react-native-string-utils";
+import DateDropdown from "./DateDropdown";
+import Calendar from "assets/images/kho/calendar.png";
+import moment from "moment";
+
+const { RangePicker } = DatePicker;
 let timer = null;
 
 export const ModalDanhSachBN = forwardRef(({ refModalNotification2 }, ref) => {
   const refLayerHotKey = useRef(stringUtils.guid());
   const refInputNhapSoKham = useRef(null);
+  const refShowDate = useRef(null);
 
   const [state, _setState] = useState({
     show: false,
     data: {},
+    selectedDateFrom: moment().format("DD/MM/YYYY"),
+    selectedDateTo: moment().format("DD/MM/YYYY"),
   });
   const setState = (data = {}) => {
     _setState((state) => {
@@ -54,7 +62,7 @@ export const ModalDanhSachBN = forwardRef(({ refModalNotification2 }, ref) => {
             rightCancelButton: true,
             cancelText: "Đóng",
           },
-          () => {},
+          () => { },
           () => {
             updateData({
               dangKhamError: "",
@@ -77,10 +85,10 @@ export const ModalDanhSachBN = forwardRef(({ refModalNotification2 }, ref) => {
         ...item,
         thongTin: `${item.tenNb}${item.tuoi && ` - ${item.tuoi} tuổi`}${
           !!item.xaPhuong ? ` - ${item.xaPhuong}` : ""
-        }
+          }
         ${!!item.quanHuyen ? ` - ${item.quanHuyen}` : ""}${
           item.tenTinhThanhPho ? ` - ${item.tenTinhThanhPho}` : ""
-        }${item.quocGia ? ` - ${item.quocGia}` : ""}`,
+          }${item.quocGia ? ` - ${item.quocGia}` : ""}`,
       };
     });
     setState({ data });
@@ -109,7 +117,8 @@ export const ModalDanhSachBN = forwardRef(({ refModalNotification2 }, ref) => {
           true
         );
       } else {
-        onSizeChange({ size: size, dataSortColumn, dataSearch }, true);
+        // onSizeChange({ size: size, dataSortColumn, dataSearch }, true);
+        onChangeInputSearch({ tuThoiGianVaoVien: moment().format("DD-MM-YYYY"), denThoiGianVaoVien: moment().format("DD-MM-YYYY") }, true);
       }
       onAddLayer({ layerId: refLayerHotKey.current });
       onRegisterHotkey({
@@ -132,7 +141,7 @@ export const ModalDanhSachBN = forwardRef(({ refModalNotification2 }, ref) => {
     },
   }));
   const onCloseModal = () => {
-    setState({ show: false });
+    setState({ show: false, selectedDateFrom: moment().format("DD/MM/YYYY"), selectedDateTo: moment().format("DD/MM/YYYY"), });
   };
   useEffect(() => {
     if (!state.show) {
@@ -294,7 +303,7 @@ export const ModalDanhSachBN = forwardRef(({ refModalNotification2 }, ref) => {
   };
   const columns = [
     {
-      title: <HeaderSearch title="STT" />,
+      title: <HeaderSearch title="STT" isTitleCenter={true}/>,
       width: "35px",
       dataIndex: "index",
       key: "index",
@@ -303,6 +312,7 @@ export const ModalDanhSachBN = forwardRef(({ refModalNotification2 }, ref) => {
     {
       title: (
         <HeaderSearch
+          isTitleCenter={true}
           title="Số khám"
           sort_key="stt2"
           dataSort={dataSortColumn["stt2"] || 0}
@@ -323,6 +333,31 @@ export const ModalDanhSachBN = forwardRef(({ refModalNotification2 }, ref) => {
     {
       title: (
         <HeaderSearch
+          isTitleCenter={true}
+          title="Ngày đăng ký"
+          sort_key="thoiGianVaoVien"
+          dataSort={dataSortColumn["thoiGianVaoVien"] || 0}
+          onClickSort={onClickSort}
+          search={
+            <Input
+              ref={refInputNhapSoKham}
+              placeholder="Nhập ngày đăng ký"
+              onChange={onSearchInput("thoiGianVaoVien")}
+            />
+          }
+        />
+      ),
+      render: (item) => {
+        return moment(item).format("DD/MM/YYYY hh:mm:ss")
+      },
+      width: "80px",
+      dataIndex: "thoiGianVaoVien",
+      key: "thoiGianVaoVien",
+    },
+    {
+      title: (
+        <HeaderSearch
+          isTitleCenter={true}
           title="Mã hồ sơ"
           sort_key="maHoSo"
           dataSort={dataSortColumn["maHoSo"] || 0}
@@ -342,6 +377,7 @@ export const ModalDanhSachBN = forwardRef(({ refModalNotification2 }, ref) => {
     {
       title: (
         <HeaderSearch
+          isTitleCenter={true}
           title="Mã NB"
           sort_key="maNb"
           dataSort={dataSortColumn["maNb"] || 0}
@@ -361,6 +397,7 @@ export const ModalDanhSachBN = forwardRef(({ refModalNotification2 }, ref) => {
     {
       title: (
         <HeaderSearch
+          isTitleCenter={true}
           title="Tên - Tuổi - Địa chỉ"
           sort_key="tenNb"
           dataSort={dataSortColumn["tenNb"] || 0}
@@ -380,6 +417,7 @@ export const ModalDanhSachBN = forwardRef(({ refModalNotification2 }, ref) => {
     {
       title: (
         <HeaderSearch
+          isTitleCenter={true}
           title="Tên dịch vụ"
           sort_key="tenDichVu"
           dataSort={dataSortColumn["tenDichVu"] || 0}
@@ -399,6 +437,7 @@ export const ModalDanhSachBN = forwardRef(({ refModalNotification2 }, ref) => {
     {
       title: (
         <HeaderSearch
+          isTitleCenter={true}
           title="Trạng thái"
           sort_key="trangThai"
           dataSort={dataSortColumn["trangThai"] || 0}
@@ -422,7 +461,7 @@ export const ModalDanhSachBN = forwardRef(({ refModalNotification2 }, ref) => {
       },
     },
     {
-      title: <HeaderSearch title="" />,
+      title: <HeaderSearch title="Thao tác" isTitleCenter={true}/>,
       width: "50px",
       dataIndex: "action",
       key: "action",
@@ -447,7 +486,6 @@ export const ModalDanhSachBN = forwardRef(({ refModalNotification2 }, ref) => {
   const rowClassName = (record) => {
     return record.id === infoNb?.id ? "active" : "";
   };
-
   return (
     <ModalStyled
       width={1447}
@@ -457,7 +495,24 @@ export const ModalDanhSachBN = forwardRef(({ refModalNotification2 }, ref) => {
     >
       <Main>
         <Row className="header-table">
-          <div className="header-table__left">Danh sách người bệnh</div>
+          <div className="header-table__left">
+            DANH SÁCH NGƯỜI BỆNH
+            <span style={{
+              fontFamily: "Nunito Sans",
+              fontSize: 14,
+              fontStyle: "normal",
+              fontWeight: 600,
+              marginLeft: 24,
+              marginRight: 10
+            }}>
+              Ngày đăng ký
+            </span>
+            <SearchDate>
+              <DateDropdown stateParent={state} setStateParent={setState} ref={refShowDate} onChangeInputSearch={onChangeInputSearch}></DateDropdown>
+              <input className="filter" value={`${state.selectedDateFrom} - ${state.selectedDateTo}`} onClick={() => refShowDate.current.show()} />
+              <img src={Calendar} alt="..." style={{ marginRight: 5 }} style={{ position: "absolute", right: 5, top: 6 }} />
+            </SearchDate>
+          </div>
           <div className="header-table__right">
             <img src={IconCancel} alt="IconCancel" onClick={onCloseModal} />
           </div>

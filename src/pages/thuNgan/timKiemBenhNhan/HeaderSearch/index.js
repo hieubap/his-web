@@ -146,11 +146,11 @@ const TimKiemBenhNhan = (props) => {
           <Col md={6} sm={12} xs={24}>
             <div className="input-search">
               <Input
-                placeholder="Quét QR NB hoặc nhập mã hồ sơ"
+                placeholder="Quét QR NB hoặc nhập mã hồ sơ [F6]"
                 onChange={onChangeCode}
                 onKeyDown={onKeyDown}
                 ref={refInput}
-                autoFocus
+                
                 onFocus={onFocus}
                 onBlur={onBlur}
                 value={valueSearch}
@@ -162,7 +162,7 @@ const TimKiemBenhNhan = (props) => {
         <Col md={12} sm={12} xs={24} className="button-gopage">
           <AuthWrapper accessRoles={[ROLES["THU_NGAN"].DANH_SACH_PHIEU_THU]}>
             <Button onClick={onClickDsPhieuThu}>
-              {titleBack || "Danh sách phiếu thu"}
+              {titleBack || `Danh sách phiếu thu [F2]`}
               <img src={icon || IconList} alt="IconList" />
             </Button>
           </AuthWrapper>
@@ -170,7 +170,7 @@ const TimKiemBenhNhan = (props) => {
         <Col md={6} sm={8} xs={24} className="next-partient">
           <AuthWrapper accessRoles={[ROLES["THU_NGAN"].NB_TIEP_THEO]}>
             <Button>
-              Người bệnh tiếp theo
+              Người bệnh tiếp theo [F1]
               <img src={IconArrowLeft} alt="IconArrowLeft" />
             </Button>
           </AuthWrapper>

@@ -24,7 +24,7 @@ import { Main } from "./styled";
 import { SORT_DEFAULT } from "./configs";
 import { checkRole } from "app/Sidebar/constant";
 import FormWraper from "components/FormWraper";
-import { INNHANH_KYSO } from "constants/index";
+import { IN_NHANH_KYSO } from "constants/index";
 import MultiLevelTab from "components/MultiLevelTab";
 import ThongTinChiTiet from "./ThongTinChiTiet";
 import DanhSachThuoc from "./DanhSachThuoc";
@@ -386,7 +386,7 @@ const LieuDungBacSy = ({
           searchSelect={
             <Select
               defaultValue=""
-              data={INNHANH_KYSO}
+              data={IN_NHANH_KYSO}
               placeholder="Chọn in nhanh"
               onChange={onSearchInput("active")}
             />

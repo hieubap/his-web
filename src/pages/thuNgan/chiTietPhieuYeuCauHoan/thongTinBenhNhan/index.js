@@ -18,22 +18,21 @@ const ThongTinBenhNhan = (props) => {
       return { ...state, ...data };
     });
   };
-  const thongTinBenhNhan = useSelector((state) => state.nbDotDieuTri);
+  const { maHoSo, soPhieu } = props;
+  const { getThongTinBenhNhan } = dispatch.danhSachPhieuYeuCauHoan;
+
   useEffect(() => {
-    setState({
-      patient: thongTinBenhNhan.thongTinBenhNhan,
+    getThongTinBenhNhan({ maHoSo, soPhieu }).then((s) => {
+      setState({
+        patient: s,
+      });
     });
-  }, [thongTinBenhNhan]);
-  const { nbDotDieuTriId } = useParams();
-  const { getThongTinNBDotDieuTri } = dispatch.nbDotDieuTri;
-  useEffect(() => {
-    getThongTinNBDotDieuTri(nbDotDieuTriId);
   }, []);
   return (
     <Main>
       <div className="image-patient">
         {state?.patient?.anhDaiDien ? (
-          <Image preview={false} src={thongTinBenhNhan?.anhDaiDien} />
+          <Image preview={false} src={state?.patient?.anhDaiDien} />
         ) : (
           <Avatar icon={<UserOutlined />} size={120} shape={"square"} />
         )}
@@ -59,14 +58,12 @@ const ThongTinBenhNhan = (props) => {
             </p>
             <p>
               <span className="column-info">Địa chỉ:</span>
-              <span className="text-info">
-                {state?.patient?.nbDiaChi?.diaChi}
-              </span>
+              <span className="text-info">{state?.patient?.diaChi}</span>
             </p>
             <p>
               <span className="column-info">Số giấy tờ tùy thân:</span>
               <span className="text-info">
-                {state?.patient?.nbGiayToTuyThan?.maSo}
+                {state?.patient?.maSoGiayToTuyThan}
               </span>
             </p>
             <p>
@@ -83,32 +80,28 @@ const ThongTinBenhNhan = (props) => {
             </p>
             <p>
               <span className="column-info-2">Số BHYT:</span>
-              <span className="text-info">
-                {state?.patient?.nbTheBaoHiem?.maThe}
-              </span>
+              <span className="text-info">{state?.patient?.maTheBhyt}</span>
             </p>
             <p>
               <span className="column-info-2">Giá trị thẻ:</span>
               <span className="text-info">
                 Từ{" "}
-                {moment(state?.patient?.nbTheBaoHiem?.tuNgay).format(
-                  "DD/MM/YYYY"
-                )}{" "}
+                {state?.patient?.tuNgayTheBhyt
+                  ? moment(state?.patient?.tuNgayTheBhyt).format("DD/MM/YYYY")
+                  : " "}{" "}
                 đến{" "}
-                {moment(state?.patient?.nbTheBaoHiem?.denNgay).format(
-                  "DD/MM/YYYY"
-                )}
+                {state?.patient?.denNgayTheBhyt
+                  ? moment(state?.patient?.denNgayTheBhyt).format("DD/MM/YYYY")
+                  : " "}
               </span>
             </p>
             <p>
               <span className="column-info-2">Loại:</span>
               <span className="text-info">
-                <span>
-                  {thongTinBenhNhan?.nbTheBaoHiem?.dungTuyen && `Đúng tuyến`}
-                </span>
+                <span>{state?.patient?.dungTuyen && `Đúng tuyến`}</span>
                 <span style={{ color: "red" }}>
-                  {thongTinBenhNhan?.nbTheBaoHiem?.mucHuong &&
-                    ` (${thongTinBenhNhan?.nbTheBaoHiem?.mucHuong}%)`}
+                  {state?.patient?.mucHuong &&
+                    ` (${state?.patient?.mucHuong}%)`}
                 </span>
               </span>
             </p>

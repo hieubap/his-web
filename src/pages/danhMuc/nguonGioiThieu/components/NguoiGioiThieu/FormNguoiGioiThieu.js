@@ -63,7 +63,9 @@ const CreateOrUpdate = (
   refClickBtnAdd.current = () => {
     form.resetFields();
     setDataEdit(null);
-    if (refAutoFocus.current) refAutoFocus.current.focus();
+    if (refAutoFocus.current) {
+      refAutoFocus.current.focus();
+    }
   };
 
   useImperativeHandle(
@@ -81,6 +83,11 @@ const CreateOrUpdate = (
       resetFields: (data) => {
         form.resetFields();
         setDataEdit(null);
+        if (refAutoFocus.current) {
+          setTimeout(() => {
+            refAutoFocus.current.focus();
+          }, 50);
+        }
       },
     }),
     []
@@ -94,18 +101,18 @@ const CreateOrUpdate = (
         .indexOf(input.toLowerCase().createUniqueText()) >= 0
     );
   };
-  useEffect(() => {
-    if (refAutoFocus.current) {
-      refAutoFocus.current.focus();
-    }
-  }, [dataEdit]);
+  // useEffect(() => {
+  //   if (refAutoFocus.current) {
+  //     refAutoFocus.current.focus();
+  //   }
+  // }, [dataEdit]);
   return (
     <CreatedWrapper
       title="Thông tin chi tiết"
       onCancel={onCancel}
       cancelText="Hủy"
       onOk={handleAddNew}
-      okText="Lưu"
+      okText="Lưu [F4]"
       roleSave={[ROLES["DANH_MUC"].NGUON_NGUOI_BENH_THEM]}
       roleEdit={[ROLES["DANH_MUC"].NGUON_NGUOI_BENH_SUA]}
       editStatus={editStatus}

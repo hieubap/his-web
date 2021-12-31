@@ -126,17 +126,20 @@ const FormChuongTrinh = (
         form.resetFields();
         setDataEdit(null);
         setAddMultiple(false);
+        setTimeout(() => {
+          if (refAutoFocus.current) refAutoFocus.current.focus();
+        }, 50);
       },
     }),
     []
   );
 
-  useEffect(() => {
-    console.log("refAutoFocus", refAutoFocus);
-    if (refAutoFocus.current) {
-      refAutoFocus.current.focus();
-    }
-  }, [dataEdit]);
+  // useEffect(() => {
+  //   console.log("refAutoFocus", refAutoFocus);
+  //   if (refAutoFocus.current) {
+  //     refAutoFocus.current.focus();
+  //   }
+  // }, [dataEdit]);
 
   return (
     <>
@@ -145,7 +148,7 @@ const FormChuongTrinh = (
         onCancel={onCancel}
         cancelText={"Hủy"}
         onOk={onSave}
-        okText={"Lưu"}
+        okText={"Lưu [F4]"}
         roleSave={[ROLES["DANH_MUC"].CHUONG_TRINH_GIAM_GIA_THEM]}
         roleEdit={[ROLES["DANH_MUC"].CHUONG_TRINH_GIAM_GIA_SUA]}
         editStatus={editStatus}

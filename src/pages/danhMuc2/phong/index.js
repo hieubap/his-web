@@ -35,7 +35,7 @@ const Index = ({
   searchTongHop,
 }) => {
   const setDefaultForm = ({ form }) => {
-    form.setFieldsValue({ macDinh: true });
+    form.setFieldsValue({ macDinh: true, checkIn: true });
   };
   useEffect(() => {
     searchTongHop({ page: 0, size: 500, active: true });
@@ -332,7 +332,63 @@ const Index = ({
       },
     },
     {
+      title: (
+        <HeaderSearch
+          searchSelect={
+            <Select
+              data={[
+                { id: "", ten: "Tất cả" },
+                { id: "true", ten: "Có mặc định" },
+                { id: "false", ten: "Không mặc định" },
+              ]}
+              placeholder="Chọn mặc định"
+              defaultValue=""
+              onChange={(value) => {
+                onSearchInput(value, "checkIn");
+              }}
+            />
+          }
+          sort_key="checkIn"
+          onClickSort={onClickSort}
+          dataSort={dataSortColumn.macDinh || 0}
+          title="Checkin vào QMS phòng"
+        />
+      ),
+      width: 110,
+      dataIndex: "checkIn",
+      key: "checkIn",
+      align: "center",
+      render: (item) => {
+        return <Checkbox checked={item} />;
+      },
+    },
+    {
       sortIndex: 12,
+      title: (
+        <HeaderSearch
+          sort_key="ngoaiVien"
+          onClickSort={onClickSort}
+          dataSort={dataSortColumn.ngoaiVien || 0}
+          searchSelect={
+            <Select
+              data={HIEU_LUC}
+              placeholder="Chọn hiệu lực"
+              onChange={(value) => onSearchInput(value, "ngoaiVien")}
+            />
+          }
+          title="Ngoại viện"
+        />
+      ),
+      width: "100px",
+      dataIndex: "ngoaiVien",
+      key: "ngoaiVien",
+      align: "center",
+      render: (item) => {
+        return <Checkbox checked={item} />;
+      },
+    },
+    {
+      sortIndex: 13,
       title: (
         <HeaderSearch
           sort_key="active"
@@ -512,8 +568,26 @@ const Index = ({
             >
               <Checkbox>Mặc định</Checkbox>
             </Form.Item>
+            <Form.Item
+              name="checkIn"
+              valuePropName="checked"
+              style={{ width: "33.33%" }}
+            >
+              <Checkbox>Checkin vào QMS phòng</Checkbox>
+            </Form.Item>
+            <Form.Item
+              name="ngoaiVien"
+              valuePropName="checked"
+              style={{ width: "33.33%" }}
+            >
+              <Checkbox>Ngoại viện</Checkbox>
+            </Form.Item>
             {editStatus && (
-              <Form.Item name="active" valuePropName="checked">
+              <Form.Item
+                name="active"
+                valuePropName="checked"
+                style={{ width: "33.33%" }}
+              >
                 <Checkbox>Có hiệu lực</Checkbox>
               </Form.Item>
             )}

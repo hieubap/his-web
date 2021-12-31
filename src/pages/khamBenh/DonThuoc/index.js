@@ -128,12 +128,17 @@ const DonThuoc = ({
     const grouped = groupBy(listDvThuoc, "loaiDonThuoc");
     return Object.keys(grouped).map((key) => {
       let groupByIdArr = grouped[key];
+      const { loaiDonThuoc } = (grouped && grouped[key][0]) || {};
+      console.log('grouped[key]?.[0]?.phieuNhapXuatId: ', grouped[key]?.[0]?.phieuNhapXuatId);
       return {
         header: (
           <Header
             title={listloaiDonThuoc.find((x) => x.id == key)?.ten}
             listDvThuoc={groupByIdArr}
             nbDotDieuTriId={nbDotDieuTriId}
+            soPhieuId={grouped[key]?.[0]?.soPhieuId}
+            phieuNhapXuatId={grouped[key]?.[0]?.phieuNhapXuatId}
+            loaiDonThuoc={loaiDonThuoc}
           />
         ),
         content: (
@@ -498,6 +503,7 @@ const DonThuoc = ({
       loaiDonThuoc: value,
       indeterminate: false,
       isGoiDichVu: value === 200,
+      khoId: null
     });
     if (value == 10) {
       // thuốc nhà thuốc
@@ -526,7 +532,8 @@ const DonThuoc = ({
 
   const handleVisible = (e) => {
     setState({
-      visible: true,
+      visible: (loaiDonThuoc === 20 || loaiDonThuoc === 30) && !state.khoId ? false : true,
+      isCheckKhoId: (loaiDonThuoc === 20 || loaiDonThuoc === 30) && !state.khoId ? true : false
     });
     // if (state.loaiDonThuoc == 10) {
     //   searchDv({ loaiDichVu: 90, nhapDotDung: true });
@@ -714,56 +721,67 @@ const DonThuoc = ({
           <TextField
             label={labeGhiChu}
             html={nbKetLuan?.ghiChu}
-            delayTyping={300}
+            // delayTyping={300}
             onChange={handleLoiDan("ghiChu")}
           />
           <TextField
             label={labeLoiDan}
             html={nbKetLuan?.loiDan}
-            delayTyping={300}
+            // delayTyping={300}
             onChange={handleLoiDan("loiDan")}
           />
 
           {elementKey === 4 && (
-            <div className="select-box">
-              <div>Thêm chỉ định &nbsp;</div>
-              <div className="wrapper-select">
-                <Select
-                  defaultValue=""
-                  data={doiTuong == 1 ? LOAI_DON_THUOC : ALL_DON_THUOC}
-                  onChange={onSelectServiceType}
-                />
-              </div>
-              <div>&nbsp;&nbsp;&nbsp;</div>
-              <div>
-                <Select
-                  data={state?.dataKho}
-                  style={{ width: "200px" }}
-                  onChange={onSelectServiceStorage}
-                  disabled={disabled}
-                />
-              </div>
-              <div className="addition-box">
-                <div className="input-box">
-                  <img src={imgSearch} alt="imgSearch" />
-                  <CustomPopover
-                    width={1500}
-                    icon={null}
-                    onSubmit={onSubmit}
-                    onCancel={onClosePopup}
-                    isDisabledSubmitButton={listSelectedDv.length <= 0}
-                    text={
-                      <Input placeholder="Chọn thuốc" onChange={handleSearch} />
-                    }
-                    contentPopover={renderContent()}
-                    visible={state.visible}
-                    handleVisible={handleVisible}
-                    placement="bottom"
-                    loadingBtn={state.loadingChiDinh}
+            <>
+              <div className="select-box">
+                <div>Thêm chỉ định &nbsp;</div>
+                <div className="wrapper-select">
+                  <Select
+                    // defaultValue=""
+                    value={loaiDonThuoc}
+                    data={doiTuong == 1 ? LOAI_DON_THUOC : ALL_DON_THUOC}
+                    onChange={onSelectServiceType}
+                    placeholder={"Vui lòng chọn"}
                   />
                 </div>
+                <div>&nbsp;&nbsp;&nbsp;</div>
+                <div>
+                  <Select
+                    data={state?.dataKho}
+                    style={{ width: "200px" }}
+                    onChange={onSelectServiceStorage}
+                    value={state.khoId}
+                    disabled={disabled}
+                  />
+                </div>
+                <div className="addition-box">
+                  <div className="input-box">
+                    <img src={imgSearch} alt="imgSearch" />
+                    <CustomPopover
+                      width={1500}
+                      icon={null}
+                      onSubmit={onSubmit}
+                      onCancel={onClosePopup}
+                      isDisabledSubmitButton={listSelectedDv.length <= 0}
+                      text={
+                        <Input placeholder="Chọn thuốc" onChange={handleSearch} />
+                      }
+                      contentPopover={renderContent()}
+                      visible={state.visible}
+                      handleVisible={handleVisible}
+                      placement="bottom"
+                      loadingBtn={state.loadingChiDinh}
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
+              <div style={{
+                height: 18,
+                color: "red",
+                marginLeft: 266,
+                visibility: state.isCheckKhoId && (loaiDonThuoc === 20 || loaiDonThuoc === 30) && !state.khoId ? "inherit" : "hidden"
+              }}>Vui lòng chọn kho</div>
+            </>
           )}
         </MainTextFiled>
       </StickyWrapper>

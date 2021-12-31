@@ -21,7 +21,7 @@ function SlideText({ children, ...rest }) {
     setWrapWidth(wrapElmWidth);
     setSpanWidth(spanElmWidth);
     setNameAnimation("slide-text" + spanElmWidth);
-
+    debugger
     if (spanElmWidth > wrapElmWidth) {
       spanElm.classList.add("animation");
     }

@@ -10,14 +10,14 @@ export const Main = styled.div`
     padding: 0 15px;
     background: #f4f5f7;
     & .bg-color1 {
-        background: #F4F5F7;
-        padding: 0;
-        .line {
-            margin: 20px 2px 20px 5px;
-            background: #FFFFFF;
-            box-shadow: 0px 0px 15px rgba(9, 30, 66, 0.07);
-            border-radius: 12px;
-        }
+      background: #f4f5f7;
+      padding: 0;
+      .line {
+        margin: 20px 2px 20px 5px;
+        background: #ffffff;
+        box-shadow: 0px 0px 15px rgba(9, 30, 66, 0.07);
+        border-radius: 12px;
+      }
     }
     .screenShot {
       position: fixed;
@@ -94,13 +94,28 @@ export const Main = styled.div`
         }
         &-danger {
           /* background: #fc3b3a; */
-          border: 1px solid #7A869A;
+          border: 1px solid #7a869a;
           mix-blend-mode: normal;
           width: fit-content;
           /* box-shadow: 0px 3px 0px #7e1d1d; */
           border-radius: 8px;
+          padding: 0 20px;
           & img {
-            filter: invert(.5);
+            filter: invert(0.5);
+          }
+          :hover {
+            background: #7a869a;
+            color: #fff;
+            & img {
+              filter: none;
+            }
+          }
+          :active {
+            background: #7a869a;
+            color: #fff;
+            & img {
+              filter: none;
+            }
           }
         }
         &-sucess {
@@ -117,6 +132,14 @@ export const Main = styled.div`
           background-color: #0762f7;
           border-radius: 8px;
           color: #ffffff;
+          :hover {
+            background: #054ab9;
+          }
+          :active {
+            background: #0762f7;
+            box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.5);
+            border: none;
+          }
         }
         &-emergency {
           width: fit-content;
@@ -124,11 +147,11 @@ export const Main = styled.div`
           left: 976px;
           bottom: 30px;
           color: #ffffff;
-          background: #08CFDE;
-          border: 1px solid #08CFDE;
+          background: #08cfde;
+          border: 1px solid #08cfde;
           mix-blend-mode: normal;
           /* box-shadow: 0px 3px 0px #08B3C0; */
-          border-radius: 8px
+          border-radius: 8px;
         }
       }
     }

@@ -377,6 +377,7 @@ export const StyleBody = styled.main`
         height: 140px;
         background: #082a55;
         display: flex !important;
+        margin-top: 25px;
         @media (max-width: 750px) {
           height: 101.3px;
           margin-top: 13px;

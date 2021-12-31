@@ -1,7 +1,6 @@
 import dichVuKhoProvider from "data-access/categories/dm-dich-vu-kho-provider";
 import tonKhoProvider from "data-access/kho/ton-kho-provider";
 import nbDvThuocProvider from "data-access/nb-dv-thuoc-provider";
-import nbDvThuocChiDinhNgoaiProvider from "data-access/nb-dv-thuoc-chi-dinh-ngoai-provider";
 import { message } from "antd";
 import cacheUtils from "utils/cache-utils";
 
@@ -24,7 +23,7 @@ export default {
 
   effects: (dispatch) => ({
     searchDv: async ({ notCallBoChiDinh, ...payload }, state) => {
-      const userId = state.auth.auth?.id;
+      const userId = state.auth.auth?.nhanVienId;
       const { loaiDichVu } = payload;
       const listDvKho = await cacheUtils.read(
         userId,
@@ -35,8 +34,7 @@ export default {
       dispatch.chiDinhDichVuTuTruc.updateData({ listDvKho, loaiDichVu });
       if (loaiDichVu && loaiDichVu === 150) {
       } else {
-        !notCallBoChiDinh &&
-          dispatch.boChiDinh.getBoChiDinh({ dsLoaiDichVu: loaiDichVu });
+          dispatch.boChiDinh.getBoChiDinh({ dsLoaiDichVu: loaiDichVu, bacSiChiDinhId : userId });
       }
       return new Promise((resolve, reject) => {
         dichVuKhoProvider

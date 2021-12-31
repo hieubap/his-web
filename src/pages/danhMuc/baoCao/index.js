@@ -23,7 +23,7 @@ import uploadImg from "assets/images/his-core/import.png";
 import { SORT_DEFAULT, DS_DINH_DANG } from "./configs";
 import { checkRole } from "app/Sidebar/constant";
 import FormWraper from "components/FormWraper";
-import { INNHANH_KYSO } from "constants/index";
+import { IN_NHANH_KYSO } from "constants/index";
 import MultiLevelTab from "components/MultiLevelTab";
 import BaoCaoChiTiet from "./BaoCaoChiTiet";
 import ThietLapChanKy from "./ThietLapChanKy";
@@ -468,7 +468,7 @@ const BaoCao = ({
           searchSelect={
             <Select
               defaultValue=""
-              data={INNHANH_KYSO}
+              data={IN_NHANH_KYSO}
               placeholder="Chọn in nhanh"
               onChange={onSearchInput("inNhanh")}
             />
@@ -493,7 +493,7 @@ const BaoCao = ({
           searchSelect={
             <Select
               defaultValue=""
-              data={INNHANH_KYSO}
+              data={IN_NHANH_KYSO}
               placeholder="Chọn ký số"
               onChange={onSearchInput("kySo")}
             />

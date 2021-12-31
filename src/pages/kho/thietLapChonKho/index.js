@@ -27,6 +27,8 @@ import thuNho from "assets/svg/thuNho.svg";
 import extendTable from "assets/svg/extendTable.svg";
 import extendChiTiet from "assets/svg/extendChiTiet.svg";
 import IcCreate from "assets/images/kho/IcCreate.png";
+import stringUtils from "mainam-react-native-string-utils";
+
 let timer = null;
 
 const ThietLapChonKho = (props) => {
@@ -84,6 +86,17 @@ const ThietLapChonKho = (props) => {
   };
   const [form] = Form.useForm();
 
+  const refLayerHotKey = useRef(stringUtils.guid());
+  const { onAddLayer, onRemoveLayer } = useDispatch().phimTat;
+
+  // register layerId
+  useEffect(() => {
+    onAddLayer({ layerId: refLayerHotKey.current });
+    return () => {
+      onRemoveLayer({ layerId: refLayerHotKey.current });
+    };
+  }, []);
+
   useEffect(() => {
     const sort = combineSort(dataSortColumn);
     const params = { page, size, sort };
@@ -94,7 +107,7 @@ const ThietLapChonKho = (props) => {
     getListAllLoaiDoiTuong({});
     getListLoaiDoiTuong({ active: "true" });
     getListChucVu({});
-    getListAccount({});
+    getListAccount({noSize : true});
     getUtils({ name: "loaiDichVuKho" });
     getUtils({ name: "doiTuong" });
   }, []);
@@ -512,7 +525,7 @@ const ThietLapChonKho = (props) => {
   };
 
   const handleAdded = (e) => {
-    e.preventDefault();
+    if (e?.preventDefault) e.preventDefault();
     form
       .validateFields()
       .then((values) => {
@@ -655,6 +668,7 @@ const ThietLapChonKho = (props) => {
             }}
             buttonHeader={[
               {
+                type: "create",
                 title: "Thêm mới",
                 onClick: handleClickedBtnAdded,
                 buttonHeaderIcon: (
@@ -682,10 +696,8 @@ const ThietLapChonKho = (props) => {
             columns={columns}
             dataSource={data}
             onRow={onRow}
-            rowClassName={(record, index) => {
-              console.log(dataEditDefault.id === record.id);
-              return dataEditDefault.id === record.id ? "row-actived" : "";
-            }}
+            layerId={refLayerHotKey.current}
+            dataEditDefault={dataEditDefault}
           ></TableWrapper>
           {totalElements && (
             <Pagination
@@ -717,6 +729,7 @@ const ThietLapChonKho = (props) => {
               cancelText="Hủy"
               onOk={handleAdded}
               okText="Lưu"
+              layerId={refLayerHotKey.current}
             >
               <Form
                 form={form}

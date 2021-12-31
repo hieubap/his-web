@@ -47,7 +47,6 @@ export default {
       const sort = combineSort(
         payload.dataSortColumn || state.huyenTongHop.dataSortColumn || {}
       );
-      debugger
       const dataSearch =
         payload.dataSearch || state.huyenTongHop.dataSearch || {};
       huyenTongHopProvider

@@ -148,6 +148,8 @@ export const Main = styled.div`
     padding: 10px 9px !important;
   }
   .row-actived {
-    background: #c1f0db !important;
+    td {
+      background: #c1f0db !important;
+    }
   }
 `;

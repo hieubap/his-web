@@ -88,7 +88,6 @@ const ChiDinhDichVu = (props) => {
         nbDotDieuTriId: dataNbChiDinh?.nbDotDieuTriId,
         chiDinhTuLoaiDichVu: dataNbChiDinh?.loaiDichVu,
       };
-      console.log("payload", payload);
       getTongHopDichVuXN(payload);
       getDsDichVuChiDinhKham(payload);
       getDsDichVuChiDinhCLS(payload);

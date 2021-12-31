@@ -25,7 +25,7 @@ export default {
 
   effects: (dispatch) => ({
     searchDv: async (payload, state) => {
-      const userId = state.auth.auth?.id;
+      const userId = state.auth.auth?.nhanVienId;
       const { loaiDichVu } = payload;
       const listDvKham = await cacheUtils.read(
         userId,
@@ -33,10 +33,11 @@ export default {
         [],
         false
       );
+      
       dispatch.chiDinhDichVuCls.updateData({ listDvKham, loaiDichVu });
       if (loaiDichVu && loaiDichVu === 150) {
       } else {
-        dispatch.boChiDinh.getBoChiDinh({ dsLoaiDichVu: loaiDichVu });
+        dispatch.boChiDinh.getBoChiDinh({ dsLoaiDichVu: loaiDichVu, bacSiChiDinhId : userId });
       }
       return new Promise((resolve, reject) => {
         dichVuKTProvider

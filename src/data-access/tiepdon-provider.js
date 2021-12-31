@@ -38,7 +38,7 @@ export default {
         });
     });
   },  
-  detail: (id) => {
+  getDetail: (id) => {
     return new Promise((resolve, reject) => {
       client
         .get(`${dataPath}${NB_DOT_DIEU_TRI}/${id}`)

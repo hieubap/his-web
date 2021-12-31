@@ -79,5 +79,29 @@ export default {
         });
     });
   },
- 
+  getDonChiDinh: ({
+    nbDotDieuTriId,
+    soPhieuId,
+    phieuNhapXuatId,
+    ...payload
+  }) => {
+    return new Promise((resolve, reject) => {
+      client
+        .get(
+          combineUrlParams(`${dataPath}${NB_DV_THUOC}/don-thuoc`, {
+            nbDotDieuTriId,
+            soPhieuId,
+            phieuNhapXuatId,
+            ...payload,
+          })
+        )
+        .then((s) => {
+          if (s?.data?.code == 0) resolve(s.data);
+          reject(s?.data);
+        })
+        .catch((e) => {
+          reject(e);
+        });
+    });
+  },
 };

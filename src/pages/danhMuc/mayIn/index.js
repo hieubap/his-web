@@ -220,7 +220,7 @@ const MayIn = ({
     const newDsMayIn = [];
     let formOrder = 1;
     if (formRef.current) {
-      (state.currentItem.dsMayIn || []).forEach((item, index) => {
+      (state.currentItem?.dsMayIn || []).forEach((item, index) => {
         formRef.current[index]
           .validateFields()
           .then((info) => {

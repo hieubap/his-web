@@ -102,7 +102,8 @@ const DanhSachBenhNhan = ({
 
   return (
     <Main className="container">
-      <Row md={24} xl={24} xxl={24} style={{ float: "right" }}>
+      <Row md={24} xl={24} xxl={24} className="first-row">
+        <div className="label">Chọn quầy</div>
         <div
           className="btn-thong-ke"
           onClick={() => {

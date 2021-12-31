@@ -418,27 +418,27 @@ const DanhMucVatTu = (props) => {
       key: "giaNhap",
       align: "right",
     },
-    {
-      title: (
-        <HeaderSearch
-          sort_key="giaTran"
-          onClickSort={onClickSort}
-          dataSort={dataSortColumn.giaTran || 0}
-          search={
-            <Input
-              placeholder="Tìm giá trần"
-              onChange={onSearchInput("giaTran")}
-            />
-          }
-          title="Giá trần"
-        />
-      ),
-      width: 130,
-      dataIndex: "giaTran",
-      key: "giaTran",
-      align: "right",
-      render: (field, _, __) => (field && formatNumber(field)) || "",
-    },
+    // {
+    //   title: (
+    //     <HeaderSearch
+    //       sort_key="giaTran"
+    //       onClickSort={onClickSort}
+    //       dataSort={dataSortColumn.giaTran || 0}
+    //       search={
+    //         <Input
+    //           placeholder="Tìm giá trần"
+    //           onChange={onSearchInput("giaTran")}
+    //         />
+    //       }
+    //       title="Giá trần"
+    //     />
+    //   ),
+    //   width: 130,
+    //   dataIndex: "giaTran",
+    //   key: "giaTran",
+    //   align: "right",
+    //   render: (field, _, __) => (field && formatNumber(field)) || "",
+    // },
     {
       title: (
         <HeaderSearch
@@ -825,6 +825,8 @@ const DanhMucVatTu = (props) => {
                 : !checkRole([ROLES["DANH_MUC"].VAT_TU_THEM])
             }
             currentItemRowParent={currentItem}
+            hiddenField={["giaTran"]}
+            optionalField={["nhomDichVuCap2Id"]}
           />
         );
       },

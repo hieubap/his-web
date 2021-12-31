@@ -27,7 +27,7 @@ function MiddleContent(props) {
       <div className="middle-content__box">
         <div className="title">
           <span className="sub-title">
-            ĐANG KHÁM ({`${dsDangThucHien?.length || 0} NB`})
+          ĐANG THỰC HIỆN ({`${dsDangThucHien?.length || 0} NB`})
           </span>
           <span className="stt"> {addPrefixNumberZero(stt)}</span>
         </div>
@@ -105,7 +105,7 @@ function MiddleContent(props) {
                 >
                   <div className="title">
                     <span className="sub-title">
-                    ĐANG KHÁM ({`${dsDangThucHien?.length || 0} NB`})
+                    ĐANG THỰC HIỆN ({`${dsDangThucHien?.length || 0} NB`})
                     </span>
                     <span className="stt">{addPrefixNumberZero(item2?.stt)}</span>
                   </div>

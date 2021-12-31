@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from "react";
+import React, { memo, useState, useEffect, useRef } from "react";
 import { compose } from "redux";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -12,7 +12,7 @@ import { MAX_MONTH_AGE } from "components/TiepDon/ThongTinTiepDon/configs";
 import { isNil } from "lodash";
 import AddressFull from "components/AddressFull";
 
-const ThemMoi = (props) => {
+const ThemMoi = ({layerId, ...props}) => {
   const [form] = Form.useForm();
   const tuoi = useSelector(state => state.themMoiThuoc.tuoi)
   const thangTuoi = useSelector(state => state.themMoiThuoc.thangTuoi)
@@ -24,6 +24,10 @@ const ThemMoi = (props) => {
   const ngaySinh = useSelector(state => state.themMoiThuoc?.ngaySinh)
   const updateData = useDispatch().themMoiThuoc.updateData
   const resetModel = useDispatch().themMoiThuoc.resetModel
+
+  const { onRegisterHotkey } = useDispatch().phimTat;
+  const refHoTen = useRef();
+
   const [state, _setState] = useState({
     diaChi: "",
   });
@@ -191,6 +195,17 @@ const ThemMoi = (props) => {
     setState({ gioiTinh: valueGender });
   };
   useEffect(() => {
+    onRegisterHotkey({
+      layerId,
+      hotKeys: [
+        {
+          keyCode: 114, //F3
+          onEvent: () => {
+            refHoTen.current && refHoTen.current.focus();
+          },
+        }
+      ],
+    });
     return () => {
       resetModel()
       updateData({
@@ -234,6 +249,7 @@ const ThemMoi = (props) => {
               <Col span={8} className="form-item">
                 <div className="item-input paddingLeft" style={{ marginLeft: 10 }}>
                   <Input
+                    ref={refHoTen}
                     placeholder={`Họ và tên`}
                     value={tenNb}
                     style={{ textTransform: "uppercase" }}

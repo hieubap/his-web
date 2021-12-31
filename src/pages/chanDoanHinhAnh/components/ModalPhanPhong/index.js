@@ -125,7 +125,7 @@ const ModalPhanPhong = (props, ref) => {
     };
   }, []);
   useEffect(() => {
-    if (open) getListPhongTheoDichVu({ dsDichVuId: state.dsDichVuId });
+    if (open) getListPhongTheoDichVu({ dsDichVuId: state.dsDichVuId , khoaChiDinhId: state.data[0].khoaChiDinhId});
   }, [state.selectedRowKeys]);
 
   const onSelectChange = (selectedRowKeys, data) => {

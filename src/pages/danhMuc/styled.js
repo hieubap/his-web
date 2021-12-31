@@ -4,6 +4,7 @@ const Main = styled("div")`
   display: flex;
   width: 100%;
   position: relative;
+  height: 100%;
   // min-height: calc(100vh - 60px);
 
   & .app-contain {

@@ -14,7 +14,8 @@ import moment from "moment";
 import { find } from "lodash"
 const { Option } = SelectAntd;
 const ThongTinDonThuoc = ({
-  isThemMoi
+  isThemMoi,
+  layerId
 }) => {
   const history = useHistory()
   //ref
@@ -35,6 +36,10 @@ const ThongTinDonThuoc = ({
   const getTheoTaiKhoan = useDispatch().kho.getTheoTaiKhoan
   const { updateData, changesDonThuoc, postThanhToan, updateGhiChuDonThuocById } = useDispatch().thuocChiTiet
   const onSearchNhanVienKho = useDispatch().nhanVienKho.onSearch
+
+  const { onRegisterHotkey } = useDispatch().phimTat;
+  const refF4 = useRef();
+  const refF12 = useRef();
 
   const [state, _setState] = useState({});
   const setState = (data = {}) => {
@@ -66,7 +71,44 @@ const ThongTinDonThuoc = ({
     //   onSearchNhanVienKho({ nhanVienId: auth?.nhanVienId , size : 9999999})
     // }
     getTheoTaiKhoan({ nhaThuoc: true })
+    
+    // đăng ký phím tắt
+    onRegisterHotkey({
+      layerId,
+      hotKeys: [
+        {
+          keyCode: 115, //F4
+          onEvent: () => {
+            refF4.current && refF4.current();
+          },
+        },
+        {
+          keyCode: 123, //F12
+          onEvent: () => {
+            if(refF12.current) refF12.current()
+          },
+        },
+      ],
+    });
   }, [])
+
+  refF12.current = () => {
+    if (
+      !infoPatient?.phieuThu?.thanhToan &&
+      (infoPatient?.phieuXuat?.trangThai === 10 ||
+        infoPatient?.phieuXuat?.trangThai === 15 ||
+        infoPatient?.phieuXuat?.trangThai === 20) &&
+      refModalNotification.current
+    )
+      refModalNotification.current.show();
+  }
+
+  useEffect(() => {
+    if(listKhoUser?.length === 1){ // default khoId , nếu kho chỉ có 1 giá trị
+      setState({khoId : listKhoUser[0].id})
+      updateData({khoId : listKhoUser[0].id})
+    }
+  }, [listKhoUser])
 
   const paymentHandler = () => {
     refModalNotification.current.show();
@@ -152,6 +194,7 @@ const ThongTinDonThuoc = ({
     }
     updateData({ isAdvised: false })
   }
+  refF4.current = saveHandler;
   const onChange = (key) => (e) => {
     const value = (e?.target && e.target.value) || e
     setState({ [key]: value })
@@ -238,8 +281,6 @@ const ThongTinDonThuoc = ({
     ));
     return options;
   }, [listKhoUser]);
-  console.log('infoPatient: ', infoPatient);
-  console.log('infoPatient?.phieuXuat?.ghiChu: ', infoPatient?.phieuXuat?.ghiChu);
   return (
     <Main md={24} xl={24} xxl={24} className="container" isThemMoi={isThemMoi}>
       <div className="title">Thông tin đơn thuốc</div>
@@ -249,7 +290,7 @@ const ThongTinDonThuoc = ({
           (
             <SelectAntd
               onChange={onChange("khoId")}
-              defaultValue={listKhoUser?.length === 1 ? listKhoUser[0].id : null}
+              value={state.khoId}
               // value={state.loaiDichVu}
               placeholder={"Chọn kho bán thuốc"}
             // data={listDataNhanVienKhoCustom}

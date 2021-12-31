@@ -81,7 +81,7 @@ const TopContent = (props) => {
                   </span>
                   <br />
                   <span className="infor-description__second">
-                    {item.chuyenKhoa?.ten}
+                    {item.tenChuyenKhoa}
                   </span>
                 </div>
               </div>

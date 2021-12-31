@@ -128,6 +128,7 @@ export const LOAI_DICH_VU = [
 export const FRAME_TITLE = [
   "Phiếu chỉ định",
   "Đơn thuốc",
+  "Vật tư",
 ];
 
 export const LOAI_DICH_VU_CHI_DINH = [

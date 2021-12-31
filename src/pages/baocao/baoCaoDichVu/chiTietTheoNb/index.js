@@ -26,51 +26,53 @@ const Index = ({
   listDoiTuongKcb,
   ...props
 }) => {
-
   const [state, _setState] = useState({
     loaiThoiGian: 20,
     tuNgay: moment().set("hour", 0).set("minute", 0).set("second", 0),
     denNgay: moment().set("hour", 23).set("minute", 59).set("second", 59),
     isValidData: true,
+    priviewPdf: false,
   });
   const setState = (data = {}) => {
     _setState((_state) => ({
       ..._state,
       ...data,
-    }))
-  }
-  const onChange = (type) => e => {
+    }));
+  };
+  const onChange = (type) => (e) => {
     const value = e?.hasOwnProperty("target")
       ? e?.target?.value
       : e?.hasOwnProperty("_d")
-        ? moment(e._d)
-        : e?.target?.checked ? e?.target?.checked : e;
+      ? moment(e._d)
+      : e?.target?.checked
+      ? e?.target?.checked
+      : e;
     setState({
       [type]: value,
     });
-  }
+  };
 
   const onOk = (isOk) => () => {
+    if (!state.loaiThoiGian || !state.denNgay || !state.tuNgay) {
+      setState({ isValidData: false });
+      return;
+    }
+    const payload = {
+      loaiThoiGian: state.loaiThoiGian,
+      tuNgay: moment(state.tuNgay).format("DD-MM-YYYY HH:mm:ss"),
+      denNgay: moment(state.denNgay).format("DD-MM-YYYY HH:mm:ss"),
+      nguonNbId: state.nguonNbId,
+      nguoiGioiThieuId: state.nguoiGioiThieuId,
+      khoaThucHienId: state.khoaThucHienId,
+      phongThucHienId: state.phongThucHienId,
+      doiTuong: state.doiTuong,
+      doiTuongKcb: state.doiTuongKcb,
+      thanhToan: state.thanhToan,
+    };
     if (isOk) {
-      if (!state.loaiThoiGian || !state.denNgay || !state.tuNgay) {
-        setState({ isValidData: false });
-        return;
-      }
-      const payload = {
-        loaiThoiGian: state.loaiThoiGian,
-        tuNgay: moment(state.tuNgay).format("DD-MM-YYYY HH:mm:ss"),
-        denNgay: moment(state.denNgay).format("DD-MM-YYYY HH:mm:ss"),
-        nguonNbId: state.nguonNbId,
-        nguoiGioiThieuId: state.nguoiGioiThieuId,
-        khoaThucHienId: state.khoaThucHienId,
-        phongThucHienId: state.phongThucHienId,
-        doiTuong: state.doiTuong,
-        doiTuongKcb: state.doiTuongKcb,
-        thanhToan: state.thanhToan
-      }
       getBc01(payload)
         .then((data) => {
-          if (!data.dinhDang || data.dinhDang == 20) {
+          if (!data.dinhDang || data.dinhDang === 20) {
             // export pdf
             if (data.file.pdf) {
               setState({
@@ -78,8 +80,7 @@ const Index = ({
                 type: 20,
               });
             }
-          }
-          else if (data.dinhDang == 10) {
+          } else if (data.dinhDang === 10) {
             // export xlsx
             setState({
               src: data.file?.doc,
@@ -87,73 +88,88 @@ const Index = ({
             });
           }
         })
-        .catch((e) => { });
+        .catch((e) => {});
+    } else {
+      getBc01(payload)
+        .then((data) => {
+          if (!data.dinhDang || data.dinhDang === 20) {
+            // export pdf
+            if (data.file.pdf) {
+              setState({
+                src: data.file?.pdf,
+                type: 20,
+                priviewPdf: true,
+              });
+            }
+          } else if (data.dinhDang === 10) {
+            // export xlsx
+            setState({
+              src: data.file?.doc,
+              type: 10,
+              priviewPdf: true,
+            });
+          }
+        })
+        .catch((e) => {});
     }
-    else {
-      setState({
-        loaiThoiGian: 20,
-        tuNgay: moment().set("hour", 0).set("minute", 0).set("second", 0),
-        denNgay: moment().set("hour", 23).set("minute", 59).set("second", 59),
-        nguonNbId: null,
-        nguoiGioiThieuId: null,
-        khoaThucHienId: null,
-        phongThucHienId: null,
-        doiTuong: null,
-        listKhoaThucHienRender: state.listKhoaThucHien,
-        isValidData: true,
-        doiTuongKcb: null,
-        thanhToan: null,
-      })
-    }
-  }
+  };
 
   useEffect(() => {
     if (state.src) {
-      fileUtils.getFromUrl({ url: fileUtils.absoluteFileUrl(state.src) }).then((s) => {
-        const blob = new Blob([new Uint8Array(s)], {
-          type: state.type ?
-            state.type == 20 ?
-              "application/pdf" :
-              state.type == 10 ?
-                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" :
-                "application/pdf" :
-            "application/ pdf",
+      fileUtils
+        .getFromUrl({ url: fileUtils.absoluteFileUrl(state.src) })
+        .then((s) => {
+          const blob = new Blob([new Uint8Array(s)], {
+            type: state.type
+              ? state.type == 20
+                ? "application/pdf"
+                : state.type == 10
+                ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                : "application/pdf"
+              : "application/ pdf",
+          });
+          const blobUrl = window.URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = blobUrl;
+          link.setAttribute("download", `${state.src}`); //or any other extension
+          document.body.appendChild(link);
+          if (state.priviewPdf) {
+            openInNewTab(blobUrl);
+          } else {
+            link.click();
+          }
         });
-        const blobUrl = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = blobUrl;
-        link.setAttribute('download', `${state.src}`); //or any other extension
-        document.body.appendChild(link);
-        link.click();
-      });
     }
   }, [state.src]);
 
   useEffect(() => {
     if (listPhongThucHien) {
-      let listKhoaThucHien = listPhongThucHien?.filter(
-        (x1) => x1.khoaChiDinh
-      )?.map(
-        (x) => ({ ...x?.khoaChiDinh, phongThucHienId: x?.phong?.id })
-      )?.filter(
-        (x2, index, parent) => parent.findIndex(x3 => x3?.id == x2?.id) == index
-      );
-      let dsPhong = listPhongThucHien?.map(
-        (x) => ({ ...x?.phong })
-      )?.filter(
-        (x1, index, parent) => parent?.findIndex(x2 => x2?.id == x1?.id) == index
-      );
+      let listKhoaThucHien = listPhongThucHien
+        ?.filter((x1) => x1.khoaChiDinh)
+        ?.map((x) => ({ ...x?.khoaChiDinh, phongThucHienId: x?.phong?.id }))
+        ?.filter(
+          (x2, index, parent) =>
+            parent.findIndex((x3) => x3?.id === x2?.id) === index
+        );
+      let dsPhong = listPhongThucHien
+        ?.map((x) => ({ ...x?.phong }))
+        ?.filter(
+          (x1, index, parent) =>
+            parent?.findIndex((x2) => x2?.id === x1?.id) === index
+        );
       setState({
         listPhongThucHien: dsPhong,
         listKhoaThucHien,
         listKhoaThucHienRender: listKhoaThucHien,
-      })
+      });
     }
   }, [listPhongThucHien]);
 
   useEffect(() => {
     if (state.phongThucHienId) {
-      let dsKhoaThucHienRender = state.dsKhoaThucHienRender?.filter((x) => x?.phongThucHienId == state.phongThucHienId);
+      let dsKhoaThucHienRender = state.dsKhoaThucHienRender?.filter(
+        (x) => x?.phongThucHienId === state.phongThucHienId
+      );
       setState({ khoaThucHienId: null, dsKhoaThucHienRender });
     }
   }, [state.phongThucHienId]);
@@ -176,11 +192,23 @@ const Index = ({
     { id: false, ten: "Chưa thanh toán" },
   ];
 
-
+  const action = (
+    <>
+      <div className="action">
+        <div className="btn" onClick={onOk(false)}>
+          <span>Xem báo cáo</span>
+        </div>
+        <div className="btn btn-blue" onClick={onOk(true)}>
+          <span>Xuất báo cáo</span>
+          <img src={require("assets/images/bao-cao/export.png")} alt="" />
+        </div>
+      </div>
+    </>
+  );
   return (
     <Main>
       <HomeWrapper title="Báo cáo">
-        <Wrapper title="BC01. Báo cáo chi tiết theo người bệnh">
+        <Wrapper title="BC01. Báo cáo chi tiết theo người bệnh" action={action}>
           <div className="note">Chọn tiêu chí lọc cho báo cáo!</div>
           <Row>
             <Col md={6} xl={6} xxl={6}>
@@ -211,16 +239,20 @@ const Index = ({
                 <Select
                   className="select"
                   placeholder={"Chọn đối tượng người bệnh"}
-                  data={[{ id:"", ten:"Tất cả"} ,...(listDoiTuong || [])]}
+                  data={[{ id: "", ten: "Tất cả" }, ...(listDoiTuong || [])]}
                   onChange={onChange("doiTuong")}
                 />
               </div>
             </Col>
             <Col md={6} xl={6} xxl={6}>
-            <div className="item-select">
+              <div className="item-select">
                 <label
                   className="label pointer"
-                  onClick={() => openInNewTab(`/danh-muc/phong?active=1&khoaId=${state.khoaThucHienId}`)}
+                  onClick={() =>
+                    openInNewTab(
+                      `/danh-muc/phong?active=1&khoaId=${state.khoaThucHienId}`
+                    )
+                  }
                 >
                   Phòng thực hiện
                 </label>
@@ -237,7 +269,9 @@ const Index = ({
               <div className="item-select">
                 <label
                   className="label pointer"
-                  onClick={() => openInNewTab("/danh-muc/nguon-nguoi-benh?active=1&tab=2")}
+                  onClick={() =>
+                    openInNewTab("/danh-muc/nguon-nguoi-benh?active=1&tab=2")
+                  }
                 >
                   Nguồn giới thiệu
                 </label>
@@ -280,12 +314,12 @@ const Index = ({
                   value={state.doiTuongKcb}
                   className="select"
                   placeholder={"Đối tượng khám chữa bệnh"}
-                  data={[{ id:"", ten:"Tất cả"} ,...(listDoiTuongKcb || [])]}
+                  data={[{ id: "", ten: "Tất cả" }, ...(listDoiTuongKcb || [])]}
                 />
               </div>
             </Col>
             <Col md={6} xl={6} xxl={6}>
-            <div className="item-select">
+              <div className="item-select">
                 <label
                   className="label pointer"
                   onClick={() => openInNewTab("/danh-muc/khoa?active=1")}
@@ -305,7 +339,11 @@ const Index = ({
               <div className="item-select">
                 <label
                   className="label pointer"
-                  onClick={() => openInNewTab(`/danh-muc/nguon-nguoi-benh?active=1&tab=1&nguonNbId=${state.nguonNbId}`)}
+                  onClick={() =>
+                    openInNewTab(
+                      `/danh-muc/nguon-nguoi-benh?active=1&tab=1&nguonNbId=${state.nguonNbId}`
+                    )
+                  }
                 >
                   Người giới thiệu
                 </label>
@@ -352,20 +390,11 @@ const Index = ({
               </div>
             </Col>
           </Row>
-          <div className="action">
-            <div className="btn" onClick={onOk(false)}>
-              <span>Reset</span>
-            </div>
-            <div className="btn btn-blue" onClick={onOk(true)}>
-              <span>Xuất báo cáo</span>
-              <img src={require("assets/images/bao-cao/export.png")} alt="" />
-            </div>
-          </div>
         </Wrapper>
       </HomeWrapper>
     </Main>
-  )
-}
+  );
+};
 
 export default connect(
   (state) => ({
@@ -391,5 +420,5 @@ export default connect(
     searchAllNguonNguoiBenh,
     searchAllNguoiGioiThieu,
     getBc01,
-  }),
+  })
 )(Index);

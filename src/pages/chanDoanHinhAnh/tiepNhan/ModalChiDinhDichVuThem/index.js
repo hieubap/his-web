@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useImperativeHandle } from "react";
+import React, { forwardRef, useState, useImperativeHandle, useEffect } from "react";
 import { ModalStyled, Main } from "./styled";
 import { Col, Row } from "antd";
 import Navigation from "pages/chanDoanHinhAnh/tiepNhan/ThongTin/navigationPage";
@@ -10,6 +10,9 @@ import DonThuoc from "pages/chanDoanHinhAnh/tiepNhan/DonThuoc";
 import useWindowSize from "hook/useWindowSize";
 import IcClose from "assets/images/kho/icClose.png";
 import VatTu from "pages/chanDoanHinhAnh/tiepNhan/VatTu";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import ModalChiDinh from "pages/chanDoanHinhAnh/tiepNhan/ModalChiDinh";
 const ModalChiDinhDichVuThem = (props, ref) => {
   const [elementKey, setElementKey] = useState(0);
   const [state, _setState] = useState({
@@ -21,6 +24,20 @@ const ModalChiDinhDichVuThem = (props, ref) => {
       ...data,
     });
   };
+
+  const {
+    dsBenhNhan: { dsPhongThucHienId, khoaId },
+    auth: { auth },
+    nhanVien: { listNhanVien },
+    thietLapChonKho: { listThietLapChonKho },
+    chiDinhDichVuCls: { neededUpdateRecord }
+  } = useSelector((state) => state);
+
+  const {
+    nhanVien: { getListNhanVienTongHop },
+    thietLapChonKho: { getListThietLapChonKho },
+    chiDinhDichVuCls: {updateData : updateDataChiDinh}
+  } = useDispatch();
 
   const windowSize = useWindowSize();
 
@@ -38,7 +55,42 @@ const ModalChiDinhDichVuThem = (props, ref) => {
     const keyNum = +key;
     setElementKey(keyNum);
   };
+  
+  useEffect(() => {
+    getListNhanVienTongHop({});
+  }, []);
 
+  useEffect(() => {
+    let nhanVien = listNhanVien.find((x) => x?.id === auth.nhanVienId);
+    let payload = {
+      khoaNbId: state?.data?.khoaThucHienId,
+      khoaChiDinhId: khoaId,
+      doiTuong: state?.data?.doiTuong,
+      loaiDoiTuongId: state?.data?.loaiDoiTuongId,
+      capCuu: state?.data?.capCuu,
+      nhanVienId: nhanVien?.id,
+      chucVuId: nhanVien?.chucVuId,
+      phongId: dsPhongThucHienId,
+      canLamSang: true,
+    };
+    getListThietLapChonKho({ ...payload });
+  }, [listNhanVien, state?.data]);
+
+  useEffect(() => {
+    let dataKho = listThietLapChonKho.map((item) => {
+      return item.kho ;
+    });
+    dataKho = dataKho.filter(
+      (item2, index) => index === dataKho.findIndex((e) => e.id === item2.id)
+    );
+    setState({ dataKho });
+  }, [listThietLapChonKho]);
+
+  const onCancelUpdateRecord = () => {
+    updateDataChiDinh({
+      neededUpdateRecord: [],
+    });
+  };
 
   return (
     <ModalStyled
@@ -61,21 +113,21 @@ const ModalChiDinhDichVuThem = (props, ref) => {
               <span style={{ fontWeight: "bold" }}>{state?.data?.cdSoBo} </span>
             </div>
           </div>
-          <div className="header__right">
-            <img src={IcClose} onClick={onCancel} />
+          <div className="header__right" onClick={onCancel}>
+            <img src={IcClose} alt="..."/>
           </div>
         </Row>
         <Row>
           <Col span={18}>
-            <StepWrapper>
+            <StepWrapper elementKey={elementKey}>
               <Element name={"0"} className="element element-page">
                 <ChiDinhDichVu dataNbChiDinh={state?.data} elementKey={elementKey}/>
               </Element>
               <Element name={"1"} className="element element-page">
-                <DonThuoc elementKey={elementKey} dataNbChiDinh={state?.data}/>
+                <DonThuoc elementKey={elementKey} dataNbChiDinh={state?.data} dataKho={state?.dataKho?.filter((x) => x.dsLoaiDichVu.includes(90))}/>
               </Element>
               <Element name={"2"} className="element element-page">
-                <VatTu elementKey={elementKey} dataNbChiDinh={state?.data}/>
+                <VatTu elementKey={elementKey} dataNbChiDinh={state?.data} dataKho={state?.dataKho?.filter((x) => x.dsLoaiDichVu.includes(100))}/>
               </Element>
             </StepWrapper>
           </Col>
@@ -93,6 +145,12 @@ const ModalChiDinhDichVuThem = (props, ref) => {
           </Col>
         </Row>
       </Main>
+      <ModalChiDinh
+        visible={neededUpdateRecord.length}
+        dataSource={neededUpdateRecord}
+        dataNbChiDinh={state?.data}
+        onCancel={onCancelUpdateRecord}
+      />
     </ModalStyled>
   );
 };

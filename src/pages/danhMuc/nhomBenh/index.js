@@ -91,13 +91,13 @@ const Index = (props) => {
   }, [activeTab]);
   useEffect(() => {
     props.getAllChuongBenh({});
-    props.getAllNhomBenh({
+    props.getNhomBenh({
       loaiNhomBenh: 10,
     });
-    props.getAllNhomBenh({
+    props.getNhomBenh({
       loaiNhomBenh: 20,
     });
-    props.getAllNhomBenh({
+    props.getNhomBenh({
       loaiNhomBenh: 30,
     });
     props.getAllLoaiBenh({});
@@ -342,13 +342,13 @@ const mapStateToProps = (state) => {
   return {};
 };
 const mapDispatchToProps = ({
-  chuongBenh: { getAllTongHop: getAllChuongBenh },
-  nhomBenh: { getAllNhomBenh, onSearchTongHop: searchNhomBenh },
+  chuongBenh: { getAll: getAllChuongBenh },
+  nhomBenh: { getNhomBenh, onSearch: searchNhomBenh },
   maBenh: { onSearch: searchTenBenh },
-  loaiBenh: { getAllTongHop: getAllLoaiBenh },
+  loaiBenh: { getAll: getAllLoaiBenh },
 }) => ({
   getAllChuongBenh,
-  getAllNhomBenh,
+  getNhomBenh,
   searchNhomBenh,
   getAllLoaiBenh,
   searchTenBenh,

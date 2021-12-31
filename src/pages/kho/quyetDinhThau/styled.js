@@ -2,6 +2,12 @@ import styled from "styled-components";
 import { date, input } from "components/mixin";
 
 export const Main = styled.div`
+  .row-actived {
+    background: #c1f0db !important;
+    td {
+      background: #c1f0db !important;
+    }
+  }
   .form-custom-button {
     margin: 0 20px 20px 0;
   }

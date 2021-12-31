@@ -74,7 +74,7 @@ const DanhSach = (props) => {
       dataIndex: "thoiGianVaoVien",
       key: "thoiGianVaoVien",
       render: (field, item, index) =>
-        field ? moment(field).format("DD / MM / YYYY") : ""
+        field ? moment(field).format("DD / MM / YYYY") : "",
     },
     {
       title: (
@@ -115,7 +115,7 @@ const DanhSach = (props) => {
       dataIndex: "ngaySinh",
       key: "ngaySinh",
       render: (field, item, index) =>
-        field ? moment(field).format("DD / MM / YYYY") : ""
+        field ? moment(field).format("DD / MM / YYYY") : "",
     },
     {
       title: (
@@ -171,12 +171,13 @@ const DanhSach = (props) => {
           dataSource={listThongTinNguoiBenh}
           onRow={onRow}
           rowKey={(record) => `${record.id}`}
-        // rowClassName={setRowClassName}
+          // rowClassName={setRowClassName}
         />
         <Pagination
           onChange={onChangePage}
           current={page + 1}
           pageSize={size}
+          listData={listThongTinNguoiBenh}
           total={totalElements}
           onShowSizeChange={handleSizeChange}
           stylePagination={{ flex: 1, justifyContent: "flex-start" }}
@@ -201,7 +202,7 @@ export default connect(
       onSortChange,
       updateData,
       onSearch: onSearchThongTinNguoiBenh,
-    }
+    },
   }) => ({
     onSizeChange,
     onChangeInputSearch,

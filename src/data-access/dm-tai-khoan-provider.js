@@ -1,6 +1,6 @@
 import { combineUrlParams } from "utils";
 import { client, dataPath } from "client/request";
-import { DM_TAI_KHOAN } from "client/api";
+import { DM_TAI_KHOAN, RESET_MAT_KHAU } from "client/api";
 
 export default {
   search: ({ page = 0, active, sort, size = 1000, ...payload }) => {
@@ -53,6 +53,19 @@ export default {
           else reject(s?.data);
         })
         .catch((e) => reject(e));
+    });
+  },
+  resetMatKhau: ({ id }) => {
+    return new Promise((resolve, reject) => {
+      client
+        .put(`${dataPath}${DM_TAI_KHOAN}${RESET_MAT_KHAU}/${id}`)
+        .then((s) => {
+          if (s?.data?.code === 0) resolve(s?.data);
+          else reject(s?.data);
+        })
+        .catch((e) => {
+          reject(e);
+        });
     });
   },
 };

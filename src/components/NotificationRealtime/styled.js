@@ -1,8 +1,5 @@
 import styled from "styled-components";
 const MarqueeD = styled.marquee`
-  position: fixed;
-  bottom: 0;
-  z-index: 1041;
   background: #42526E;
   color: #fff;
   padding: 7px;

@@ -10,11 +10,11 @@ import moment from "moment";
 let timer = null;
 
 const DanhSach = (props) => {
-  const refModalPhieu = useRef(null)
+  const refModalPhieu = useRef(null);
   const history = useHistory();
-  const { dataSortColumn } = useSelector(state => state.danhSachPhieuChoKy)
+  const { dataSortColumn } = useSelector((state) => state.danhSachPhieuChoKy);
 
-  const { onSortChange , updateData } = useDispatch().danhSachPhieuChoKy
+  const { onSortChange, updateData } = useDispatch().danhSachPhieuChoKy;
   const {
     onSizeChange,
     getUtils,
@@ -28,15 +28,15 @@ const DanhSach = (props) => {
   } = props;
 
   useEffect(() => {
-    getUtils({name : "trangThaiKy"})
+    getUtils({ name: "trangThaiKy" });
     onSizeChange({});
-    return () =>{
+    return () => {
       updateData({
-        dataSortColumn : {},
+        dataSortColumn: {},
         maHoSo: "",
-        dataSearch : {}
-      })
-    }
+        dataSearch: {},
+      });
+    };
   }, []);
   const onClickSort = (key, value) => {
     onSortChange({ [key]: value });
@@ -55,8 +55,8 @@ const DanhSach = (props) => {
         const { id } = record;
         // history.push('/ky-so/danh-sach-phieu-cho-ky/chi-tiet/' + id)
         refModalPhieu.current.show({
-          fileLink : record.fileTruocKy,
-          item : record
+          fileLink: record.fileTruocKy,
+          item: record,
         });
       },
     };
@@ -89,8 +89,8 @@ const DanhSach = (props) => {
       dataIndex: "tenBaoCao",
       key: "tenBaoCao",
       render: (item) => {
-        return <b>{item}</b>
-      }
+        return <b>{item}</b>;
+      },
     },
     {
       title: (
@@ -105,8 +105,8 @@ const DanhSach = (props) => {
       dataIndex: "maHoSo",
       key: "maHoSo",
       render: (item) => {
-        return <b>{item}</b>
-      }
+        return <b>{item}</b>;
+      },
     },
     {
       title: (
@@ -157,9 +157,9 @@ const DanhSach = (props) => {
       title: (
         <HeaderSearch
           title="Xem phiếu"
-        // sort_key="diaChi"
-        // onClickSort={onClickSort}
-        // dataSort={dataSortColumn["soPhieu"] || ""}
+          // sort_key="diaChi"
+          // onClickSort={onClickSort}
+          // dataSort={dataSortColumn["soPhieu"] || ""}
         />
       ),
       width: "30px",
@@ -167,12 +167,18 @@ const DanhSach = (props) => {
       // key: "diaChi",
       align: "center",
       render: (item) => {
-        return <img src={require("assets/images/utils/eye.png")} alt="" onClick={()=>{
-          refModalPhieu.current.show({
-            fileLink : item.fileTruocKy,
-            item : item
-          });
-        }}/>;
+        return (
+          <img
+            src={require("assets/images/utils/eye.png")}
+            alt=""
+            onClick={() => {
+              refModalPhieu.current.show({
+                fileLink: item.fileTruocKy,
+                item: item,
+              });
+            }}
+          />
+        );
       },
     },
   ];
@@ -188,8 +194,6 @@ const DanhSach = (props) => {
         />
         <Pagination
           listData={listData}
-          styleVersion={2}
-          styleVersion={2}
           onChange={onChangePage}
           current={page + 1}
           pageSize={size}
@@ -198,7 +202,7 @@ const DanhSach = (props) => {
           stylePagination={{ flex: 1, justifyContent: "flex-start" }}
         />
       </ContentTable>
-      <ModalPhieu ref={refModalPhieu}/>
+      <ModalPhieu ref={refModalPhieu} />
     </Main>
   );
 };
@@ -218,7 +222,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = ({
   danhSachPhieuChoKy: { getList, updateData, onSizeChange },
   utils: { getUtils },
-
 }) => ({
   getList,
   updateData,

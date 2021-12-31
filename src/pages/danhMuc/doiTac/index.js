@@ -355,7 +355,7 @@ const GoiDichVu = (props) => {
               paddingRight: 35,
             }}
             buttonHeader={
-              checkRole([ROLES["DANH_MUC"].BAO_CAO_THEM])
+              checkRole([ROLES["DANH_MUC"].DOI_TAC_THEM])
                 ? [
                     {
                       type: "create",

@@ -89,7 +89,7 @@ const HangThe = (props) => {
       hotKeys: [
         {
           keyCode: 112, //F1
-          onEvent: () => {
+          onEvent: (e) => {
             refClickBtnAdd.current && refClickBtnAdd.current();
           },
         },
@@ -102,13 +102,15 @@ const HangThe = (props) => {
         {
           keyCode: 38, //up
           onEvent: (e) => {
-            refSelectRow.current && refSelectRow.current(-1);
+            if (refSelectRow.current && e?.target?.nodeName != "INPUT")
+              refSelectRow.current(-1);
           },
         },
         {
           keyCode: 40, //down
           onEvent: (e) => {
-            refSelectRow.current && refSelectRow.current(1);
+            if (refSelectRow.current && e?.target?.nodeName != "INPUT")
+              refSelectRow.current(1);
           },
         },
       ],
@@ -408,6 +410,11 @@ const HangThe = (props) => {
     setImageUploaded({});
     form.resetFields();
     updateData({ dataEditDefault: {} });
+    if (refAutoFocus.current) {
+      setTimeout(() => {
+        refAutoFocus.current.focus();
+      }, 50);
+    }
   };
   refClickBtnAdd.current = handleClickedBtnAdded;
 
@@ -443,11 +450,11 @@ const HangThe = (props) => {
     setImageUploaded({ ...imageUploaded, imageUrl: urlPreview });
   };
   const refAutoFocus = useRef(null);
-  useEffect(() => {
-    if (refAutoFocus.current) {
-      refAutoFocus.current.focus();
-    }
-  }, [dataEditDefault]);
+  // useEffect(() => {
+  //   if (refAutoFocus.current) {
+  //     refAutoFocus.current.focus();
+  //   }
+  // }, [dataEditDefault]);
   const handleChangeshowTable = () => {
     setState({
       changeShowFullTbale: true,
@@ -492,7 +499,7 @@ const HangThe = (props) => {
               checkRole([ROLES["DANH_MUC"].HANG_THE_THEM])
                 ? [
                     {
-                      title: "Thêm mới",
+                      title: "Thêm mới [F1]",
                       onClick: handleClickedBtnAdded,
                       buttonHeaderIcon: (
                         <img style={{ marginLeft: 5 }} src={IcCreate} alt="" />
@@ -579,7 +586,7 @@ const HangThe = (props) => {
               onCancel={handleCancel}
               cancelText="Hủy"
               onOk={handleAdded}
-              okText="Lưu"
+              okText="Lưu [F4]"
               roleSave={[ROLES["DANH_MUC"].HANG_THE_THEM]}
               roleEdit={[ROLES["DANH_MUC"].HANG_THE_SUA]}
               editStatus={editStatus}

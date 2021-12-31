@@ -58,13 +58,15 @@ const NguoiGioiThieu = ({
         {
           keyCode: 38, //up
           onEvent: (e) => {
-            refSelectRow.current && refSelectRow.current(-1);
+            if (refSelectRow.current && e?.target?.nodeName != "INPUT")
+              refSelectRow.current(-1);
           },
         },
         {
           keyCode: 40, //down
           onEvent: (e) => {
-            refSelectRow.current && refSelectRow.current(1);
+            if (refSelectRow.current && e?.target?.nodeName != "INPUT")
+              refSelectRow.current(1);
           },
         },
       ],
@@ -85,7 +87,6 @@ const NguoiGioiThieu = ({
         .scrollIntoView({ block: "end", behavior: "smooth" });
     }
   };
-
 
   const setState = (_state) => {
     _setState((state) => ({
@@ -305,7 +306,7 @@ const NguoiGioiThieu = ({
           checkRole([ROLES["DANH_MUC"].NGUON_NGUOI_BENH_THEM])
             ? [
                 {
-                  title: "Thêm mới",
+                  title: "Thêm mới [F1]",
                   onClick: onReset,
                   buttonHeaderIcon: (
                     <img style={{ marginLeft: 5 }} src={IcCreate} alt="" />

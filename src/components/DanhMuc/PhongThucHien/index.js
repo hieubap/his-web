@@ -26,7 +26,7 @@ function PhongThucHien(props) {
   };
 
   useEffect(() => {
-    props.getData({ dichVuId });
+    props.getData({ dichVuId, active: null, dataSortColumn: { active: 0 } });
     props.getListAllKhoa();
     props.getListAllPhong({});
     props.getUtils({ name: "gioiTinh" });
@@ -94,11 +94,11 @@ function PhongThucHien(props) {
   };
 
   const onChangePage = (page) => {
-    props.onSearch({ page: page - 1, dichVuId });
+    props.onSearch({ page: page - 1, dichVuId, active: null, dataSortColumn: { active: 0 } });
   };
 
   const onSizeChange = (size) => {
-    props.onSizeChange({ size: size, dichVuId });
+    props.onSizeChange({ size: size, dichVuId, active: null, dataSortColumn: { active: 0 } });
   };
 
   const columns = [
@@ -377,12 +377,12 @@ function PhongThucHien(props) {
       roleEdit={props.roleEdit}
       editStatus={state?.pressButtonAdded ? false : editStatus}
       forceShowButtonSave={
-        (state?.pressedRow && checkRole(props.roleEdit) && true) || false
+        (state?.pressedRow && checkRole(props.roleEdit) && true) || (state.pressButtonAdded && checkRole(props.roleEdit) && true) || false
       }
       forceShowButtonCancel={
-        (state?.pressedRow && checkRole(props.roleEdit) && true) || false
+        (state?.pressedRow && checkRole(props.roleEdit) && true) || (state.pressButtonAdded && checkRole(props.roleEdit) && true) || false
       }
-      // isHiddenButtonAdd={true}
+      isEditAndPressRow={dichVuId && checkRole(props.roleEdit)}
     >
       <fieldset disabled={state?.pressButtonAdded ? false : editStatus}>
         <div>

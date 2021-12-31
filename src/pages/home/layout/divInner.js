@@ -4,6 +4,7 @@ import MenuIcon from "assets/svg/menu/MenuIcon.svg";
 import ExpandIcon1 from "assets/svg/home/expandIcon1.svg";
 import ExpandIcon2 from "assets/svg/home/expandIcon2.svg";
 import { capitalize } from "lodash";
+import { Link } from "react-router-dom";
 
 function WrapperContentLeft(props) {
   const { link, history, bg, homePage, title, icon } = props;
@@ -12,13 +13,13 @@ function WrapperContentLeft(props) {
       link && history.push(link);
       return setTimeout(() => {
         history.go();
-      }, 300)
+      }, 300);
     } else {
       link && history.push(link);
     }
-  }
+  };
   return (
-    <div className="item" onClick={() => onClick()}  >
+    <div className="item" onClick={onClick}>
       <div className="item--bg">
         <img src={bg} alt="iSofh" />
       </div>
@@ -57,49 +58,46 @@ const WrapperContentTree = ({ item, history, onSearch, ...props }) => {
       ..._state,
       ...data,
     }));
-  }
+  };
   const onChange = (type) => () => {
     setState({
       [type]: !state.isExpand,
-    })
-  }
+    });
+  };
   const navigateTo = (child) => () => {
     if (history) {
       history.push(`${child.link}`);
     }
-  }
+  };
 
   useEffect(() => {
     if (onSearch) {
       setState({ isExpand: true });
-    }
-    else {
+    } else {
       setState({ isExpand: false });
     }
   }, [onSearch]);
   return (
     <Tree>
-      <div
-        className="meta d-flex pointer"
-        onClick={onChange("isExpand")}
-      >
+      <div className="meta d-flex pointer" onClick={onChange("isExpand")}>
         <div className="_icon">
-          {state.isExpand ? (
-            <ExpandIcon1 />
-          ) : (
-            <ExpandIcon2 />
-          )}
+          {state.isExpand ? <ExpandIcon1 /> : <ExpandIcon2 />}
         </div>
         <div className="_name">{item?.title}</div>
       </div>
       <div className="content">
         <TreeNodes isExpand={state.isExpand}>
           {(item?.children || [])
-            .sort((a, b) => a?.title?.toLowerCase().localeCompare(b?.title?.toLowerCase()))
+            .sort((a, b) =>
+              a?.title?.toLowerCase().localeCompare(b?.title?.toLowerCase())
+            )
             .map((child, index) => {
-              const title = child?.capitalizeTitle ? capitalize(child?.title) : child?.title;
+              const title = child?.capitalizeTitle
+                ? capitalize(child?.title)
+                : child?.title;
               return (
-                <div
+                <Link
+                  to={child.link}
                   className="child d-flex pointer"
                   key={index}
                   onClick={navigateTo(child)}
@@ -107,19 +105,13 @@ const WrapperContentTree = ({ item, history, onSearch, ...props }) => {
                   <div className="_icon">
                     <MenuIcon />
                   </div>
-                  <div className="_name">
-                    {title}
-                  </div>
-                </div>
-              )
+                  <div className="_name">{title}</div>
+                </Link>
+              );
             })}
         </TreeNodes>
       </div>
-    </Tree >
+    </Tree>
   );
-}
-export {
-  WrapperContentLeft,
-  WrapperPanel,
-  WrapperContentTree,
 };
+export { WrapperContentLeft, WrapperPanel, WrapperContentTree };

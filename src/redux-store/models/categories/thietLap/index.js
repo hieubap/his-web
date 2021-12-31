@@ -6,8 +6,8 @@ import { combineSort } from "utils";
 
 export default {
   state: {
-    dataTIEU_DE_TRAI_1: {},
-    dataTAI_KHOAN_BHXH: {},
+    dataTIEU_DE_TRAI_1: "",
+    dataTAI_KHOAN_BHXH: "",
     totalElements: null,
     page: PAGE_DEFAULT,
     size: PAGE_SIZE,

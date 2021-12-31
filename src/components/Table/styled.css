@@ -41,6 +41,7 @@
 .ant-table-tbody .ant-table-row:nth-child(2n){
     background: linear-gradient(0deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), #0762F7
 }
+
 .custome-header .addition-box input {
     position: absolute;
     width: 95%;

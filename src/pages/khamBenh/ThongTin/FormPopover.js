@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Form } from "antd";
 import Select from "components/Select";
 import { HUONG_DIEU_TRI_KHAM } from "../configs";
@@ -9,12 +9,19 @@ function FormPopover(props) {
   const { listhuongDieuTriKham = [], listketQuaDieuTriKham = [] } = useSelector(
     (state) => state.utils
   );
-  const [huongDieuTri, setHuongDieuTri] = useState();
-
+  const [huongDieuTri, setHuongDieuTri] = useState(); 
+  
+  useEffect(() => { // mặc định hẹn khám
+    if(!form.getFieldValue("keyHuongDieuTri")){ 
+      setHuongDieuTri(20)
+      form.setFieldsValue({"keyHuongDieuTri" : 20 })
+      handleChangeSelectPopover({keyHuongDieuTri : 20}) 
+    }
+  }, [])
+ 
   const handleChangeHuongDieuTri = (value) => {
     setHuongDieuTri(value);
   };
-
   const listKetQuaDieuTriFilter = useMemo(() => {
     const _huongDieuTri = huongDieuTri || form.getFieldValue("keyHuongDieuTri");
     return listketQuaDieuTriKham.filter((item) => {
@@ -26,15 +33,15 @@ function FormPopover(props) {
       } else if (
         _huongDieuTri === HUONG_DIEU_TRI_KHAM.NHAP_VIEN ||
         _huongDieuTri === HUONG_DIEU_TRI_KHAM.CHUYEN_VIEN
-      ) {
-        arrKetQua = [3, 4, 10];
-      } else {
-        arrKetQua = [10];
-      }
-
-      return arrKetQua.includes(item.id);
-    });
-  }, [huongDieuTri]);
+        ) {
+          arrKetQua = [3, 4, 10];
+        } else {
+          arrKetQua = [10];
+        }
+        
+        return arrKetQua.includes(item.id);
+      });
+    }, [huongDieuTri]);
 
   return (
     <Form

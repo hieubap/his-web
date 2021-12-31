@@ -589,7 +589,6 @@ export default {
             chiDinhTuDichVuId: state.khamBenh?.infoNb?.id
           })
             .then((s) => {
-              console.log('s: ', s);
               printProvider
                 .printPdf(s.data)
                 .then(() => {

@@ -5,14 +5,17 @@ import HeaderSearch from "components/TableWrapper/headerSearch";
 import Pagination from "components/Pagination";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { GIOI_TINH_VNI } from "constants/index";
+import { GIOI_TINH_BY_VALUE } from "constants/index";
 import moment from "moment";
 let timer = null;
 
 const DanhSach = (props) => {
-  const { dsKhoId, dsTrangThai, tenNb, dataSortColumn } = useSelector(state => state.lichSuKyDanhSachNguoiBenh)
-  const { listKhoUser } = useSelector(state => state.kho)
-  const { searchThuocByParams, onSortChange } = useDispatch().lichSuKyDanhSachNguoiBenh
+  const { dsKhoId, dsTrangThai, tenNb, dataSortColumn } = useSelector(
+    (state) => state.lichSuKyDanhSachNguoiBenh
+  );
+  const { listKhoUser } = useSelector((state) => state.kho);
+  const { searchThuocByParams, onSortChange } =
+    useDispatch().lichSuKyDanhSachNguoiBenh;
   const {
     getListPhieuNhap,
     onSizeChange,
@@ -36,29 +39,33 @@ const DanhSach = (props) => {
     let obj = {
       dsTrangThai,
       dsKhoId,
-    }
-    for (let i in obj) { // xóa param search bằng null hoặc không có
+      tongHop: true
+    };
+    for (let i in obj) {
+      // xóa param search bằng null hoặc không có
       if (!obj[i] || obj[i]?.length === 0) {
-        delete obj[i]
+        delete obj[i];
       }
     }
     onSizeChange(obj);
     getUtils({ name: "TrangThaiPhieuNhapXuat" });
   }, []);
   useEffect(() => {
-    if (listKhoUser.length > 0) { // random kho khi render lần đầu
-      const list = listKhoUser.map(item => item.id)
-      const randomId = list[~~(Math.random() * list.length)] // random 
+    if (listKhoUser.length > 0) {
+      // random kho khi render lần đầu
+      const list = listKhoUser.map((item) => item.id);
+      const randomId = list[~~(Math.random() * list.length)]; // random
       updateData({
-        dsKhoId: [randomId]
-      })
+        dsKhoId: [randomId],
+      });
       let obj = {
         dsTrangThai,
         dsKhoId,
-      }
-      for (let i in obj) { // xóa param search bằng null hoặc không có
+      };
+      for (let i in obj) {
+        // xóa param search bằng null hoặc không có
         if (!obj[i] || obj[i]?.length === 0) {
-          delete obj[i]
+          delete obj[i];
         }
       }
       onSizeChange(obj);
@@ -85,7 +92,9 @@ const DanhSach = (props) => {
     return {
       onClick: () => {
         const { id } = record;
-        history.push('/ky-so/lich-su-ky/danh-sach-nguoi-benh/danh-sach-phieu/' + id)
+        history.push(
+          "/ky-so/lich-su-ky/danh-sach-nguoi-benh/danh-sach-phieu/" + id
+        );
       },
     };
   };
@@ -128,8 +137,8 @@ const DanhSach = (props) => {
       dataIndex: "maHoSo",
       key: "maHoSo",
       render: (item) => {
-        return <b>{item}</b>
-      }
+        return <b>{item}</b>;
+      },
     },
     {
       title: (
@@ -144,8 +153,8 @@ const DanhSach = (props) => {
       dataIndex: "maNb",
       key: "maNb",
       render: (item) => {
-        return <b>{item}</b>
-      }
+        return <b>{item}</b>;
+      },
     },
     {
       title: (
@@ -173,7 +182,7 @@ const DanhSach = (props) => {
       dataIndex: "ngaySinh",
       key: "ngaySinh",
       render: (item) => {
-        return item && moment(item).format("DD/MM/YYYY") || "";
+        return (item && moment(item).format("DD/MM/YYYY")) || "";
       },
     },
     {
@@ -189,32 +198,37 @@ const DanhSach = (props) => {
       dataIndex: "gioiTinh",
       key: "gioiTinh",
       render: (item) => {
-        return item && GIOI_TINH_VNI[item];
+        return item && GIOI_TINH_BY_VALUE[item];
       },
     },
     {
-      title: (
-        <HeaderSearch
-          title="Địa chỉ"
-        />
-      ),
+      title: <HeaderSearch title="Địa chỉ" />,
       width: "150px",
-      dataIndex: "nbDiaChi",
-      key: "nbDiaChi",
+      dataIndex: "diaChi",
+      key: "diaChi",
+      // dataIndex: "nbDiaChi",
+      // key: "nbDiaChi",
       render: (item) => {
-        return item.diaChi;
+        return item;
       },
     },
     {
-      title: (
-        <HeaderSearch
-          title="Xem danh sách phiếu"
-        />
-      ),
+      title: <HeaderSearch title="Xem danh sách phiếu" />,
       width: "60px",
       align: "center",
       render: (item) => {
-        return <img src={require("assets/images/utils/eye.png")} alt="" onClick={() => history.push('/ky-so/lich-su-ky/danh-sach-nguoi-benh/danh-sach-phieu/' + item.id)} />;
+        return (
+          <img
+            src={require("assets/images/utils/eye.png")}
+            alt=""
+            onClick={() =>
+              history.push(
+                "/ky-so/lich-su-ky/danh-sach-nguoi-benh/danh-sach-phieu/" +
+                  item.id
+              )
+            }
+          />
+        );
       },
     },
   ];
@@ -230,8 +244,6 @@ const DanhSach = (props) => {
         />
         <Pagination
           listData={listData}
-          styleVersion={2}
-          styleVersion={2}
           onChange={onChangePage}
           current={page + 1}
           pageSize={size}
@@ -259,7 +271,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = ({
   lichSuKyDanhSachNguoiBenh: { getList, updateData, onSizeChange },
   utils: { getUtils },
-
 }) => ({
   getList,
   updateData,

@@ -279,6 +279,7 @@ export const StyledHeader = styled.div`
         width: auto;
         height: 100%;
         border-radius: 50%;
+        width: 90px;
       }
       @media (max-width: 750px) {
         width: 67.96px;

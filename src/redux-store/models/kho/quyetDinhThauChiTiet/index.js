@@ -18,21 +18,6 @@ export default {
     },
   },
   effects: (dispatch) => ({
-    onSortChangeGetAll: ({ ...payload }, state) => {
-      const dataSortColumn = {
-        ...state.quyetDinhThauChiTiet.dataSortColumn,
-        ...payload,
-      };
-      dispatch.quyetDinhThauChiTiet.updateData({
-        page: 0,
-        dataSortColumn,
-      });
-      dispatch.quyetDinhThauChiTiet.getAllListDichVuKho({
-        page: 0,
-        dataSortColumn,
-      });
-    },
-
     getAllListDichVuKho: ({ page = 0, ...payload }, state) => {
       const dataSearch =
         payload.dataSearch || state.quyetDinhThauChiTiet.dataSearch || {};
@@ -149,7 +134,7 @@ export default {
       }
     },
 
-    onSearch: ({ page = 0, ...payload }, state) => {
+    onSearch: ({ page = 0, fromTongHop, ...payload }, state) => {
       let newState = { isLoading: true, page };
       dispatch.quyetDinhThauChiTiet.updateData(newState);
       let size = payload.size || state.quyetDinhThauChiTiet.size || 10;
@@ -159,13 +144,12 @@ export default {
           {}
       );
       const dataSearch = payload.dataSearch || state.xaTongHop.dataSearch || {};
-      quyetDinhThauChiTietProvider
-        .search({
-          page,
-          size,
-          sort,
-          ...dataSearch,
-        })
+      quyetDinhThauChiTietProvider[fromTongHop ? "searchAll" : "search"]({
+        page,
+        size,
+        sort,
+        ...dataSearch,
+      })
         .then((s) => {
           dispatch.quyetDinhThauChiTiet.updateData({
             listQuyetDinhThauChiTiet: (s?.data || []).map((item, index) => {
@@ -186,7 +170,7 @@ export default {
         });
     },
 
-    onChangeSort: ({ ...payload }, state) => {
+    onChangeSort: ({ fromTongHop, ...payload }, state) => {
       const dataSortColumn = {
         ...state.quyetDinhThauChiTiet.dataSortColumn,
         ...payload,
@@ -197,11 +181,12 @@ export default {
       });
       dispatch.quyetDinhThauChiTiet.onSearch({
         page: 0,
+        fromTongHop,
         dataSortColumn,
       });
     },
 
-    onChangeInputSearch: ({ ...payload }, state) => {
+    onChangeInputSearch: ({ fromTongHop, ...payload }, state) => {
       const dataSearch = {
         ...(state.quyetDinhThauChiTiet.dataSearch || {}),
         ...payload,
@@ -212,10 +197,11 @@ export default {
       });
       dispatch.quyetDinhThauChiTiet.onSearch({
         page: 0,
+        fromTongHop,
         dataSearch,
       });
     },
-    onChangeSize: ({ size }, state) => {
+    onChangeSize: ({ size, fromTongHop }, state) => {
       dispatch.quyetDinhThauChiTiet.updateData({
         size,
         page: 0,
@@ -223,6 +209,7 @@ export default {
       dispatch.quyetDinhThauChiTiet.onSearch({
         page: 0,
         size,
+        fromTongHop,
       });
     },
     getDetail: (id, state) => {

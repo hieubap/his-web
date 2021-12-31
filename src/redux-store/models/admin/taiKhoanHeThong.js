@@ -27,7 +27,7 @@ export default {
       });
       dispatch.adminTaiKhoanHeThong.onSearch({ page: 0, size });
     },
-    onSearch: ({ page = 0, ...payload }, state) => {
+    onSearch: ({ page = 0, noSize, ...payload }, state) => {
       let newState = { isLoading: true, page };
       dispatch.adminTaiKhoanHeThong.updateData(newState);
       let size = payload.size || state.adminTaiKhoanHeThong.size || 10;
@@ -38,7 +38,9 @@ export default {
       );
       const dataSearch =
         payload.dataSearch || state.adminTaiKhoanHeThong.dataSearch || {};
-
+      if (noSize) {
+        size = null;
+      }
       taiKhoanProvider
         .search({ page, size, sort, ...dataSearch })
         .then((s) => {
@@ -131,6 +133,20 @@ export default {
           message.error(err?.message.toString());
           return Promise.reject(err);
         }
+      });
+    },
+    resetMatKhau: ({ id }) => {
+      return new Promise((resolve, reject) => {
+        taiKhoanProvider
+          .resetMatKhau({ id })
+          .then((s) => {
+            message.success("Bạn đã reset mật khẩu thành công");
+            resolve(s);
+          })
+          .catch((e) => {
+            message.error(e?.message || "Xảy ra lỗi, vui lòng thử lại sau");
+            reject();
+          });
       });
     },
   }),

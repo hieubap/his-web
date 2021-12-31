@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import cloneDeep from "lodash/cloneDeep";
 import { Checkbox, Col, Input, Form } from "antd";
 import HomeWrapper from "components/HomeWrapper";
@@ -29,6 +29,8 @@ import { SORT_DEFAULT } from "./configs";
 import { groupBy } from "lodash";
 import { checkRole } from "app/Sidebar/constant";
 import FormWraper from "components/FormWraper";
+import stringUtils from "mainam-react-native-string-utils";
+
 let timer = null;
 
 const SettingsPermission = ({
@@ -51,6 +53,7 @@ const SettingsPermission = ({
 }) => {
   const [collapseStatus, setCollapseStatus] = useState(false);
   const [form] = Form.useForm();
+  const refAutoFocus = useRef(null);
 
   const [state, _setState] = useState({
     editStatus: false,
@@ -62,6 +65,7 @@ const SettingsPermission = ({
     allPermision: [],
     values: [],
     showFullTable: false,
+    listAllPermission: [],
   });
   const setState = (data = {}) => {
     _setState((state) => {
@@ -70,6 +74,17 @@ const SettingsPermission = ({
   };
 
   const { dataPermission, inValidRoles } = state;
+
+  const refLayerHotKey = useRef(stringUtils.guid());
+  const { onAddLayer, onRemoveLayer } = useDispatch().phimTat;
+
+  // register layerId
+  useEffect(() => {
+    onAddLayer({ layerId: refLayerHotKey.current });
+    return () => {
+      onRemoveLayer({ layerId: refLayerHotKey.current });
+    };
+  }, []);
 
   useEffect(() => {
     onSizeChange(10);
@@ -86,6 +101,12 @@ const SettingsPermission = ({
     });
     updateData({ dataEditDefault: null });
     form.resetFields();
+
+    if (refAutoFocus.current) {
+      setTimeout(() => {
+        refAutoFocus.current.focus();
+      }, 50);
+    }
   };
 
   const onShowAndHandleUpdate = (data = {}) => {
@@ -149,7 +170,7 @@ const SettingsPermission = ({
   };
 
   const handleAdded = (e) => {
-    e.preventDefault();
+    if (e?.preventDefault) e.preventDefault();
     form
       .validateFields()
       .then((values) => {
@@ -384,14 +405,16 @@ const SettingsPermission = ({
   };
   const setRowClassName = (record) => {
     let idDiff = dataEditDefault?.id;
-    return record.id === idDiff ? "row-actived" : "";
+    return record.id === idDiff
+      ? "row-actived row-id-" + record.id
+      : "row-id-" + record.id;
   };
-  const refAutoFocus = useRef(null);
-  useEffect(() => {
-    if (refAutoFocus.current) {
-      refAutoFocus.current.focus();
-    }
-  }, [dataEditDefault]);
+
+  // useEffect(() => {
+  //   if (refAutoFocus.current) {
+  //     refAutoFocus.current.focus();
+  //   }
+  // }, [dataEditDefault]);
   const handleChangeshowTable = () => {
     setState({
       changeShowFullTbale: true,
@@ -434,7 +457,8 @@ const SettingsPermission = ({
               checkRole([ROLES["QUAN_LY_TAI_KHOAN"].VAI_TRO_HE_THONG_THEM])
                 ? [
                     {
-                      title: "Thêm mới",
+                      type: "create",
+                      title: "Thêm mới [F1]",
                       onClick: handleClickedBtnAdded,
                       buttonHeaderIcon: (
                         <img style={{ marginLeft: 5 }} src={IcCreate} alt="" />
@@ -488,8 +512,10 @@ const SettingsPermission = ({
             columns={columns}
             dataSource={listData}
             onRow={onRow}
+            layerId={refLayerHotKey.current}
+            dataEditDefault={dataEditDefault}
             // rowKey={(record) => record.id}
-            rowClassName={setRowClassName}
+            // rowClassName={setRowClassName}
           />
           {!!totalElements ? (
             <Pagination
@@ -520,10 +546,11 @@ const SettingsPermission = ({
               onCancel={handleCancel}
               cancelText="Hủy"
               onOk={handleAdded}
-              okText="Lưu"
+              okText="Lưu [F4]"
               roleSave={[ROLES["QUAN_LY_TAI_KHOAN"].VAI_TRO_HE_THONG_THEM]}
               roleEdit={[ROLES["QUAN_LY_TAI_KHOAN"].VAI_TRO_HE_THONG_SUA]}
               editStatus={state.editStatus}
+              layerId={refLayerHotKey.current}
             >
               <FormWraper
                 disabled={

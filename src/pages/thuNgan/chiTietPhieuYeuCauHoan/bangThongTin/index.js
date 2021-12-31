@@ -113,19 +113,23 @@ const BangThongTin = (props) => {
               <div className="w120">{item.maDichVu}</div>
               <div className="w250">{item.tenDichVu}</div>
               <div className="right w120">{item.soLuong}</div>
-              <div className="right w150">{item.thanhTien.formatPrice()}</div>
               <div className="right w150">
-                {item.giaKhongBaoHiem.formatPrice()}
-              </div>
-              <div className="right w150">{item.giaBaoHiem.formatPrice()}</div>
-              <div className="right w150">
-                {item.giaKhongBaoHiem.formatPrice()}
+                {item?.thanhTien && item?.thanhTien?.formatPrice()}
               </div>
               <div className="right w150">
-                {item.tienMienGiam.formatPrice()}
+                {item?.giaKhongBaoHiem && item?.giaKhongBaoHiem?.formatPrice()}
+              </div>
+              <div className="right w150">
+                {item?.giaBaoHiem && item?.giaBaoHiem?.formatPrice()}
+              </div>
+              <div className="right w150">
+                {item?.giaKhongBaoHiem && item?.giaKhongBaoHiem?.formatPrice()}
+              </div>
+              <div className="right w150">
+                {item?.tienMienGiam && item?.tienMienGiam?.formatPrice()}
               </div>
               <div className="left w150">
-                {renderTrangThai(item.trangThaiHoan)}
+                {renderTrangThai(item?.trangThaiHoan)}
               </div>
               <div className="w150 center">
                 <Checkbox disabled={true} checked={item.tuTra} />
@@ -179,28 +183,30 @@ const BangThongTin = (props) => {
               >
                 {index + 1}
               </div>
-              <div className="w120">{item.maDichVu}</div>
-              <div className="w250">{item.tenDichVu}</div>
-              <div className="right w120">{item.soLuong.formatPrice()}</div>
-              <div className="right w150">{item.thanhTien.formatPrice()}</div>
+              <div className="w120">{item?.maDichVu}</div>
+              <div className="w250">{item?.tenDichVu}</div>
+              <div className="right w120">{item?.soLuong?.formatPrice()}</div>
+              <div className="right w150">{item?.thanhTien?.formatPrice()}</div>
               <div className="right w150">
-                {item.giaKhongBaoHiem.formatPrice()}
-              </div>
-              <div className="right w150">{item.giaBaoHiem.formatPrice()}</div>
-              <div className="right w150">
-                {item.giaKhongBaoHiem.formatPrice()}
+                {item?.giaKhongBaoHiem?.formatPrice()}
               </div>
               <div className="right w150">
-                {item.tienMienGiam.formatPrice()}
+                {item?.giaBaoHiem?.formatPrice()}
+              </div>
+              <div className="right w150">
+                {item?.giaKhongBaoHiem?.formatPrice()}
+              </div>
+              <div className="right w150">
+                {item?.tienMienGiam?.formatPrice()}
               </div>
               <div className="left w150">
-                {renderTrangThai(item.trangThaiHoan)}
+                {renderTrangThai(item?.trangThaiHoan)}
               </div>
               <div className="w150 center">
                 <Checkbox disabled={true} checked={item.tuTra} />
               </div>
               <div className="notborderR center w150">
-                <Checkbox checked={item.khongTinhTien} disabled={true} />
+                <Checkbox checked={item?.khongTinhTien} disabled={true} />
               </div>
             </div>
           ))}

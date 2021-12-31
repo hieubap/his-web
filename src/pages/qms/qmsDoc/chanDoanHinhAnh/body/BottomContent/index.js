@@ -62,7 +62,7 @@ function BottomContent(props) {
             pauseOnHover={false}
             pauseOnFocus={false}
           >
-            {render(dsChoXacNhan)}
+            {render(dsChoXacNhan,"ChoXacNhan")}
           </Carousel>
           : <div className="bottom-box__body">{render(dsChoXacNhan,"ChoXacNhan")}</div>}
       </div>

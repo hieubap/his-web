@@ -328,7 +328,7 @@ const ChuongBenh = (props) => {
   );
 };
 const mapDispatchToProps = ({
-  chuongBenh: { updateData, onSearchTongHop: onSearch },
+  chuongBenh: { updateData, onSearch: onSearch },
 }) => ({
   updateData,
   onSearch,

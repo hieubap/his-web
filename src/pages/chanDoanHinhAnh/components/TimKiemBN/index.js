@@ -13,6 +13,7 @@ function TimKiemBN(props) {
     onChangeInputSearch,
     getDsNguoiBenhCLSQms,
     updateData,
+    getListLyDo
   } = props;
   let paramCheck = ["/chan-doan-hinh-anh/tiep-nhan"].includes(
     window.location.pathname
@@ -27,6 +28,7 @@ function TimKiemBN(props) {
     getPhongChanDoan({ loaiPhong: 20 }, paramCheck);
     props.getKhoaAll({});
     props.getNhomDichVuAll({ tiepDonCls: true, active: true });
+    getListLyDo({active : true});
   }, []);
 
   useEffect(() => {
@@ -193,6 +195,7 @@ export default connect(
     chanDoanHinhAnh: { getPhongChanDoan, getKhoaAll, getNhomDichVuAll },
     dsBenhNhan: { onChangeInputSearch, onSizeChange, updateData },
     qms: { getDsNguoiBenhCLSQms },
+    lyDoDoiTra: { getListLyDo },
   }) => ({
     getAllDichVuCap2,
     getPhongChanDoan,
@@ -202,5 +205,6 @@ export default connect(
     onSizeChange,
     getDsNguoiBenhCLSQms,
     updateData,
+    getListLyDo
   })
 )(TimKiemBN);

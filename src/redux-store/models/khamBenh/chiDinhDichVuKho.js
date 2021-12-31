@@ -4,6 +4,7 @@ import nbDvThuocProvider from "data-access/nb-dv-thuoc-provider";
 import nbDvThuocChiDinhNgoaiProvider from "data-access/nb-dv-thuoc-chi-dinh-ngoai-provider";
 import { message } from "antd";
 import cacheUtils from "utils/cache-utils";
+import printProvider from "data-access/print-provider";
 
 export default {
   state: {
@@ -23,7 +24,7 @@ export default {
   },
 
   effects: (dispatch) => ({
-    searchDv: async ({ notCallBoChiDinh,bacSiChiDinhId, ...payload }, state) => {
+    searchDv: async ({ notCallBoChiDinh, bacSiChiDinhId, ...payload }, state) => {
       const userId = state.auth.auth?.id;
       const { loaiDichVu } = payload;
       const listDvKho = await cacheUtils.read(
@@ -36,7 +37,7 @@ export default {
       if (loaiDichVu && loaiDichVu === 150) {
       } else {
         !notCallBoChiDinh &&
-          dispatch.boChiDinh.getBoChiDinh({ dsLoaiDichVu: loaiDichVu , bacSiChiDinhId});
+          dispatch.boChiDinh.getBoChiDinh({ dsLoaiDichVu: loaiDichVu, bacSiChiDinhId });
       }
       return new Promise((resolve, reject) => {
         dichVuKhoProvider
@@ -148,7 +149,7 @@ export default {
           });
           return dataTamTinhTien;
         })
-        .catch((e) => {});
+        .catch((e) => { });
     },
     chiDinhDichVu: (payload, state) => {
       const { listLoaiDichVu } = state.chiDinhDichVuKho;
@@ -209,7 +210,7 @@ export default {
             neededUpdateRecord,
           };
         })
-        .catch((e) => {});
+        .catch((e) => { });
     },
     getListDichVuThuocKeNgoai: (payload) => {
       return new Promise((resolve, reject) => {
@@ -284,7 +285,7 @@ export default {
             neededUpdateRecord,
           };
         })
-        .catch((e) => {});
+        .catch((e) => { });
     },
     getListDichVuTonKho: (payload, state) => {
       return new Promise((resolve, reject) => {
@@ -446,6 +447,69 @@ export default {
           })
           .catch((e) => {
             reject(e);
+            message.error(e?.message || "Xảy ra lỗi, vui lòng thử lại sau");
+          });
+      });
+    },
+    inPhieu: ({ loaiDonThuoc, nbDotDieuTriId, soPhieuId, phieuNhapXuatId, ...payload }) => {
+      return new Promise((resolve, reject) => {
+        // 10 phiếu khám bệnh
+        // 20 xét nghiệm 
+        // 30 cdha, tdcn
+        if (
+          loaiDonThuoc == 10 || // thuốc nhà thuốc 
+          loaiDonThuoc == 20 || // thuốc tủ trực
+          loaiDonThuoc == 30 ||//cdha, tdcn
+          loaiDonThuoc == 40 
+        ) {
+          let api = nbDvThuocProvider
+          switch (loaiDonThuoc) {
+            case 10:
+              api = nbDvThuocProvider
+              break;
+            case 20:
+              api = nbDvThuocProvider
+              break;
+            // case 30:
+            //   api = nbDvCLSProvider
+            //   break;
+
+          }
+          api.getDonChiDinh({ nbDotDieuTriId, soPhieuId, phieuNhapXuatId })
+            .then((s) => {
+              printProvider
+                .printPdf(s.data)
+                .then(() => {
+                  console.info("Print success");
+                })
+                .catch((err) => {
+                  message.error(
+                    err?.message || "Xảy ra lỗi, vui lòng thử lại sau"
+                  );
+                });
+            })
+            .catch((e) => {
+              message.error(e?.message || "Xảy ra lỗi, vui lòng thử lại sau");
+            });
+        }
+      });
+    },
+    inPhieuThuocKeNgoai: ({ loaiDonThuoc, nbDotDieuTriId, soPhieuId, phieuNhapXuatId, ...payload }) => {
+      return new Promise((resolve, reject) => {
+        nbDvThuocChiDinhNgoaiProvider.getDonChiDinh({ nbDotDieuTriId, soPhieuId, phieuNhapXuatId })
+          .then((s) => {
+            printProvider
+              .printPdf(s.data)
+              .then(() => {
+                console.info("Print success");
+              })
+              .catch((err) => {
+                message.error(
+                  err?.message || "Xảy ra lỗi, vui lòng thử lại sau"
+                );
+              });
+          })
+          .catch((e) => {
             message.error(e?.message || "Xảy ra lỗi, vui lòng thử lại sau");
           });
       });

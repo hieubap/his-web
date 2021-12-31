@@ -7,6 +7,7 @@ import {
   DM_NHAN_VIEN,
   DM_BENH_VIEN,
   DM_HANG_THE,
+  DM_HUONG_DAN_SU_DUNG,
 } from "client/api";
 
 export default {
@@ -34,6 +35,8 @@ export default {
       url += `${dataPath}${DM_HANG_THE}/tai-len/icon`;
     } else if (type === "anhKyNhanVien") {
       url += `${dataPath}${DM_NHAN_VIEN}/tai-len/anh-ky`;
+    } else if (type === "huongDanSuDung") {
+      url += `${dataPath}${DM_HUONG_DAN_SU_DUNG}/tai-len/hdsd`;
     }
 
     const formData = new FormData();

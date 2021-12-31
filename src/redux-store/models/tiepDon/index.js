@@ -199,7 +199,7 @@ export default {
     getDetail: (id, state) => {
       return new Promise((resolve, reject) => {
         tiepDonProvider
-          .detail(id)
+          .getDetail(id)
           .then((s) => {
             if (s.code === 0 && s.data) {
               dispatch.tiepDon.updateDetail(s.data);

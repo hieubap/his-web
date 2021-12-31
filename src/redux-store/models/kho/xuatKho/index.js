@@ -23,10 +23,9 @@ export default {
     },
   },
   effects: (dispatch) => ({
-    onSizeChange: ({ dataSearch, page = 0, ...rest }) => {
+    onSizeChange: ({ page = 0, dsKhoId, ...rest }) => {
       dispatch.xuatKho.updateData({
         page,
-        dataSearch,
         ...rest,
       });
       dispatch.xuatKho.getListPhieuXuat({ page, ...rest });
@@ -42,8 +41,6 @@ export default {
 
       phieuNhapXuatProvider
         .search({
-          //   nhapKho: true,
-          loaiNhapXuat: 20,
           page,
           size,
           sort,
@@ -59,12 +56,14 @@ export default {
             page,
             size,
             sort: payload.sort,
+            dataSearch,
           });
         })
         .catch((e) => {
           message.error(e?.message || "Xảy ra lỗi vui lòng thử lại");
           dispatch.xuatKho.updateData({
             sort: payload.sort,
+            dataSearch,
           });
         });
     },

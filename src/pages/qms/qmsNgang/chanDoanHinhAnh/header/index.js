@@ -12,7 +12,14 @@ import moment from "moment";
 const Header = (props) => {
   const formatHour = "HH:mm";
   const format = "HH:mm:ss";
-  const { onClick, tenPhong, tenKhoa, currentKiosk, listNhanVien = [], iconChuyenKhoa } = props;
+  const {
+    onClick,
+    tenPhong,
+    tenKhoa,
+    currentKiosk,
+    listNhanVien = [],
+    iconChuyenKhoa,
+  } = props;
   const [state, _setState] = useState({});
   const setState = (data = {}) => {
     _setState((state) => {
@@ -27,8 +34,8 @@ const Header = (props) => {
 
   useEffect(() => {
     let bacSi = listNhanVien?.filter((x) =>
-    currentKiosk?.dsBacSiId?.includes(x.id)
-  );
+      currentKiosk?.dsBacSiId?.includes(x.id)
+    );
     let dieuDuong = listNhanVien.find((x) => x.id == currentKiosk.dieuDuongId);
     let hoTro = listNhanVien.find((x) => x.id == currentKiosk.hoTroId);
     setState({ bacSi, dieuDuong, hoTro });
@@ -37,7 +44,7 @@ const Header = (props) => {
   const openFullScreen = () => {
     var elem = document.documentElement;
     elem.requestFullscreen();
-  }
+  };
 
   const formatTime = (time) => {
     return time && moment(time, format).format(formatHour);
@@ -53,20 +60,20 @@ const Header = (props) => {
       return;
     const timeNow = Number(moment().format("HHmm"));
     const thoiGianSangTu = Number(
-      moment(currentKiosk?.thoiGianSangTu,"HH:mm:ss").format("HHmm")
+      moment(currentKiosk?.thoiGianSangTu, "HH:mm:ss").format("HHmm")
     );
     const thoiGianSangDen = Number(
-      moment(currentKiosk?.thoiGianSangDen,"HH:mm:ss").format("HHmm")
+      moment(currentKiosk?.thoiGianSangDen, "HH:mm:ss").format("HHmm")
     );
     const thoiGianChieuDen = Number(
-      moment(currentKiosk?.thoiGianChieuDen,"HH:mm:ss").format("HHmm")
+      moment(currentKiosk?.thoiGianChieuDen, "HH:mm:ss").format("HHmm")
     );
     const thoiGianChieuTu = Number(
-      moment(currentKiosk?.thoiGianChieuTu,"HH:mm:ss").format("HHmm")
+      moment(currentKiosk?.thoiGianChieuTu, "HH:mm:ss").format("HHmm")
     );
     return timeNow < thoiGianSangTu ||
-      (timeNow > thoiGianSangDen  && timeNow < thoiGianChieuTu ) ||
-      timeNow >  thoiGianChieuDen? (
+      (timeNow > thoiGianSangDen && timeNow < thoiGianChieuTu) ||
+      timeNow > thoiGianChieuDen ? (
       <span className="grey">Không làm việc</span>
     ) : (
       <span>Đang làm việc</span>
@@ -80,20 +87,34 @@ const Header = (props) => {
           <Row>
             <div className="header">
               <div className="logo" onClick={onOpenPopup}>
-                <img src={`${HOST}/api/his/v1/dm-thiet-lap/logo-benh-vien`} alt="..." />
+                <img
+                  src={`${HOST}/api/his/v1/dm-thiet-lap/logo-benh-vien`}
+                  alt="..."
+                />
               </div>
               <div className="title-header">
-                <span className="title-header__first">{tenPhong}</span>
-                <br />
-                <span className="title-header__second">{tenKhoa}</span>
+                <SlideText className="title-header__first">
+                  <span>{tenPhong}</span>
+                </SlideText>
+                <SlideText className="title-header__second">
+                  <span>{tenKhoa}</span>
+                </SlideText>
               </div>
-              <div className="sub-logo" onClick={onClick} onClick={openFullScreen}>
-                <img className="sub-logo__icon" alt="" src={`${fileUtils.absoluteFileUrl(iconChuyenKhoa)}`} />
+              <div
+                className="sub-logo"
+                onClick={onClick}
+                onClick={openFullScreen}
+              >
+                <img
+                  className="sub-logo__icon"
+                  alt=""
+                  src={`${fileUtils.absoluteFileUrl(iconChuyenKhoa)}`}
+                />
               </div>
             </div>
           </Row>
           <Row>
-          <div className="work-time">
+            <div className="work-time">
               <div className="work-time__left">
                 <div className="work-time__title">Thời gian làm việc</div>
                 <div className="work-time__display">
@@ -109,7 +130,7 @@ const Header = (props) => {
         </Col>
         <Col span={12}>
           <div className="content">
-          <Carousel autoplay autoplaySpeed={10000} >
+            <Carousel autoplay autoplaySpeed={10000}>
               {(state?.bacSi || []).map((item) => {
                 return (
                   <div className="top-content__infor">
@@ -123,11 +144,11 @@ const Header = (props) => {
                       </div>
                       <div className="infor-description">
                         <span className="infor-description__first">
-                        {item.vietTatHocHamHocVi} {item.ten}
+                          {item.vietTatHocHamHocVi} {item.ten}
                         </span>
                         <br />
                         <span className="infor-description__second">
-                          {item.chuyenKhoa?.ten}
+                          {item.tenChuyenKhoa}
                         </span>
                       </div>
                     </div>

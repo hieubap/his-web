@@ -33,9 +33,7 @@ const TableDonThuoc = (props) => {
   const [form] = Form.useForm();
   const refPopupThemLieuDung = useRef(null)
   const refSelectLieuDung = useRef(null)
-  console.log('refSelectLieuDungrefSelectLieuDungrefSelectLieuDung: ', refSelectLieuDung.current)
   const listDuongDung = useSelector(state => state.duongDung.listDuongDung)
-  const thongTinChiTiet = useSelector(state => state.khamBenh.thongTinChiTiet)
   const nhanVienId = useSelector(state => state.auth.auth.nhanVienId)
 
   const createOrEditLieuDung = useDispatch().lieuDung.createOrEdit
@@ -162,128 +160,7 @@ const TableDonThuoc = (props) => {
       },
     },
   ];
-  const contentPopoverLieuDung = () => {
-    return (
-      <ContentWrapper>
-        <div className="content-popover">
-          <div className="title-popup" style={{
-            background: "linear-gradient(0deg, rgba(23, 43, 77, 0.1), rgba(23, 43, 77, 0.1)),linear-gradient(0deg, #FFFFFF, #FFFFFF)",
-            fontFamily: "Nunito Sans",
-            fontSize: 16,
-            fontStyle: "normal",
-            fontWeight: 700,
-            letterSpacing: 0,
-            textAlign: "left",
-            padding: "8px 16px",
-          }}>Thêm nhanh liều dùng bác sĩ</div>
-          <Form
-            form={form}
-            layout="vertical"
-            className="form-custom form-custom--one-line"
-          >
-            <Row gutter={[16, 0]}>
-              <Col span={24}>
-                <Form.Item
-                  label="Tên liều dùng"
-                  name="ten"
-                >
-                  <Input
-                    className="input-option"
-                    placeholder="Vui lòng nhập tên liều dùng"
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={6}>
-                <Form.Item
-                  label="SL dùng sáng"
-                  name="slDungSang"
-                >
-                  <Input
-                    className="input-option"
-                    placeholder="Vui lòng nhập sl dùng sáng"
-                    type="number"
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={6}>
-                <Form.Item
-                  label="SL dùng chiều"
-                  name="slDungChieu"
-                >
-                  <Input
-                    className="input-option"
-                    placeholder="Vui lòng nhập sl dùng chiều"
-                    type="number"
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={6}>
-                <Form.Item
-                  label="SL dùng tối"
-                  name="slDungToi"
-                >
-                  <Input
-                    className="input-option"
-                    placeholder="Vui lòng nhập sl dùng tối"
-                    type="number"
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={6}>
-                <Form.Item
-                  label="SL dùng đêm"
-                  name="slDungDem"
-                >
-                  <Input
-                    className="input-option"
-                    placeholder="Vui lòng nhập sl dùng đêm"
-                    type="number"
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
-                  label="Thời điểm dùng"
-                  name="thoiDiemDung"
-                >
-                  <Input
-                    className="input-option"
-                    placeholder="Vui lòng nhập thời điểm dùng"
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
-                  label="Đường dùng"
-                  name="duongDung"
-                >
-                  <Select
-                    placeholder="Vui lòng chọn đường dùng"
-                    data={listDuongDung}
-                    showArrow={true}
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form>
-          <div className="popover-btn-list">
-            <Button className="popover-btn-list__cancel"
-              //  onClick={onCancel}
-              onClick={() => setState({ visiblePopupThemLieuDung: "" })}
-            >
-              Hủy
-          </Button>
-            <Button
-              className="popover-btn-list__ok"
-            // onClick={onSubmitThem}
-            >
-              {"Lưu"}<img style={{ marginLeft: 6 }} src={require("assets/images/kho/save.png")} alt=""></img>
-            </Button>
-          </div>
-        </div>
-      </ContentWrapper>
-    )
-  }
+  
   const reRenderListLieuDungDependDichVu = async () => {
     let list = [...state?.listServiceSelected]
     await (() => {
@@ -449,11 +326,12 @@ const TableDonThuoc = (props) => {
     []
   );
   const renderEmptyTextLeftTable = () => {
-    if (boChiDinh?.data?.length <= 0 && state?.isBoChiDinh && state.keyWord) {
+    if (boChiDinh?.data?.length <= 0 && state?.isBoChiDinh) {
       // condition : click bộ chỉ định => search => không có bộ chỉ định => hiện
       return (
         <div style={{ marginTop: 130 }}>
           <div style={{ color: "#c3c3c3", fontSize: 14 }}>Không có dữ liệu phù hợp</div>
+          <Button style={{ borderRadius:"8px" }} onClick={() => openInNewTab(`/danh-muc/bo-chi-dinh`)}>Thêm mới bộ chỉ định</Button>
         </div>
       )
     } else if ((state?.isBoChiDinh && !state?.boChiDinhSelected) || (state?.isBoChiDinh && Object.keys(state?.boChiDinhSelected)?.length <= 0)) {

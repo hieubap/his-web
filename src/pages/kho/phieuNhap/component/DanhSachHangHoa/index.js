@@ -10,34 +10,39 @@ import React, {
   useEffect,
   useMemo,
 } from "react";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { ContentTable, Main, Modal } from "./styled";
-
-const DanhSachHangHoa = ({
-  // state
-  thongTinPhieuNhap,
-  khoHienTai,
-  listAllDichVuKho,
-  page,
-  size,
-  totalElements,
-  dataSortColumn,
-  // dispatch
-  getListThangSoBanLe,
-  getAllListDichVuKho,
-  onSortChangeGetAll,
-  // utils
-  focusSearchHangHoa,
-  onClose = () => { },
-  ...props
-}, ref) => {
+import { Input } from "antd";
+const DanhSachHangHoa = (
+  {
+    // utils
+    focusSearchHangHoa,
+    onClose = () => { },
+    ...props
+  },
+  ref
+) => {
   const [state, _setState] = useState({});
   const setState = (data = {}) => {
     _setState((_state) => ({
       ..._state,
       ...data,
-    }))
-  }
+    }));
+  };
+
+  const {
+    listQuyetDinhThauChiTiet,
+    page = 0,
+    size = 10,
+    totalElements,
+    dataSortColumn,
+  } = useSelector((state) => state.quyetDinhThauChiTiet);
+  const { thongTinPhieuNhap } = useSelector((state) => state.phieuNhap);
+  const { currentItem: khoHienTai } = useSelector((state) => state.kho);
+  const {
+    quyetDinhThauChiTiet: { onSearch, onChangeSort, onChangeInputSearch },
+  } = useDispatch();
+
   useImperativeHandle(ref, () => ({
     show: ({ dichVuId }) => {
       setState({
@@ -45,21 +50,55 @@ const DanhSachHangHoa = ({
         index: -1,
         dichVuId,
       });
-      getAllListDichVuKho({
+      onSearch({
         dataSearch: {
           quyetDinhThauId: thongTinPhieuNhap?.quyetDinhThauId,
           nhaCungCapId: thongTinPhieuNhap?.nhaCungCapId,
           dsLoaiDichVu: khoHienTai?.dsLoaiDichVu,
           dichVuId: dichVuId,
         },
+        fromTongHop: true,
         page: 0,
         size: 10,
       });
     },
   }));
+  const refTimeOut = useRef(null);
+  const onSearchInput = (key) => (e) => {
+    console.log('key: ', key);
+    if (refTimeOut.current) {
+      clearTimeout(refTimeOut.current);
+      refTimeOut.current = null;
+    }
+    refTimeOut.current = setTimeout(
+      (key, e) => {
+        let value = "";
+        if (e) {
+          if (e?.hasOwnProperty("checked")) value = e?.checked;
+          else value = e?.value;
+        } else value = e;
+        onChangeInputSearch({
+          fromTongHop: true,
+          [key]: value,
+          dichVuId: state.dichVuId,
+        });
+      },
+      500,
+      key,
+      e?.target || e
+    );
+  };
+  useEffect(() => {
+    return () => {
+      if (refTimeOut.current) {
+        clearTimeout(refTimeOut.current);
+      }
+    };
+  }, []);
 
   const onClickSort = (key, value) => {
-    onSortChangeGetAll({
+    onChangeSort({
+      fromTongHop: true,
       [key]: value,
       // dataSearch: {
       //   quyetDinhThauId: thongTinPhieuNhap?.quyetDinhThauId,
@@ -93,13 +132,13 @@ const DanhSachHangHoa = ({
         // dataSort={dataSortColumn?.["dichVu.dichVu.ma"] || 0}
         />
       ),
-      key: "stt",
+      key: "index",
       width: "7%",
       align: "center",
       ellipsis: {
         showTitle: false,
       },
-      dataIndex: "stt",
+      dataIndex: "index",
     },
     {
       title: (
@@ -108,6 +147,12 @@ const DanhSachHangHoa = ({
           sort_key="ma"
           onClickSort={onClickSort}
           dataSort={dataSortColumn?.["ma"] || 0}
+          search={
+            <Input
+              placeholder="Tìm mã hàng hóa"
+              onChange={onSearchInput("ma")}
+            />
+          }
         />
       ),
       dataIndex: "ma",
@@ -122,6 +167,12 @@ const DanhSachHangHoa = ({
           sort_key="ten"
           onClickSort={onClickSort}
           dataSort={dataSortColumn?.["ten"] || 0}
+          search={
+            <Input
+              placeholder="Tìm tên hàng hóa"
+              onChange={onSearchInput("ten")}
+            />
+          }
         />
       ),
       dataIndex: "ten",
@@ -136,6 +187,12 @@ const DanhSachHangHoa = ({
           sort_key="quyetDinhThau"
           onClickSort={onClickSort}
           dataSort={dataSortColumn?.["quyetDinhThau"] || 0}
+          search={
+            <Input
+              placeholder="Tìm quyết định thầu"
+              onChange={onSearchInput("quyetDinhThau")}
+            />
+          }
         />
       ),
       dataIndex: "quyetDinhThau",
@@ -173,14 +230,36 @@ const DanhSachHangHoa = ({
       align: "right",
       //   sorter: (a, b) => a - b,
     },
+    {
+      title: (
+        <HeaderSearch
+          title="Nhà cung cấp"
+          sort_key="tenNhaCungCap"
+          onClickSort={onClickSort}
+          dataSort={dataSortColumn?.["tenNhaCungCap"] || 0}
+          search={
+            <Input
+              placeholder="Tìm nhà cung"
+              onChange={onSearchInput("tenNhaCungCap")}
+            />
+          }
+        />
+      ),
+      dataIndex: "tenNhaCungCap",
+      key: "tenNhaCungCap",
+      width: "15%",
+      align: "left",
+      //   sorter: (a, b) => a - b,
+    },
   ];
   const onCancel = (index) => {
-    const item = (listAllDichVuKho || [])[index];
+    const item = (listQuyetDinhThauChiTiet || [])[index];
     onClose(item);
     setState({ open: false });
   };
   const onChangePage = (page) => {
-    getAllListDichVuKho({
+    onSearch({
+      fromTongHop: true,
       dataSearch: {
         quyetDinhThauId: thongTinPhieuNhap?.quyetDinhThauId,
         nhaCungCapId: thongTinPhieuNhap?.nhaCungCapId,
@@ -192,7 +271,8 @@ const DanhSachHangHoa = ({
     });
   };
   const onSizeChange = (size) => {
-    getAllListDichVuKho({
+    onSearch({
+      fromTongHop: true,
       dataSearch: {
         quyetDinhThauId: thongTinPhieuNhap?.quyetDinhThauId,
         nhaCungCapId: thongTinPhieuNhap?.nhaCungCapId,
@@ -203,26 +283,6 @@ const DanhSachHangHoa = ({
       size: size,
     });
   };
-  // useEffect(() => {
-  //   if (state.open && state.dichVuId != undefined && state.dichVuId != null) {
-  //     getAllListDichVuKho({
-  //       dataSearch: {
-  //         quyetDinhThauId: thongTinPhieuNhap?.quyetDinhThauId,
-  //         nhaCungCapId: thongTinPhieuNhap?.nhaCungCapId,
-  //         dsLoaiDichVu: khoHienTai?.dsLoaiDichVu,
-  //         dichVuId: state.dichVuId,
-  //       },
-  //       page: 0,
-  //       size: 10,
-  //     });
-  //   }
-  // }, [state.open]);
-  const data = useMemo(() => {
-    let ds = (listAllDichVuKho || []).map((item, index) => ({
-      ...item,
-    }));
-    return ds;
-  }, [listAllDichVuKho]);
   return (
     <Modal
       visible={state.open}
@@ -239,8 +299,11 @@ const DanhSachHangHoa = ({
       <Main>
         <ContentTable>
           <TableWrapper
+            rowClassName={(record, index) => {
+              return index % 2 === 0 ? `table-row-even ${index == state?.listServiceSelected?.length - 1 ? "add-border" : ""}` : `table-row-odd ${index == state?.listServiceSelected?.length - 1 ? "add-border" : ""}`
+            }}
             columns={columns}
-            dataSource={data}
+            dataSource={listQuyetDinhThauChiTiet}
             //   onRow={onRow}
             rowKey={(record) =>
               record.dichVuId +
@@ -255,6 +318,7 @@ const DanhSachHangHoa = ({
             onChange={onChangePage}
             current={page + 1}
             pageSize={size}
+            listData={listQuyetDinhThauChiTiet}
             total={totalElements}
             onShowSizeChange={onSizeChange}
             stylePagination={{ flex: 1, justifyContent: "flex-start" }}
@@ -265,24 +329,4 @@ const DanhSachHangHoa = ({
   );
 };
 
-export default connect(
-  (state) => ({
-    thongTinPhieuNhap: state.phieuNhap.thongTinPhieuNhap,
-    khoHienTai: state.kho.currentItem,
-    listAllDichVuKho: state.quyetDinhThauChiTiet.listAllDichVuKho || [],
-    page: state.quyetDinhThauChiTiet.page || 0,
-    size: state.quyetDinhThauChiTiet.size || 10,
-    totalElements: state.quyetDinhThauChiTiet.totalElements,
-    dataSortColumn: state.quyetDinhThauChiTiet.dataSortColumn,
-  }),
-  ({
-    thangSoBanLe: { getListThangSoBanLe },
-    quyetDinhThauChiTiet: { getAllListDichVuKho, onSortChangeGetAll },
-  }) => ({
-    getListThangSoBanLe,
-    getAllListDichVuKho,
-    onSortChangeGetAll,
-  }),
-  null,
-  { forwardRef: true }
-)(forwardRef(DanhSachHangHoa));
+export default forwardRef(DanhSachHangHoa);

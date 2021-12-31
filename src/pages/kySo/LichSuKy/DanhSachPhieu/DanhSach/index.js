@@ -11,13 +11,15 @@ import moment from "moment";
 let timer = null;
 
 const DanhSach = (props) => {
-  const refModalPhieu = useRef(null)
+  const refModalPhieu = useRef(null);
   const history = useHistory();
 
-  const { dsKhoId, dsTrangThai, tenNb, dataSortColumn } = useSelector(state => state.lichSuKyDanhSachPhieu)
-  const { listKhoUser } = useSelector(state => state.kho)
-  const { searchByParams, onSortChange } = useDispatch().lichSuKyDanhSachPhieu
-  const {listtrangThaiKy} = useSelector(state => state.utils)
+  const { dsKhoId, dsTrangThai, tenNb, dataSortColumn } = useSelector(
+    (state) => state.lichSuKyDanhSachPhieu
+  );
+  const { listKhoUser } = useSelector((state) => state.kho);
+  const { searchByParams, onSortChange } = useDispatch().lichSuKyDanhSachPhieu;
+  const { listtrangThaiKy } = useSelector((state) => state.utils);
   const {
     getListPhieuNhap,
     onSizeChange,
@@ -38,7 +40,7 @@ const DanhSach = (props) => {
   } = props;
 
   useEffect(() => {
-    onSizeChange({nbDotDieuTriId : props?.match?.params?.id});
+    onSizeChange({ nbDotDieuTriId: props?.match?.params?.id });
   }, []);
   const onClickSort = (key, value) => {
     onSortChange({ [key]: value });
@@ -51,12 +53,13 @@ const DanhSach = (props) => {
     onSizeChange({ size });
   };
 
-
   const onRow = (record) => {
     return {
       onClick: () => {
-        const { id , soPhieu} = record;
-        history.push(`/ky-so/lich-su-ky/danh-sach-nguoi-benh/danh-sach-phieu/${props?.match?.params?.id}/lich-su-phieu/${soPhieu}`)
+        const { id, soPhieu } = record;
+        history.push(
+          `/ky-so/lich-su-ky/danh-sach-nguoi-benh/danh-sach-phieu/${props?.match?.params?.id}/lich-su-phieu/${soPhieu}`
+        );
       },
     };
   };
@@ -88,8 +91,8 @@ const DanhSach = (props) => {
       dataIndex: "maBaoCao",
       key: "maBaoCao",
       render: (item) => {
-        return item
-      }
+        return item;
+      },
     },
     {
       title: (
@@ -104,8 +107,8 @@ const DanhSach = (props) => {
       dataIndex: "tenBaoCao",
       key: "tenBaoCao",
       render: (item) => {
-        return item
-      }
+        return item;
+      },
     },
     {
       title: (
@@ -120,8 +123,8 @@ const DanhSach = (props) => {
       dataIndex: "soPhieu",
       key: "soPhieu",
       render: (item) => {
-        return item
-      }
+        return item;
+      },
     },
     {
       title: (
@@ -165,21 +168,25 @@ const DanhSach = (props) => {
       dataIndex: "trangThai",
       key: "trangThai",
       render: (item) => {
-        return item && listtrangThaiKy?.find(obj => obj.id === item)?.ten;
+        return item && listtrangThaiKy?.find((obj) => obj.id === item)?.ten;
       },
     },
     {
-      title: (
-        <HeaderSearch
-          title="Lịch sử ký"
-        />
-      ),
+      title: <HeaderSearch title="Lịch sử ký" />,
       width: "30px",
       align: "center",
       render: (item) => {
-        return <img src={require("assets/images/utils/time-blue.png")} alt="" onClick={()=>{
-          history.push(`/ky-so/lich-su-ky/danh-sach-nguoi-benh/danh-sach-phieu/${props.match.params.id}/lich-su-phieu/${item.soPhieu}`)
-        }}/>;
+        return (
+          <img
+            src={require("assets/images/utils/time-blue.png")}
+            alt=""
+            onClick={() => {
+              history.push(
+                `/ky-so/lich-su-ky/danh-sach-nguoi-benh/danh-sach-phieu/${props.match.params.id}/lich-su-phieu/${item.soPhieu}`
+              );
+            }}
+          />
+        );
       },
     },
   ];
@@ -195,8 +202,6 @@ const DanhSach = (props) => {
         />
         <Pagination
           listData={listData}
-          styleVersion={2}
-          styleVersion={2}
           onChange={onChangePage}
           current={page + 1}
           pageSize={size}
@@ -205,7 +210,7 @@ const DanhSach = (props) => {
           stylePagination={{ flex: 1, justifyContent: "flex-start" }}
         />
       </ContentTable>
-      <ModalPhieu ref={refModalPhieu}/>
+      <ModalPhieu ref={refModalPhieu} />
     </Main>
   );
 };
@@ -226,12 +231,13 @@ const mapDispatchToProps = ({
   lichSuKyDanhSachPhieu: { getList, updateData, onSizeChange },
   thuocChiTiet: { updateData: updateDataThuocChiTiet },
   utils: { getUtils },
-
 }) => ({
   getList,
   updateData,
   onSizeChange,
   getUtils,
-  updateDataThuocChiTiet
+  updateDataThuocChiTiet,
 });
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DanhSach));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(DanhSach)
+);

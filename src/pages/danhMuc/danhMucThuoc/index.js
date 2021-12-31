@@ -499,48 +499,48 @@ const DanhMucThuoc = (props) => {
       align: "right",
       render: (field, _, __) => (field && formatNumber(field)) || "",
     },
-    {
-      title: (
-        <HeaderSearch
-          sort_key="giaTran"
-          onClickSort={onClickSort}
-          dataSort={dataSortColumn.giaTran || 0}
-          search={
-            <Input
-              placeholder="Tìm giá trần"
-              onChange={onSearchInput("giaTran")}
-            />
-          }
-          title="Giá trần"
-        />
-      ),
-      width: 130,
-      dataIndex: "giaTran",
-      key: "giaTran",
-      align: "right",
-      render: (field, _, __) => (field && formatNumber(field)) || "",
-    },
-    {
-      title: (
-        <HeaderSearch
-          sort_key="tranBaoHiem"
-          onClickSort={onClickSort}
-          dataSort={dataSortColumn.tranBaoHiem || 0}
-          search={
-            <Input
-              placeholder="Tìm giá trần BH"
-              onChange={onSearchInput("tranBaoHiem")}
-            />
-          }
-          title="Trần bảo hiểm"
-        />
-      ),
-      width: 130,
-      dataIndex: "tranBaoHiem",
-      key: "tranBaoHiem",
-      align: "right",
-      render: (field, _, __) => (field && formatNumber(field)) || "",
-    },
+    // {
+    //   title: (
+    //     <HeaderSearch
+    //       sort_key="giaTran"
+    //       onClickSort={onClickSort}
+    //       dataSort={dataSortColumn.giaTran || 0}
+    //       search={
+    //         <Input
+    //           placeholder="Tìm giá trần"
+    //           onChange={onSearchInput("giaTran")}
+    //         />
+    //       }
+    //       title="Giá trần"
+    //     />
+    //   ),
+    //   width: 130,
+    //   dataIndex: "giaTran",
+    //   key: "giaTran",
+    //   align: "right",
+    //   render: (field, _, __) => (field && formatNumber(field)) || "",
+    // },
+    // {
+    //   title: (
+    //     <HeaderSearch
+    //       sort_key="tranBaoHiem"
+    //       onClickSort={onClickSort}
+    //       dataSort={dataSortColumn.tranBaoHiem || 0}
+    //       search={
+    //         <Input
+    //           placeholder="Tìm giá trần BH"
+    //           onChange={onSearchInput("tranBaoHiem")}
+    //         />
+    //       }
+    //       title="Trần bảo hiểm"
+    //     />
+    //   ),
+    //   width: 130,
+    //   dataIndex: "tranBaoHiem",
+    //   key: "tranBaoHiem",
+    //   align: "right",
+    //   render: (field, _, __) => (field && formatNumber(field)) || "",
+    // },
     {
       title: (
         <HeaderSearch
@@ -660,28 +660,28 @@ const DanhMucThuoc = (props) => {
         return item && item?.nhomDichVuCap3?.ten;
       },
     },
-    {
-      title: (
-        <HeaderSearch
-          sort_key="dichVu.maTuongDuong"
-          onClickSort={onClickSort}
-          dataSort={dataSortColumn["dichVu.maTuongDuong"] || 0}
-          search={
-            <Input
-              placeholder="Tìm mã tương đương"
-              onChange={onSearchInput("dichVu.maTuongDuong")}
-            />
-          }
-          title="Mã tương đương"
-        />
-      ),
-      width: 150,
-      dataIndex: "dichVu",
-      key: "dichVu",
-      render: (item) => {
-        return item && item.maTuongDuong;
-      },
-    },
+    // {
+    //   title: (
+    //     <HeaderSearch
+    //       sort_key="dichVu.maTuongDuong"
+    //       onClickSort={onClickSort}
+    //       dataSort={dataSortColumn["dichVu.maTuongDuong"] || 0}
+    //       search={
+    //         <Input
+    //           placeholder="Tìm mã tương đương"
+    //           onChange={onSearchInput("dichVu.maTuongDuong")}
+    //         />
+    //       }
+    //       title="Mã tương đương"
+    //     />
+    //   ),
+    //   width: 150,
+    //   dataIndex: "dichVu",
+    //   key: "dichVu",
+    //   render: (item) => {
+    //     return item && item.maTuongDuong;
+    //   },
+    // },
     {
       title: (
         <HeaderSearch
@@ -811,11 +811,13 @@ const DanhMucThuoc = (props) => {
           title="Không tính tiền"
         />
       ),
+      align: "center",
       width: 160,
       dataIndex: "dichVu",
       key: "dichVu",
       render: (item) => {
-        return <Checkbox checked={!!item?.khongTienTien} />;
+        console.log("item: ", item);
+        return <Checkbox checked={!!item?.khongTinhTien} />;
       },
     },
 
@@ -876,6 +878,8 @@ const DanhMucThuoc = (props) => {
                 : !checkRole([ROLES["DANH_MUC"].THUOC_THEM])
             }
             currentItemRowParent={props?.currentItem}
+            optionalField={["nhomDichVuCap2Id"]}
+            hiddenField={["giaTran", "tranBaoHiem", "maTuongDuong"]}
           />
         );
       },

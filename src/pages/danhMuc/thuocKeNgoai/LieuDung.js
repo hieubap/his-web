@@ -38,7 +38,7 @@ import uploadImg from "assets/images/his-core/import.png";
 import { SORT_DEFAULT, DS_DINH_DANG } from "./configs";
 import { checkRole } from "app/Sidebar/constant";
 import FormWraper from "components/FormWraper";
-import { INNHANH_KYSO } from "constants/index";
+import { IN_NHANH_KYSO } from "constants/index";
 import MultiLevelTab from "components/MultiLevelTab";
 const { Option } = Select;
 const LieuDung = ({
@@ -371,7 +371,7 @@ const LieuDung = ({
           searchSelect={
             <Select
               defaultValue=""
-              data={INNHANH_KYSO}
+              data={IN_NHANH_KYSO}
               placeholder="Chọn in nhanh"
               onChange={onSearchInput("active")}
             />

@@ -25,7 +25,6 @@ export default {
     onSizeChange: ({ dataSearch, ...rest }, state) => {
       dispatch.dsBenhNhan.updateData({
         page: 0,
-        dataSearch,
         ...rest,
       });
       dispatch.dsBenhNhan.onSearch({ rest });
@@ -104,6 +103,7 @@ export default {
         ...(state.dsBenhNhan.dataSearch || {}),
         ...payload,
       };
+      debugger
       dispatch.dsBenhNhan.updateData({
         page: 0,
         dataSearch,

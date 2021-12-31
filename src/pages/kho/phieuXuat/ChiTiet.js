@@ -7,7 +7,6 @@ import { connect } from "react-redux";
 import ThongTinHangHoa from "./container/ThongTinHangHoa";
 import ThongTinPhieuXuat from "./container/ThongTinPhieuXuat";
 import { Main } from "./styled";
-import phieuNXChiTietProvider from "data-access/kho/phieu-nhap-xuat-chi-tiet-provieder";
 import phieuNhapProvider from "data-access/kho/phieu-nhap-xuat-provieder";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -24,7 +23,6 @@ const ChiTiet = ({
   pnNhaCungCap,
   //dispatch
   updateData,
-  getAllListDichVuKho,
   ...props
 }) => {
   const [data, setData] = useState({});
@@ -219,7 +217,7 @@ const ChiTiet = ({
         // }, 1000);
       })
       .catch((e) => {
-        message.error("Cập nhật không thành công");
+        message.error(e.message);
       });
   };
 
@@ -297,11 +295,7 @@ export default connect(
     isLoadingDichVuKho: state.dichVuKho.isLoading || false,
     pnNhaCungCap: state.nhapKho.pnNhaCungCap,
   }),
-  ({
-    quyetDinhThauChiTiet: { getAllListDichVuKho },
-    nhapKho: { updateData },
-  }) => ({
+  ({ nhapKho: { updateData } }) => ({
     updateData,
-    getAllListDichVuKho,
   })
 )(ChiTiet);

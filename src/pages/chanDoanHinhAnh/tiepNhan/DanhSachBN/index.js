@@ -201,8 +201,9 @@ const DanhSachBN = ({ layerId }) => {
             onChange={onChangePage}
             current={page + 1}
             pageSize={size}
+            listData={listData}
             total={totalElements}
-            onShowSizeChange={onSizeChange}
+            onShowSizeChange={handleSizeChange}
             stylePagination={{ flex: 1, justifyContent: "flex-start" }}
           />
         ) : null}

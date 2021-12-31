@@ -116,10 +116,10 @@ function ModalContent(props) {
       titleHeader="Chuyển phiếu thu"
       titleBtnNext={
         <ButtonWrapper>
-          Lưu <img src={IconSave} alt="iconSave" />
+          Lưu [F4] <img src={IconSave} alt="iconSave" />
         </ButtonWrapper>
       }
-      titleBtnBack="Quay lại"
+      titleBtnBack="Quay lại [ESC]"
       subTitleHeader={
         <>
           <span>{firstLetterWordUpperCase(thongTinBenhNhan?.tenNb)} </span> -{" "}

@@ -69,12 +69,12 @@ function ThongTinPhieuThu(props) {
             refBtnInPhieuThu.current && refBtnInPhieuThu.current.click();
           },
         },
-        {
-          keyCode: 120, //F9
-          onEvent: () => {
-            refBtnSinhPhieuChi.current && refBtnSinhPhieuChi.current.click();
-          },
-        },
+        // {
+        //   keyCode: 120, //F9
+        //   onEvent: () => {
+        //     refBtnSinhPhieuChi.current && refBtnSinhPhieuChi.current.click();
+        //   },
+        // },
         {
           keyCode: 123, //F12
           onEvent: () => {
@@ -125,7 +125,7 @@ function ThongTinPhieuThu(props) {
               }
               onClick={onClickThanhToan}
             >
-              Thanh toán
+              Thanh toán [F12]
             </Button>
           </AuthWrapper>
         )}

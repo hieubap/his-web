@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useState } from "react";
+import React, { memo, useEffect, useMemo, useRef, useState } from "react";
 import { compose } from "redux";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -7,10 +7,14 @@ import { Col, Row, Input, message } from "antd";
 import { Main, PopoverWrapper, GlobalStyle, InputSearch } from "./styled";
 import IconSearch from "assets/images/xetNghiem/icSearch.png";
 import Checkbox from "antd/lib/checkbox/Checkbox";
-import { GIOI_TINH_VNI } from "../../../../../constants";
+import { GIOI_TINH_BY_VALUE } from "../../../../../constants";
 import thuocProvider from "data-access/kho/thuoc-provider";
-const ThongTinNguoiBenh = (props) => {
+const ThongTinNguoiBenh = ({layerId, ...props}) => {
   const { searchThuocByParams } = useDispatch().thuocKho
+
+  const { onRegisterHotkey } = useDispatch().phimTat;
+  const refThongTin = useRef();
+
   const [state, _setState] = useState({});
   const setState = (newState) => {
     _setState((state) => {
@@ -20,6 +24,21 @@ const ThongTinNguoiBenh = (props) => {
   const history = useHistory()
   const infoPatient = useSelector(state => state.thuocChiTiet.infoPatient)
   const { nbDotDieuTri } = infoPatient
+
+  useEffect(() => {
+    onRegisterHotkey({
+      layerId,
+      hotKeys: [
+        {
+          keyCode: 114, //F3
+          onEvent: () => {
+            refThongTin.current && refThongTin.current.focus();
+          },
+        }
+      ],
+    });
+  },[]);
+
   const isVangLai = useMemo(() => {
     return nbDotDieuTri?.ngoaiVien
   }, [nbDotDieuTri])
@@ -112,6 +131,7 @@ const ThongTinNguoiBenh = (props) => {
             <InputSearch>
               <img src={IconSearch} alt="IconSearch" className="icon-search" />
               <Input
+                ref={refThongTin}
                 placeholder="Quét Qr người bệnh hoặc nhập mã hồ sơ để tìm đơn mới"
                 autoFocus
                 onChange={onChange("qrBN", true)}
@@ -124,7 +144,7 @@ const ThongTinNguoiBenh = (props) => {
             <Row className="">
               <div className="title" style={{ marginRight: 90 }}>Họ và tên:</div>
               <div className="detail" >
-                <b>{infoPatient?.nbDotDieuTri?.tenNb}{` (${moment(infoPatient?.nbDotDieuTri?.ngaySinh).format("DD/MM/YYYY")} - ${`${infoPatient?.nbDotDieuTri?.thangTuoi > 36 ? `${infoPatient?.nbDotDieuTri?.tuoi} tuổi` : `${infoPatient?.nbDotDieuTri?.thangTuoi} tháng`}`} - ${infoPatient?.nbDotDieuTri?.gioiTinh ? GIOI_TINH_VNI[infoPatient?.nbDotDieuTri?.gioiTinh] : ""})`}</b>
+                <b>{infoPatient?.nbDotDieuTri?.tenNb}{` (${moment(infoPatient?.nbDotDieuTri?.ngaySinh).format("DD/MM/YYYY")} - ${`${infoPatient?.nbDotDieuTri?.thangTuoi > 36 ? `${infoPatient?.nbDotDieuTri?.tuoi} tuổi` : `${infoPatient?.nbDotDieuTri?.thangTuoi} tháng`}`} - ${infoPatient?.nbDotDieuTri?.gioiTinh ? GIOI_TINH_BY_VALUE[infoPatient?.nbDotDieuTri?.gioiTinh] : ""})`}</b>
               </div>
             </Row>
           </Col>

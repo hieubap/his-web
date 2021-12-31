@@ -1,14 +1,15 @@
-import React, { forwardRef, useImperativeHandle, useState, useMemo } from "react";
+import React, { forwardRef, useImperativeHandle, useState, useMemo, useEffect, useRef } from "react";
 import { Checkbox, Input, Form, InputNumber } from "antd";
 import { Select } from "components";
 import EditWrapper from "components/MultiLevelTab/EditWrapper";
-import { connect } from "react-redux"
+import { connect, useDispatch } from "react-redux"
 import { openInNewTab } from "utils";
 
 const FormQuyetDinhThau = ({
   handleSubmit,
   onCancel,
   dataSort,
+  layerId,
   ...props }, ref) => {
   const [form] = Form.useForm();
   const formRef = React.useRef();
@@ -17,6 +18,21 @@ const FormQuyetDinhThau = ({
   const [loaiDichVuThau, setLoaiDichVuThau] = useState(null);
   const [showField, setShowField] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const { onRegisterHotkey } = useDispatch().phimTat;
+  const refClickBtnSave = useRef();
+  useEffect(() => {
+    onRegisterHotkey({
+      layerId,
+      hotKeys: [
+        {
+          keyCode: 115, //F4
+          onEvent: (e) => {
+            refClickBtnSave.current && refClickBtnSave.current(e);
+          },
+        },
+      ],
+    });
+  }, []);
 
   useImperativeHandle(ref, () => ({
     setfields: (data) => {
@@ -110,6 +126,7 @@ const FormQuyetDinhThau = ({
   const onSave = (e) => {
     form.submit();
   };
+  refClickBtnSave.current = onSave;
 
   const handleSumitForm = (values) => {
     handleSubmit(values);

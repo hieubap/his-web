@@ -11,7 +11,7 @@ import Checkbox from "components/Checkbox";
 import { Form, Input, Row, Col } from "antd";
 import { connect } from "react-redux";
 function ThongTinKho(props, ref) {
-  const { currentItem } = props;
+  const { currentItem, layerId } = props;
   const [state, _setState] = useState({});
   const setState = (data = {}) => {
     _setState((state) => {
@@ -140,6 +140,7 @@ function ThongTinKho(props, ref) {
       showAdded={false}
       isShowSaveButton={true}
       isShowCancelButton={true}
+      layerId={layerId}
     >
       <Form
         form={form}
@@ -257,19 +258,19 @@ function ThongTinKho(props, ref) {
                 style={{ paddingRight: "10pt" }}
               />
             </Form.Item>
-            <Form.Item label="Cơ chế dự trừ/ Lĩnh bù" name="dsCoCheDuTru">
+            <Form.Item label="Cơ chế dự trù/ Lĩnh bù" name="dsCoCheDuTru">
               <Select
                 data={props.listCoCheDuTru}
-                placeholder="Vui lòng chọn cơ chế dự trừ/ Lĩnh bù"
+                placeholder="Vui lòng chọn Cơ chế dự trù/ Lĩnh bù"
                 mode="multiple"
                 showArrow
                 style={{ paddingRight: "10pt" }}
               />
             </Form.Item>
-            <Form.Item label="TH trừ tồn ngay khi kê" name="dsGiuTonKhaDung">
+            <Form.Item label="Giữ chỗ ngay khi kê" name="dsGiuTonKhaDung">
               <Select
                 data={props.listGiuTonKhaDung}
-                placeholder="Vui lòng chọn TH trừ tồn ngay khi kê"
+                placeholder="Vui lòng chọn Giữ chỗ ngay khi kê"
                 mode="multiple"
                 showArrow
                 style={{ paddingRight: "10pt" }}

@@ -76,7 +76,8 @@ export const Main = styled.div`
 `;
 export const InputSearch = styled.div`
   background: #ffffff;
-  border: ${(props) => (!props.focusInput ? "2px solid #dfe1e6" : null)};
+  border: ${(props) =>
+    !props.focusInput ? "2px solid #dfe1e6" : "1px solid #0762f7"};
   box-sizing: border-box;
   border-radius: 50px;
   display: flex;
@@ -84,9 +85,11 @@ export const InputSearch = styled.div`
   padding: 3px 8px;
   margin-right: 36px;
   width: 251px;
-  box-shadow: ${(props) =>
-    props.focusInput ? "0 0 0 2px rgb(24 144 255 / 20%)" : null};
-
+  box-shadow: ${(props) => (props.focusInput ? "0 0 0 3px #0062ff47" : null)};
+  :hover {
+    border: 1px solid #0762f7;
+    box-shadow: 0 0 0 3px #0062ff47;
+  }
   input {
     padding: 0 1em 0 8.5px !important;
     border: none;

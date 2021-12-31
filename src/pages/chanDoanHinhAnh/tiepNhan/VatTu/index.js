@@ -20,34 +20,29 @@ import TableVatTu from "../components/TableVatTu";
 import { groupBy } from "lodash";
 
 const { Panel } = Collapse;
-const DonThuoc = ({
-  searchDv,
-  listDvKho,
-  tamTinhTien,
-  chiDinhDichVu,
-  updateData,
-  listGoiDv,
-  dataNb,
-  listThietLapChonKho,
-  getListDichVuTonKho,
-  listDvTonKho,
-  fullName,
-  getListDichVuVatTu,
-  listDvVatTu,
-  getData,
-  getListThietLapChonKho,
-  getListDonViTinhTongHop,
-  elementKey,
-  dataNbChiDinh,
-}) => {
+const DonThuoc = ({ elementKey, dataNbChiDinh, dataKho }) => {
   const boChiDinh = useSelector((state) => state.boChiDinh.boChiDinh);
   const {
-    dsBenhNhan: { dsPhongThucHienId, khoaId },
     auth: { auth },
-    nhanVien: { listNhanVien },
+    chiDinhDichVuVatTu: {
+      dataNb,
+      listDvTonKho,
+      listDvVatTu,
+      listDvKho,
+      listGoiDv,
+    },
   } = useSelector((state) => state);
   const {
-    nhanVien: { getListNhanVienTongHop },
+    chiDinhDichVuVatTu: {
+      searchDv,
+      tamTinhTien,
+      chiDinhDichVu,
+      updateData,
+      getListDichVuTonKho,
+      getListDichVuVatTu,
+    },
+    quanTriKho: { getData },
+    donViTinh: { getListDonViTinhTongHop },
   } = useDispatch();
 
   const [state, _setState] = useState({
@@ -73,38 +68,17 @@ const DonThuoc = ({
   useEffect(() => {
     if (state.visible) refScrollThisElement.current.click();
   }, [state.visible]);
-  useEffect(() => {
-    let dataKho = listThietLapChonKho.map((item) => {
-      return item.kho;
-    });
-    dataKho = dataKho.filter(
-      (item2, index) => index === dataKho.findIndex((e) => e.id === item2.id)
-    );
-    setState({ dataKho });
-  }, [listThietLapChonKho]);
-  
+
   useEffect(() => {
     getData({ size: 999 });
     getListDonViTinhTongHop({});
-    getListNhanVienTongHop({});
   }, []);
 
   useEffect(() => {
-    let nhanVien = listNhanVien.find((x) => x?.id == auth.nhanVienId);
-    let payload = {
-      loaiDichVu: 100,
-      khoaNbId: dataNbChiDinh?.khoaThucHienId,
-      khoaChiDinhId: khoaId,
-      doiTuong: dataNbChiDinh?.doiTuong,
-      loaiDoiTuongId: dataNbChiDinh?.loaiDoiTuongId,
-      capCuu: dataNbChiDinh?.capCuu,
-      nhanVienId: nhanVien?.id,
-      chucVuId: nhanVien?.chucVuId,
-      phongId: dsPhongThucHienId,
-      canLamSang: true,
-    };
-    getListThietLapChonKho({ ...payload});
-  },[listNhanVien]);
+    if(elementKey === 2) {
+      searchDv({ loaiDichVu: 100 });
+    }
+  }, [elementKey]);
 
   const listPanel = useMemo(() => {
     const grouped = groupBy(listDvVatTu, "loaiDonThuoc");
@@ -113,7 +87,7 @@ const DonThuoc = ({
       return {
         header: (
           <Header
-            title={""}
+            title={"Đơn tủ trực"}
             listDvVatTu={groupByIdArr}
             nbDotDieuTriId={dataNbChiDinh?.nbDotDieuTriId}
           />
@@ -142,7 +116,7 @@ const DonThuoc = ({
   }, [state.filterText, listGoiDv, state.loaiDichVu]);
 
   useEffect(() => {
-    getListDichVuVatTu({ nbDotDieuTriId : dataNbChiDinh?.nbDotDieuTriId });
+    getListDichVuVatTu({ nbDotDieuTriId: dataNbChiDinh?.nbDotDieuTriId });
   }, [dataNbChiDinh?.nbDotDieuTriId]);
 
   useEffect(() => {
@@ -151,7 +125,6 @@ const DonThuoc = ({
 
     let arr = listDvTonKho;
     let arrAll = [];
-    
 
     let listDichVu = [];
 
@@ -176,7 +149,7 @@ const DonThuoc = ({
   //   });
   //   onTamTinhTien(data);
   // };
-  
+
   const onSelectedAll = (e, currentListDataKey) => {
     const { listDichVu, listSelectedDv } = state;
     if (!listDichVu.length) return;
@@ -199,7 +172,7 @@ const DonThuoc = ({
 
   const onTamTinhTien = (listSelected, isCheckAll) => {
     const payload = listSelected.map((item) => ({
-      nbDotDieuTriId : dataNbChiDinh?.nbDotDieuTriId,
+      nbDotDieuTriId: dataNbChiDinh?.nbDotDieuTriId,
       nbDichVu: {
         dichVuId: item?.dichVuId,
         soLuong: item.soLuong,
@@ -236,7 +209,7 @@ const DonThuoc = ({
   const onSelected = (data) => {
     onTamTinhTien(data);
   };
-  
+
   const onSelectedBoChiDinh = (itemSelected) => {
     let item = {};
     let obj = {
@@ -251,8 +224,8 @@ const DonThuoc = ({
     if (!!item.id) {
       obj.boChiDinhId = item.id;
     }
-    console.log("object", obj)
-    getListDichVuTonKho({ ...obj, khoId: state.khoId })
+    console.log("object", obj);
+    getListDichVuTonKho({ ...obj, khoId: state.khoId });
     // setState({ boChiDinhSelected: item });
   };
 
@@ -333,12 +306,12 @@ const DonThuoc = ({
 
     const dataTable = listSelectedDv.map((item) => {
       return {
-        nbDotDieuTriId : dataNbChiDinh?.nbDotDieuTriId,
+        nbDotDieuTriId: dataNbChiDinh?.nbDotDieuTriId,
         nbDichVu: {
           dichVuId: item?.dichVuId,
           soLuong: item.soLuong,
           chiDinhTuDichVuId: dataNbChiDinh?.id,
-          chiDinhTuLoaiDichVu: dataNbChiDinh?.chiDinhTuLoaiDichVu,
+          chiDinhTuLoaiDichVu: dataNbChiDinh?.loaiDichVu,
           khoaChiDinhId: dataNbChiDinh?.khoaChiDinhId,
           loaiDichVu: item?.loaiDichVu,
           dichVu: {
@@ -360,7 +333,7 @@ const DonThuoc = ({
           listSelectedDv: [],
         });
         if (s?.code === 0) {
-          getListDichVuVatTu({ nbDotDieuTriId : dataNbChiDinh?.nbDotDieuTriId });
+          getListDichVuVatTu({ nbDotDieuTriId: dataNbChiDinh?.nbDotDieuTriId });
           onClosePopup();
         }
       })
@@ -413,13 +386,13 @@ const DonThuoc = ({
       ></div>
       <StickyWrapper>
         <MainTextFiled>
-          <TextField label="Bác sĩ chỉ định" html={fullName} />
+          <TextField label="Bác sĩ chỉ định" html={auth.full_name} />
           <div className="select-box">
             <div>Thêm chỉ định &nbsp;</div>
             <div>&nbsp;&nbsp;&nbsp;</div>
             <div>
               <Select
-                data={state?.dataKho}
+                data={dataKho}
                 style={{ width: "200px" }}
                 onChange={onSelectServiceStorage}
               />

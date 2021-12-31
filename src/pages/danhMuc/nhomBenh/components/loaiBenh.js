@@ -458,7 +458,7 @@ const LoaiBenh = (props) => {
 };
 
 const mapDispatchToProps = ({
-  loaiBenh: { updateData, onSearchTongHop : onSearch },
+  loaiBenh: { updateData, onSearch : onSearch },
   nhomBenh: { getAllNhomBenh },
 }) => ({
   updateData,

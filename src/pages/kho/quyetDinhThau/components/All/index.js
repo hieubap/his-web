@@ -5,7 +5,7 @@ import { HIEU_LUC } from "constants/index";
 import { connect } from "react-redux";
 import { combineSort } from "utils";
 import moment from "moment";
-const dateFormat = 'DD-MM-YYYY';
+const dateFormat = "DD-MM-YYYY";
 
 const DanhSach = (props) => {
   const data = useMemo(() => {
@@ -73,7 +73,7 @@ const DanhSach = (props) => {
       dataIndex: "stt",
       key: "stt",
       align: "center",
-      fixed: 'left',
+      fixed: "left",
     },
     {
       title: (
@@ -97,7 +97,7 @@ const DanhSach = (props) => {
       width: 150,
       dataIndex: "quyetDinhThau",
       key: "quyetDinhThau",
-      fixed: 'left',
+      fixed: "left",
       render: (item) => {
         return item && item?.quyetDinhThau;
       },
@@ -123,7 +123,7 @@ const DanhSach = (props) => {
       width: 200,
       dataIndex: "dichVu",
       key: "dichVu",
-      fixed: 'left',
+      fixed: "left",
       render: (item) => {
         return item && item?.ten;
       },
@@ -321,7 +321,9 @@ const DanhSach = (props) => {
       dataIndex: "nhaCungCapId",
       key: "nhaCungCapId",
       render: (item) => {
-        return props.listNCC && (props.listNCC.find(e => e.id === item) || [])?.ten;
+        return (
+          props.listNCC && (props.listNCC.find((e) => e.id === item) || [])?.ten
+        );
       },
     },
     {
@@ -346,7 +348,10 @@ const DanhSach = (props) => {
       dataIndex: "goiThau",
       key: "goiThau",
       render: (item) => {
-        return props.listGoiThau && (props.listGoiThau.find(e => e.id === item) || [])?.ten;
+        return (
+          props.listGoiThau &&
+          (props.listGoiThau.find((e) => e.id === item) || [])?.ten
+        );
       },
     },
     {
@@ -392,8 +397,11 @@ const DanhSach = (props) => {
       dataIndex: "nhomThau",
       key: "nhomThau",
       render: (item) => {
-        return props.listNhomThau && (props.listNhomThau.find(e => e.id === item) || [])?.ten;
-      }
+        return (
+          props.listNhomThau &&
+          (props.listNhomThau.find((e) => e.id === item) || [])?.ten
+        );
+      },
     },
     {
       title: (
@@ -417,8 +425,11 @@ const DanhSach = (props) => {
       dataIndex: "nhomChiPhiBh",
       key: "nhomChiPhiBh",
       render: (item) => {
-        return props.listNhomChiPhiBh && (props.listNhomChiPhiBh.find(e => e.id === item) || [])?.ten;
-      }
+        return (
+          props.listNhomChiPhiBh &&
+          (props.listNhomChiPhiBh.find((e) => e.id === item) || [])?.ten
+        );
+      },
     },
     {
       title: (
@@ -488,9 +499,12 @@ const DanhSach = (props) => {
       width: 150,
       dataIndex: "loaiThuoc",
       key: "loaiThuoc",
-      render: (item => {
-        return props.listLoaiThuocThau && (props.listLoaiThuocThau.find(e => e.id === item) || [])?.ten;
-      })
+      render: (item) => {
+        return (
+          props.listLoaiThuocThau &&
+          (props.listLoaiThuocThau.find((e) => e.id === item) || [])?.ten
+        );
+      },
     },
     {
       title: (
@@ -514,7 +528,7 @@ const DanhSach = (props) => {
       dataIndex: "xuatXu",
       key: "xuatXu",
       render: (item) => {
-        return item && item?.ten || "";
+        return (item && item?.ten) || "";
       },
     },
     {
@@ -539,7 +553,9 @@ const DanhSach = (props) => {
       dataIndex: "nhaSanXuatId",
       key: "nhaSanXuatId",
       render: (item) => {
-        return props.listNSX && (props.listNSX.find(e => e.id === item) || [])?.ten;
+        return (
+          props.listNSX && (props.listNSX.find((e) => e.id === item) || [])?.ten
+        );
       },
     },
     {
@@ -613,9 +629,9 @@ const DanhSach = (props) => {
       width: 150,
       dataIndex: "dichVuId",
       key: "duongDung",
-      render: (item => {
-        ""
-      })
+      render: (item) => {
+        "";
+      },
     },
     {
       title: (
@@ -662,9 +678,12 @@ const DanhSach = (props) => {
       width: 150,
       dataIndex: "hoatChatId",
       key: "maHoatChat",
-      render: ((item) => {
-        return props.listHoatChat && (props.listHoatChat.find(e => e.id === item) || [])?.ma
-      })
+      render: (item) => {
+        return (
+          props.listHoatChat &&
+          (props.listHoatChat.find((e) => e.id === item) || [])?.ma
+        );
+      },
     },
     {
       title: (
@@ -707,9 +726,9 @@ const DanhSach = (props) => {
       width: 150,
       dataIndex: "dichVu",
       key: "maDV",
-      render: (item => {
+      render: (item) => {
         return item && item.ma;
-      })
+      },
     },
     {
       title: (
@@ -757,9 +776,9 @@ const DanhSach = (props) => {
       width: 150,
       dataIndex: "donViTinh",
       key: "donViTinh",
-      render: (item => {
+      render: (item) => {
         return item && item.ten;
-      })
+      },
     },
     {
       title: (
@@ -878,7 +897,7 @@ const DanhSach = (props) => {
       key: "goiThau",
       render: (item) => {
         return item && item?.goiThau;
-      }
+      },
     },
     {
       title: (
@@ -902,7 +921,15 @@ const DanhSach = (props) => {
       dataIndex: "dichVu",
       key: "loaiDichVu",
       render: (item) => {
-        return item && props.listLoaiDichVuThuocVatTuHoaChat && (props.listLoaiDichVuThuocVatTuHoaChat.find((e) => e.id === item.loaiDichVu) || [])?.ten;
+        return (
+          item &&
+          props.listLoaiDichVuThuocVatTuHoaChat &&
+          (
+            props.listLoaiDichVuThuocVatTuHoaChat.find(
+              (e) => e.id === item.loaiDichVu
+            ) || []
+          )?.ten
+        );
       },
     },
     {
@@ -927,7 +954,11 @@ const DanhSach = (props) => {
       dataIndex: "quyetDinhThauId",
       key: "nguonNhapKho",
       render: (item) => {
-        return props.listAllQuyetDinhThau && (props.listAllQuyetDinhThau?.find(e => e.id === item) || [])?.nguonNhapKho?.ten;
+        return (
+          props.listAllQuyetDinhThau &&
+          (props.listAllQuyetDinhThau?.find((e) => e.id === item) || [])
+            ?.nguonNhapKho?.ten
+        );
       },
     },
     {
@@ -952,8 +983,15 @@ const DanhSach = (props) => {
       dataIndex: "quyetDinhThauId",
       key: "loaiThau",
       render: (item) => {
-        const res = props.listAllQuyetDinhThau && (props.listAllQuyetDinhThau?.find(e => e.id === item) || [])?.loaiThau;
-        return res && props.listloaiThau && (props.listloaiThau?.find(e => e.id === res) || [])?.ten;
+        const res =
+          props.listAllQuyetDinhThau &&
+          (props.listAllQuyetDinhThau?.find((e) => e.id === item) || [])
+            ?.loaiThau;
+        return (
+          res &&
+          props.listloaiThau &&
+          (props.listloaiThau?.find((e) => e.id === res) || [])?.ten
+        );
       },
     },
     {
@@ -979,7 +1017,11 @@ const DanhSach = (props) => {
       dataIndex: "quyetDinhThauId",
       key: "ngayCongBo",
       render: (item) => {
-        return props.listAllQuyetDinhThau && (props.listAllQuyetDinhThau?.find(e => e.id === item) || [])?.ngayCongBo;
+        return (
+          props.listAllQuyetDinhThau &&
+          (props.listAllQuyetDinhThau?.find((e) => e.id === item) || [])
+            ?.ngayCongBo
+        );
       },
     },
     {
@@ -1004,7 +1046,11 @@ const DanhSach = (props) => {
       dataIndex: "quyetDinhThauId",
       key: "ngayHieuLuc",
       render: (item) => {
-        return props.listAllQuyetDinhThau && (props.listAllQuyetDinhThau?.find(e => e.id === item) || [])?.ngayHieuLuc;
+        return (
+          props.listAllQuyetDinhThau &&
+          (props.listAllQuyetDinhThau?.find((e) => e.id === item) || [])
+            ?.ngayHieuLuc
+        );
       },
     },
     {
@@ -1029,8 +1075,15 @@ const DanhSach = (props) => {
       dataIndex: "quyetDinhThauId",
       key: "khoa",
       render: (item) => {
-        const res = props.listAllQuyetDinhThau && (props.listAllQuyetDinhThau?.find(e => e.id === item) || [])?.khoaId;
-        return res && props.listAllKhoa && (props.listAllKhoa?.find(e => e.id === res) || [])?.ten;
+        const res =
+          props.listAllQuyetDinhThau &&
+          (props.listAllQuyetDinhThau?.find((e) => e.id === item) || [])
+            ?.khoaId;
+        return (
+          res &&
+          props.listAllKhoa &&
+          (props.listAllKhoa?.find((e) => e.id === res) || [])?.ten
+        );
       },
     },
     {
@@ -1055,11 +1108,17 @@ const DanhSach = (props) => {
       dataIndex: "quyetDinhThauId",
       key: "trangThai",
       render: (item) => {
-        const res = props.listAllQuyetDinhThau && (props.listAllQuyetDinhThau?.find(e => e.id === item) || [])?.trangThai;
-        return res && props.listtrangThaiThau && (props.listtrangThaiThau?.find(e => e.id === res) || [])?.ten;
+        const res =
+          props.listAllQuyetDinhThau &&
+          (props.listAllQuyetDinhThau?.find((e) => e.id === item) || [])
+            ?.trangThai;
+        return (
+          res &&
+          props.listtrangThaiThau &&
+          (props.listtrangThaiThau?.find((e) => e.id === res) || [])?.ten
+        );
       },
     },
-
 
     {
       title: (
@@ -1083,21 +1142,19 @@ const DanhSach = (props) => {
       key: "active",
       align: "center",
       render: (item) => {
-        return <Checkbox checked={item} onClick={() => { }} />;
+        return <Checkbox checked={item} onClick={() => {}} />;
       },
     },
   ];
   return (
     <div>
-      <TableWrapper
-        columns={columnsGroup}
-        dataSource={data}
-      />
+      <TableWrapper columns={columnsGroup} dataSource={data} />
       {props.totalElements ? (
         <Pagination
           onChange={onChangePage}
           current={props.page + 1}
           pageSize={props.size}
+          listData={data}
           total={props.totalElements}
           onShowSizeChange={handleSizeChange}
           style={{ flex: 1, justifyContent: "flex-end" }}
@@ -1116,7 +1173,8 @@ const mapStateToProps = (state) => {
       size,
       dataEditDefault,
       dataSortColumn,
-      dataSearch, },
+      dataSearch,
+    },
     quyetDinhThau: { listAllQuyetDinhThau },
     nhaSanXuat: { listNSX, listNCC },
     // ttHanhChinh: { listAllQuocGia },
@@ -1134,8 +1192,8 @@ const mapStateToProps = (state) => {
       listLoaiDichVuThuocVatTuHoaChat,
       listloaiThau,
       listtrangThaiThau,
-      listLoaiThuocThau },
-
+      listLoaiThuocThau,
+    },
   } = state;
 
   return {
@@ -1168,7 +1226,12 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = ({
   quyetDinhThau: { getListAllQuyetDinhThau },
-  quyetDinhThauChiTiet: { getListQuyetDinhThauChiTiet, onChangeSort, onChangeSize, onChangeInputSearch },
+  quyetDinhThauChiTiet: {
+    getListQuyetDinhThauChiTiet,
+    onChangeSort,
+    onChangeSize,
+    onChangeInputSearch,
+  },
   nhaSanXuat: { getListNhaSanXuat },
   // ttHanhChinh: { getListAllQuocGia },
   xuatXu: { getListXuatXu },

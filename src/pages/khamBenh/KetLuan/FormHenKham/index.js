@@ -78,7 +78,7 @@ export const FormHenKham = (props) => {
   };
 
   const showAddress = () => {
-    return `${soNha && `${soNha} - `}${tenXaPhuong || ""}${tenXaPhuong && tenQuanHuyen ? " - " : ""}${
+    return `${soNha ? `${soNha} - ` : ""}${tenXaPhuong || ""}${tenXaPhuong && tenQuanHuyen ? " - " : ""}${
       tenQuanHuyen || ""
     }${(tenXaPhuong || tenQuanHuyen) && tenTinhThanhPho ? " - " : ""}${
       tenTinhThanhPho || ""

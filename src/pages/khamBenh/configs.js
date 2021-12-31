@@ -161,10 +161,10 @@ export const ALL_DON_THUOC = [
     ten: "Thuốc kê ngoài",
     id: 150,
   },
-  {
-    ten: "Tất cả loại thuốc",
-    id: "",
-  },
+  // {
+  //   ten: "Tất cả loại thuốc",
+  //   id: "",
+  // },
 ];
 
 export const LOAI_DON_THUOC = [
@@ -180,8 +180,8 @@ export const LOAI_DON_THUOC = [
     ten: "Thuốc kê ngoài",
     id: 150,
   },
-  {
-    ten: "Tất cả loại thuốc",
-    id: "",
-  },
+  // {
+  //   ten: "Tất cả loại thuốc",
+  //   id: "",
+  // },
 ];

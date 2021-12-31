@@ -102,7 +102,8 @@ const DanhSach = (props) => {
       dataIndex: "thanhTien",
       key: "thanhTien",
       align: "right",
-      render: (field, _, __) => field && formatNumber(Number.parseFloat(`${field}`)) || "",
+      render: (field, _, __) =>
+        (field && formatNumber(Number.parseFloat(`${field}`))) || "",
     },
     {
       title: (
@@ -210,6 +211,7 @@ const DanhSach = (props) => {
           onChange={onChangePage}
           current={page + 1}
           pageSize={size}
+          listData={listPhieuNhap}
           total={totalElements}
           onShowSizeChange={handleSizeChange}
           stylePagination={{ flex: 1, justifyContent: "flex-start" }}

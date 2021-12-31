@@ -6,7 +6,7 @@ import React, {
   useDebugValue,
   useRef,
 } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import moment from "moment";
 import { Main } from "./styled";
 import { combineSort } from "utils";
@@ -17,6 +17,7 @@ import showFull from "assets/svg/showFull.svg";
 import thuNho from "assets/svg/thuNho.svg";
 import extendTable from "assets/svg/extendTable.svg";
 import extendChiTiet from "assets/svg/extendChiTiet.svg";
+import IcResetPassWord from "assets/svg/resetPassWord.svg";
 import {
   Pagination,
   HeaderSearch,
@@ -41,6 +42,9 @@ import cloneDeep from "lodash/cloneDeep";
 import { openInNewTab } from "../../../utils";
 import { checkRole } from "app/Sidebar/constant";
 import { ROLES } from "constants/index";
+import stringUtils from "mainam-react-native-string-utils";
+import { ModalNotification2 } from "../../../components/ModalConfirm";
+
 let timer = null;
 
 const SettingsAccount = (props) => {
@@ -61,6 +65,7 @@ const SettingsAccount = (props) => {
     getListRoles,
     listAllNhanVien,
     getListAllNhanVien,
+    resetMatKhau,
   } = props;
 
   const [collapseStatus, setCollapseStatus] = useState(false);
@@ -92,6 +97,18 @@ const SettingsAccount = (props) => {
     });
   };
   const { dataRoles } = state;
+
+  const refAutoFocus = useRef(null);
+  const refLayerHotKey = useRef(stringUtils.guid());
+  const { onAddLayer, onRemoveLayer } = useDispatch().phimTat;
+
+  // register layerId
+  useEffect(() => {
+    onAddLayer({ layerId: refLayerHotKey.current });
+    return () => {
+      onRemoveLayer({ layerId: refLayerHotKey.current });
+    };
+  }, []);
 
   useEffect(() => {
     onSizeChange(10);
@@ -246,22 +263,22 @@ const SettingsAccount = (props) => {
         return <Checkbox checked={item} />;
       },
     },
-    // {
-    //   title: <HeaderSearch title="Actions" />,
-    //   width: 48,
-    //   align: "center",
-    //   key: "action",
-    //   render: (item, list) => (
-    //     <a onClick={resetPassWord(list)}>Action</a>
-    //     // <Space size="middle">
-    //     //   <a>Action</a>
-    //     // </Space>
-    //   ),
-    // },
+    {
+      title: <HeaderSearch title="Thao tác" />,
+      width: 60,
+      align: "center",
+      key: "action",
+      render: (text, item) => (
+        <Icon
+          component={IcResetPassWord}
+          onClick={handleResetPassWord(item)}
+        ></Icon>
+      ),
+    },
   ];
 
   const handleAdded = (e) => {
-    e.preventDefault();
+    if (e?.preventDefault) e.preventDefault();
     form
       .validateFields()
       .then((values) => {
@@ -310,14 +327,24 @@ const SettingsAccount = (props) => {
       })
       .catch((error) => {});
   };
-
-  const resetPassWord = (item) => () => {
-    item.passWord = "123456";
-    let formattedData = {
-      ...item,
-    };
-    formattedData = { ...formattedData, id: item.id };
-    createOrEdit(formattedData).then(() => {});
+  const refNotification = useRef(null);
+  const handleResetPassWord = (item) => () => {
+    refNotification.current &&
+      refNotification.current.show(
+        {
+          title: "Cảnh báo",
+          content: `Xác nhận reset mật khẩu cho tài khoản ${item.taiKhoan}  về mặc định`,
+          cancelText: "Hủy",
+          okText: "Đồng ý",
+          showImg: false,
+          showBtnOk: true,
+          typeModal: "warning",
+          rightCancelButton: true,
+        },
+        () => {
+          resetMatKhau({ id: item.id });
+        }
+      );
   };
 
   const onShowAndHandleUpdate = (data = {}) => {
@@ -358,6 +385,12 @@ const SettingsAccount = (props) => {
     setCheckedList(null);
     updateData({ dataEditDefault: null });
     form.resetFields();
+
+    if (refAutoFocus.current) {
+      setTimeout(() => {
+        refAutoFocus.current.focus();
+      }, 50);
+    }
   };
 
   const handleCancel = () => {
@@ -411,16 +444,11 @@ const SettingsAccount = (props) => {
       dataRoles: plainOptions,
     });
   };
-  const setRowClassName = (record) => {
-    let idDiff = dataEditDefault?.id;
-    return record.id === idDiff ? "row-actived" : "";
-  };
-  const refAutoFocus = useRef(null);
-  useEffect(() => {
-    if (refAutoFocus.current) {
-      refAutoFocus.current.focus();
-    }
-  }, [dataEditDefault]);
+  // useEffect(() => {
+  //   if (refAutoFocus.current) {
+  //     refAutoFocus.current.focus();
+  //   }
+  // }, [dataEditDefault]);
   const handleChangeshowTable = () => {
     setState({
       changeShowFullTbale: true,
@@ -465,7 +493,8 @@ const SettingsAccount = (props) => {
               checkRole([ROLES["QUAN_LY_TAI_KHOAN"].QUAN_LY_TAI_KHOAN_THEM])
                 ? [
                     {
-                      title: "Thêm mới",
+                      type: "create",
+                      title: "Thêm mới [F1]",
                       onClick: handleClickedBtnAdded,
                       buttonHeaderIcon: (
                         <img style={{ marginLeft: 5 }} src={IcCreate} alt="" />
@@ -519,7 +548,8 @@ const SettingsAccount = (props) => {
             dataSource={listAccount}
             onRow={onRow}
             rowKey={(record) => record.id}
-            rowClassName={setRowClassName}
+            layerId={refLayerHotKey.current}
+            dataEditDefault={dataEditDefault}
           ></TableWrapper>
           {!!totalElements ? (
             <Pagination
@@ -551,10 +581,11 @@ const SettingsAccount = (props) => {
               onCancel={handleCancel}
               cancelText="Hủy"
               onOk={handleAdded}
-              okText="Lưu"
+              okText="Lưu [F4]"
               roleSave={[ROLES["QUAN_LY_TAI_KHOAN"].QUAN_LY_TAI_KHOAN_THEM]}
               roleEdit={[ROLES["QUAN_LY_TAI_KHOAN"].QUAN_LY_TAI_KHOAN_SUA]}
               editStatus={state.editStatus}
+              layerId={refLayerHotKey.current}
             >
               <fieldset
                 disabled={
@@ -751,6 +782,7 @@ const SettingsAccount = (props) => {
           </Col>
         )}
       </HomeWrapper>
+      <ModalNotification2 ref={refNotification}></ModalNotification2>
     </Main>
   );
 };
@@ -794,11 +826,13 @@ const mapDispatchToProps = ({
     onChangeInputSearch,
     updateData,
     createOrEdit,
+    resetMatKhau,
   },
   adminVaiTroHeThong: { onSearchTongHop: getListRoles },
   nhanVien: { getListAllNhanVien: getListAllNhanVien },
   quyen: { onGetAll: getAllPermission },
 }) => ({
+  resetMatKhau,
   onSearch,
   onSizeChange,
   onSortChange,

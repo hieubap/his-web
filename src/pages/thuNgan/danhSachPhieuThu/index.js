@@ -55,7 +55,13 @@ function DanhSachPhieuThu(props) {
 
   useEffect(() => {
     onAddLayer({ layerId: refLayerHotKey.current });
-    onSizeChange({ size: 20, dataSearch: {}, dataSortColumn: {} });
+    onSizeChange({
+      size: 20,
+      dataSearch: {
+        thanhToan: false,
+      },
+      dataSortColumn: {},
+    });
     getAllServices();
     return () => {
       onRemoveLayer({ layerId: refLayerHotKey.current });
@@ -66,36 +72,55 @@ function DanhSachPhieuThu(props) {
       setState({ currentIndex: 0 });
     }
   }, [listData]);
+  const scrollToRow = (id) => {
+    document
+      .getElementsByClassName("row-id-" + id)[0]
+      .scrollIntoView({ block: "center", behavior: "smooth" });
+  };
   useEffect(() => {
     onRegisterHotkey({
       layerId: refLayerHotKey.current,
       hotKeys: [
         {
           keyCode: 38, //Mũi tên lên
-          onEvent: () => {
-            if (state.currentIndex > 0) {
+          onEvent: (e) => {
+            console.log(e, "e");
+            if (e.target.id !== "nh-select-tim-kiem-ten-man-hinh")
+              e.target.blur();
+            if (
+              state.currentIndex > 0 &&
+              e.target.id !== "nh-select-tim-kiem-ten-man-hinh"
+            ) {
               setState({
                 currentIndex: state.currentIndex - 1,
               });
+              scrollToRow(listData[state.currentIndex - 1]?.id);
             }
           },
         },
 
         {
           keyCode: 40, //Mũi tên xuống
-          onEvent: () => {
-            if (state.currentIndex < listData.length - 1) {
+          onEvent: (e) => {
+            console.log(e, "e");
+            if (e.target.id !== "nh-select-tim-kiem-ten-man-hinh")
+              e.target.blur();
+            if (
+              state.currentIndex < listData.length - 1 &&
+              e.target.id !== "nh-select-tim-kiem-ten-man-hinh"
+            ) {
               setState({
                 currentIndex: state.currentIndex + 1,
               });
+              scrollToRow(listData[state.currentIndex + 1]?.id);
             }
           },
         },
         {
           keyCode: 13, //Enter
-          onEvent: () => {
+          onEvent: (e) => {
             const record = listData[state.currentIndex];
-            if (record) {
+            if (record && e.target.nodeName !== "INPUT") {
               onRow(record).onClick();
             }
           },
@@ -226,7 +251,7 @@ function DanhSachPhieuThu(props) {
           dataSort={dataSortColumn.thanhToan || 0}
           searchSelect={
             <Select
-              defaultValue=""
+              defaultValue={"false"}
               data={TRANG_THAI_PHIEU_THU}
               placeholder="Chọn TT phiếu thu"
               onChange={onSearchInput("thanhToan")}
@@ -382,7 +407,7 @@ function DanhSachPhieuThu(props) {
   return (
     <Main>
       <MainHeaderSearchThuNgan
-        titleBack="Quay lại"
+        titleBack="Quay lại [ESC]"
         backLink="/thu-ngan"
         icon={IconArrowRight}
         layerId={refLayerHotKey.current}
@@ -393,7 +418,9 @@ function DanhSachPhieuThu(props) {
         <TableWrapper
           style={{ background: "#f4f5f7" }}
           rowClassName={(record, index) => {
-            return index == state.currentIndex ? "row-selected" : "";
+            return index == state.currentIndex
+              ? "row-selected row-id-" + record.id
+              : "row-id-" + record.id;
           }}
           scroll={{ y: 500, x: 1500 }}
           columns={columns}
@@ -405,6 +432,7 @@ function DanhSachPhieuThu(props) {
             onChange={handleChangePage}
             current={page + 1}
             pageSize={size}
+            listData={listData}
             total={totalElements}
             onShowSizeChange={handleSizeChange}
             style={{ flex: 1, justifyContent: "flex-end" }}

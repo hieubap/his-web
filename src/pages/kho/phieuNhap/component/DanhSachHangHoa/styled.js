@@ -20,6 +20,36 @@ export const Main = styled.div`
     align-items: center;
     color: #ffffff;
   }
+  .table-row-odd{
+      &.ant-table-row-selected{
+        .ant-table-cell{
+          background-color : #c1f0db;
+        }
+      }
+      &.add-border{
+        .ant-table-cell{
+          border-bottom : 1px solid #ececec;
+        }
+      }
+      .ant-table-cell{
+        background-color: white;
+      }
+    }
+    .table-row-even{
+      &.ant-table-row-selected{
+        .ant-table-cell{
+          background-color : #c1f0db;
+        }
+      }
+      &.add-border{
+        .ant-table-cell{
+          border-bottom : 1px solid #ececec;
+        }
+      }
+      .ant-table-cell{
+        background-color: #eaf0fe;
+      }
+    }
 `;
 
 export const ContentTable = styled.div`

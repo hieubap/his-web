@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { Checkbox, Col, Input, Form } from "antd";
 import HomeWrapper from "components/HomeWrapper";
 import TableWrapper from "components/TableWrapper";
@@ -25,6 +25,8 @@ import { Main } from "./styled";
 import { SORT_DEFAULT } from "./configs";
 import { checkRole } from "app/Sidebar/constant";
 import FormWraper from "components/FormWraper";
+import stringUtils from "mainam-react-native-string-utils";
+
 let timer = null;
 
 const ThietLap = ({
@@ -56,6 +58,18 @@ const ThietLap = ({
     });
   };
 
+  const refAutoFocus = useRef();
+  const refLayerHotKey = useRef(stringUtils.guid());
+  const { onAddLayer, onRemoveLayer } = useDispatch().phimTat;
+
+  // register layerId
+  useEffect(() => {
+    onAddLayer({ layerId: refLayerHotKey.current });
+    return () => {
+      onRemoveLayer({ layerId: refLayerHotKey.current });
+    };
+  }, []);
+
   useEffect(() => {
     onSizeChange({ size: 10 });
   }, []);
@@ -65,6 +79,11 @@ const ThietLap = ({
       editStatus: false,
     });
     form.resetFields();
+    if (refAutoFocus.current) {
+      setTimeout(() => {
+        refAutoFocus.current.focus();
+      }, 50);
+    }
   };
 
   const onShowAndHandleUpdate = (data = {}) => {
@@ -120,7 +139,7 @@ const ThietLap = ({
   };
 
   const handleAdded = (e) => {
-    e.preventDefault();
+    if (e?.preventDefault) e.preventDefault();
     form
       .validateFields()
       .then((values) => {
@@ -237,12 +256,11 @@ const ThietLap = ({
       },
     },
   ];
-  const refAutoFocus = useRef(null);
-  useEffect(() => {
-    if (refAutoFocus.current) {
-      refAutoFocus.current.focus();
-    }
-  }, [dataEditDefault]);
+  // useEffect(() => {
+  //   if (refAutoFocus.current) {
+  //     refAutoFocus.current.focus();
+  //   }
+  // }, [dataEditDefault]);
   const handleChangeshowTable = () => {
     setState({
       changeShowFullTbale: true,
@@ -285,7 +303,8 @@ const ThietLap = ({
               checkRole([ROLES.THIET_LAP_CHUNG_THEM])
                 ? [
                     {
-                      title: "Thêm mới",
+                      type: "create",
+                      title: "Thêm mới [F1]",
                       onClick: handleClickedBtnAdded,
                       buttonHeaderIcon: (
                         <img style={{ marginLeft: 5 }} src={IcCreate} alt="" />
@@ -338,6 +357,8 @@ const ThietLap = ({
             columns={columns}
             dataSource={listData}
             onRow={onRow}
+            layerId={refLayerHotKey.current}
+            dataEditDefault={dataEditDefault}
           />
           {!!totalElements ? (
             <Pagination
@@ -368,10 +389,11 @@ const ThietLap = ({
               onCancel={handleCancel}
               cancelText="Hủy"
               onOk={handleAdded}
-              okText="Lưu"
+              okText="Lưu [F4]"
               roleSave={[ROLES.THIET_LAP_CHUNG_THEM]}
               roleEdit={[ROLES.THIET_LAP_CHUNG_SUA]}
               editStatus={state.editStatus}
+              layerId={refLayerHotKey.current}
             >
               <FormWraper
                 disabled={

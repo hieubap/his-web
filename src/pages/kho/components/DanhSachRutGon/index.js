@@ -152,7 +152,10 @@ const DanhSachRutGon = (props) => {
           onClickSort={onClickSort}
           searchSelect={
             <Select
-              data = {[{id: "", ten : "Tất cả"}, ...(listTrangThaiPhieuNhapXuat || [])]}
+              data={[
+                { id: "", ten: "Tất cả" },
+                ...(listTrangThaiPhieuNhapXuat || []),
+              ]}
               placeholder="Nhập trạng thái"
               onChange={onSearchInput("trangThai")}
             />
@@ -251,8 +254,8 @@ const DanhSachRutGon = (props) => {
       <Row className="header">
         <div className="header__left">
           <span>Danh sách phiếu nhập</span>
-          <Button className ="btn-show" onClick={showChiTiet} >
-          <img src={IcUp} alt="..." />
+          <Button className="btn-show" onClick={showChiTiet}>
+            <img src={IcUp} alt="..." />
           </Button>
         </div>
         <div className="header__right">
@@ -275,6 +278,7 @@ const DanhSachRutGon = (props) => {
           onChange={onChangePage}
           current={page + 1}
           pageSize={size}
+          listData={listPhieuNhap}
           total={totalElements}
           onShowSizeChange={handleSizeChange}
           stylePagination={{ flex: 1, justifyContent: "flex-start" }}

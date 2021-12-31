@@ -2,10 +2,11 @@ import React from "react";
 import { HeaderWrapper } from "../styled";
 import IconPrinter from "assets/images/khamBenh/printer.png";
 import IconDelete from "assets/images/khamBenh/delete.png";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { message } from "antd";
 function Header(props) {
-  const { listDvThuoc, onDeleteAll, getListDichVuThuoc, nbDotDieuTriId } = props;
+  const inPhieu = useDispatch().chiDinhDichVuKho.inPhieu;
+  const { listDvThuoc, onDeleteAll, getListDichVuThuoc, nbDotDieuTriId, soPhieuId, loaiDonThuoc, phieuChiDinhId ,phieuNhapXuatId} = props;
 
   const onDelete = (e) => {
     const payload = listDvThuoc.map((item) => {
@@ -23,7 +24,6 @@ function Header(props) {
       }
     })
   };
-  console.log('props.title: ', props);
   return (
     <HeaderWrapper>
       {props.title && `${props.title} - ${props?.listDvThuoc ? props?.listDvThuoc[0]?.soPhieu : ""}`}
@@ -31,6 +31,12 @@ function Header(props) {
         src={IconPrinter}
         alt="IconEdit"
         onClick={(e) => {
+          inPhieu({
+            nbDotDieuTriId,
+            soPhieuId,
+            loaiDonThuoc,
+            phieuNhapXuatId,
+          });
           e.stopPropagation();
         }}
       />

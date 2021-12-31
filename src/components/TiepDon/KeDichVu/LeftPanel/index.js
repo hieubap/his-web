@@ -1,27 +1,23 @@
 import React, { memo, useEffect } from "react";
-import InfoRegister from "./InfoRegister";
-import SearchService from "./SearchService";
-import { Main } from "./styledMain";
-import { compose } from "redux";
-import { connect } from "react-redux";
+import ThongTinBN from "./ThongTinBN";
+import TimKiemDichVu from "./TimKiemDichVu";
+import { Main } from "./styled";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 
 const LeftPanel = (props) => {
-  const { getUtils, id } = props;
+  const {
+    utils: { getUtils },
+  } = useDispatch();
   useEffect(() => {
     getUtils({ name: "gioiTinh" });
   }, []);
   return (
     <Main className="container-fluid">
-      <InfoRegister id={id} />
-      <SearchService id={id} />
+      <ThongTinBN />
+      <TimKiemDichVu />
     </Main>
   );
 };
 
-const mapDispatchToProps = ({ utils: { getUtils } }) => ({
-  getUtils,
-});
-
-const withConnect = connect(null, mapDispatchToProps);
-
-export default compose(withConnect, memo)(LeftPanel);
+export default memo(LeftPanel);

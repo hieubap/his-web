@@ -6,7 +6,7 @@ import HeaderSearch from "components/TableWrapper/headerSearch";
 import IcSave from "assets/images/kho/save.png";
 import IcCreate from "assets/images/kho/IcCreate2.png";
 import Select from "components/Select";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { MUC_DO_UU_TIEN } from "constants/index";
 import { cloneDeep } from "lodash";
 import CreatedWrapper from "components/CreatedWrapper";
@@ -21,6 +21,7 @@ const ChiTiet = (props) => {
     getById,
     currentData,
     collapseStatus,
+    layerId,
   } = props;
   const [state, _setState] = useState({
     dataTable: [],
@@ -200,7 +201,7 @@ const ChiTiet = (props) => {
   const refAutofocus = useRef(null);
   useEffect(() => {
     console.log(refAutofocus.current);
-    if (refAutofocus.current) {
+    if (refAutofocus.current && !currentItem?.id) {
       refAutofocus.current.focus();
     }
   }, [currentItem]);
@@ -211,10 +212,11 @@ const ChiTiet = (props) => {
         onCancel={onReset}
         cancelText="Hủy"
         onOk={onSave}
-        okText="Lưu"
+        okText="Lưu [F4]"
         // roleSave={[ROLES["DANH_MUC"].MAU_QMS_THEM]}
         // roleEdit={[ROLES["DANH_MUC"].MAU_QMS_SUA]}
         editStatus={props.stateParent.editStatus}
+        layerId={layerId}
       >
         <Form
           form={form}

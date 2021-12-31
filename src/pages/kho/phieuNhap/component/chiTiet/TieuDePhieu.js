@@ -10,11 +10,21 @@ import { ModalNotification2 } from "components/ModalConfirm";
 import phieuNhapProvider from "data-access/kho/phieu-nhap-xuat-provieder";
 import { useHistory } from "react-router-dom";
 import { openInNewTab } from "utils";
+import { useDispatch } from "react-redux";
 
 const TieuDePhieu = ({ supplier = {}, ticket = {} }) => {
   const refConfirmRemoveItem = useRef();
   const [state, setState] = useState({});
   const { push } = useHistory();
+  const updateData = useDispatch().phieuNhap.updateData
+  useEffect(() => {
+    return () => {
+      updateData({
+        thongTinPhieuNhap : {},
+        dsAllNhapXuatChiTiet: []
+      })
+    }
+  }, [])
   const getStatus = () => {
     return [
       {

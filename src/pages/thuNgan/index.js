@@ -1,16 +1,16 @@
 import React from "react";
 import { Route } from "react-router-dom";
-import { thuNganPages } from "pages/constants";
+import { pageThuNgan } from "pages/constants";
 
 const ThuNganPages = (props) => {
   return (
     <div className={"app-contain"}>
-      {Object.keys(thuNganPages).map((key) => (
+      {Object.keys(pageThuNgan).map((key) => (
         <Route
           key={key}
-          path={thuNganPages[key].path}
-          component={thuNganPages[key].component}
-          exact={thuNganPages[key].exact}
+          path={pageThuNgan[key].path}
+          component={pageThuNgan[key].component}
+          exact={pageThuNgan[key].exact}
         />
       ))}
     </div>

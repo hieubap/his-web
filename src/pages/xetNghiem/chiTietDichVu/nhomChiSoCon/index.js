@@ -82,7 +82,7 @@ function NhomChiSoCon(props) {
   };
 
   const renderKetQua = (key, value, index) => {
-    const { loaiKetQua, phanLoaiKetQua } = data.dsChiSoCon[index];
+    const { loaiKetQua = null, phanLoaiKetQua = null} = data.dsChiSoCon[index];
     if (loaiKetQua === LOAI_KET_QUA.SO) {
       return (
         <InputNumber

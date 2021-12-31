@@ -193,7 +193,7 @@ const ModalListDichVuTimKiem = (props, ref) => {
     return {
       onClick: () => {
         if (record?.soLuongKhaDungConHsd == 0) {
-          message.error(`Dịch vụ đã hết hạn sử dụng ${record?.ngayHanSuDungLonNhat ? moment(moment(record?.ngayHanSuDungLonNhat,"DD-MM-YYYY")).format("DD/MM/YYYY") : moment(moment(record?.ngayHanSuDungNhoNhat,"DD-MM-YYYY")).format("DD/MM/YYYY")}`)
+          message.error(`Dịch vụ đã hết hạn sử dụng ${record?.ngayHanSuDungLonNhat ? moment(moment(record?.ngayHanSuDungLonNhat,"YYYY-MM-DD")).format("DD/MM/YYYY") : moment(moment(record?.ngayHanSuDungNhoNhat,"DD-MM-YYYY")).format("DD/MM/YYYY")}`)
           return null
         }
         if (record.soLuongKhaDung > 0) {

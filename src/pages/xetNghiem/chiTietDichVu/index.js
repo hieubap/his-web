@@ -137,7 +137,7 @@ const ChiTietDichVu = (props, ref) => {
       <ModalBody>
         <Row gutter={32}>
           <Col className="gutter-row" span={8}>
-            <NhomKetLuan data={data} form={form} />
+            <NhomKetLuan data={data} form={form} listphanLoaiKetQuaXetNghiem={listphanLoaiKetQuaXetNghiem} />
             <ThongTinChung data={data} />
           </Col>
           <Col className="gutter-row" span={16}>

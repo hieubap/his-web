@@ -158,11 +158,11 @@ const FormChuongTrinh = (
       setState({ dsDichVu: arr });
     }
   };
-  useEffect(() => {
-    if (refAutoFocus.current) {
-      refAutoFocus.current.focus();
-    }
-  }, [state.dataEdit]);
+  // useEffect(() => {
+  //   if (refAutoFocus.current) {
+  //     refAutoFocus.current.focus();
+  //   }
+  // }, [state.dataEdit]);
   return (
     <>
       <CreatedWrapper
@@ -170,7 +170,7 @@ const FormChuongTrinh = (
         onCancel={onCancel}
         cancelText={"Hủy"}
         onOk={onSave}
-        okText={"Lưu"}
+        okText={"Lưu [F4]"}
         roleSave={[ROLES["DANH_MUC"].CHUONG_TRINH_GIAM_GIA_THEM]}
         roleEdit={[ROLES["DANH_MUC"].CHUONG_TRINH_GIAM_GIA_SUA]}
         editStatus={editStatus}

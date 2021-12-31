@@ -1,6 +1,6 @@
 import { Col, Input, Popover, Row } from "antd";
 import Breadcrumb from "components/Breadcrumb";
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import { Main } from "./styled";
 import LeftPanel from "./LeftPanel";
 import RightPanel from "./RightPanel";
@@ -8,6 +8,8 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from 'react-router'
 import moment from "moment";
+import stringUtils from "mainam-react-native-string-utils";
+
 const ChiTietDonThuoc = (props) => {
     const history = useHistory()
     const macDinh = useDispatch().themMoiThuoc.macDinh
@@ -18,6 +20,17 @@ const ChiTietDonThuoc = (props) => {
     const getListAllLieuDung = useDispatch().lieuDung.getListAllLieuDung
     const infoPatient = useSelector(state => state.thuocChiTiet.infoPatient)
     const trangThaiDon = useSelector(state => state?.thuocChiTiet?.infoPatient?.phieuXuat?.trangThai || "")
+
+    const refLayerHotKey = useRef(stringUtils.guid());
+    const { onAddLayer, onRemoveLayer } = useDispatch().phimTat;
+
+    useEffect(() => {
+        onAddLayer({ layerId: refLayerHotKey.current });
+        return () => {
+        onRemoveLayer({ layerId: refLayerHotKey.current });
+        };
+    }, []);
+
     const isThemMoi = useMemo(() => {
         if (history.location.pathname.includes("them-moi")) {
             return true
@@ -102,10 +115,10 @@ const ChiTietDonThuoc = (props) => {
             </div>
             <Row>
                 <Col span={19} className="body">
-                    <LeftPanel isThemMoi={isThemMoi} />
+                    <LeftPanel isThemMoi={isThemMoi} layerId={refLayerHotKey.current} />
                 </Col>
                 <Col span={5} className="bg-color" >
-                    <RightPanel isThemMoi={isThemMoi} />
+                    <RightPanel isThemMoi={isThemMoi} layerId={refLayerHotKey.current}/>
                 </Col>
             </Row>
         </Main>

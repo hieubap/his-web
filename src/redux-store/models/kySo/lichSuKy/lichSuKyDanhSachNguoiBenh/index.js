@@ -34,13 +34,17 @@ export default {
       });
       dispatch.lichSuKyDanhSachNguoiBenh.getList({ ...obj })
     },
-    onSizeChange: ({ dataSearch, ...rest }) => {
+    onSizeChange: ({ dataSearch, tongHop,...rest }) => {
       dispatch.lichSuKyDanhSachNguoiBenh.updateData({
         page: 0,
         // dataSearch: dataSearch || {},
         ...rest,
       });
-      dispatch.lichSuKyDanhSachNguoiBenh.getList({ ...rest });
+      if(tongHop){
+        dispatch.lichSuKyDanhSachNguoiBenh.getListTongHop({ ...rest });
+      } else {
+        dispatch.lichSuKyDanhSachNguoiBenh.getList({ ...rest });
+      }
     },
     getList: ({ page = 0, dataSortColumn, ...payload }, state) => {
       let size = payload?.size || state.lichSuKyDanhSachNguoiBenh.size || 10;
@@ -53,6 +57,36 @@ export default {
       }
       nbDotDieuTriProvider
         .searchNBDotDieuTri({
+          page, size,
+          sort,
+          ...dataSearch,
+        })
+        .then((s) => {
+          dispatch.lichSuKyDanhSachNguoiBenh.updateData({
+            listData: (s?.data || []).map((item, index) => {
+              item.index = page * size + index + 1;
+              return item;
+            }),
+            totalElements: s?.totalElements || 0,
+            page,
+            size,
+          });
+        })
+        .catch((e) => {
+          message.error(e?.message || "Xảy ra lỗi vui lòng thử lại");
+        });
+    },
+    getListTongHop: ({ page = 0, dataSortColumn, ...payload }, state) => {
+      let size = payload?.size || state.lichSuKyDanhSachNguoiBenh.size || 10;
+      const sort = combineSort(
+        dataSortColumn || state.lichSuKyDanhSachNguoiBenh.dataSortColumn || {}
+      );
+      const dataSearch = {
+        ...state.lichSuKyDanhSachNguoiBenh.dataSearch,
+        ...payload,
+      }
+      nbDotDieuTriProvider
+        .searchNBDotDieuTriTongHop({
           page, size,
           sort,
           ...dataSearch,

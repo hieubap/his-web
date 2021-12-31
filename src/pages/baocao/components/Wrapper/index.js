@@ -4,12 +4,14 @@ import { Main } from "./styled";
 const Index = ({
   title = "Báo cáo",
   children,
+  action,
   ...props
 }) => {
   return (
     <Main>
       <div className="title">
-        {title}
+        <div className="left">{title}</div>
+        <div className="right">{action}</div>
       </div>
       <div className="container">
         {children}

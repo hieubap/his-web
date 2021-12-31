@@ -13,7 +13,6 @@ import { useHistory } from "react-router-dom";
 import { useQueryString } from "hook";
 
 const App = (props) => {
-  const history = useHistory();
   const [redirect] = useQueryString("redirect", "/");
 
   useEffect(() => {

@@ -1,36 +1,13 @@
+import nbDotDieuTriProvider from "data-access/nb-dot-dieu-tri-provider";
 import dichVuProvider from "data-access/dich-vu-provider";
 import dichVuXNProvider from "data-access/nb-dv-xet-nghiem-provider";
 import nbDvKhamProvider from "data-access/nb-dv-kham-provider";
 import nbDvCLSProvider from "data-access/nb-dv-cdha-tdcn-pt-tt-provider";
 import { message } from "antd";
 import cacheUtils from "utils/cache-utils";
-import { combineSort, parseParams, getIdFromUrl } from "utils";
+import { combineSort } from "utils";
 import { groupBy } from "lodash";
 import printProvider from "data-access/print-provider";
-
-export const getPromises = ({ id, payload }) => {
-  let promises = {};
-  [
-    "phieuCdha",
-    "phieuXetNghiem",
-    "phieuKhamBenh",
-    "camKetDieuTriCovid",
-    "phieuGiuTheBHYT",
-    "vongTayNguoiBenh",
-  ].map((item) => {
-    promises[item] = new Promise((resolve, reject) => {
-      let nameFunc = `get${item.charAt(0).toLocaleUpperCase() + item.slice(1)}`;
-      dichVuProvider[nameFunc](id, payload)
-        .then((s) => {
-          resolve(s);
-        })
-        .catch((e) => {
-          reject(e);
-        });
-    });
-  });
-  return promises;
-};
 
 export default {
   state: {
@@ -572,108 +549,82 @@ export default {
           });
       });
     },
-    getAllPhieu: ({ id, ...payload }, state) => {
-      const {
-        phieuCdha,
-        phieuXetNghiem,
-        phieuKhamBenh,
-        camKetDieuTriCovid,
-        phieuGiuTheBHYT,
-        vongTayNguoiBenh,
-      } = getPromises({ id, payload });
-      return Promise.all([
-        payload.covid ? camKetDieuTriCovid : null,
-        phieuKhamBenh,
-        phieuXetNghiem,
-        phieuCdha,
-        phieuGiuTheBHYT,
-        vongTayNguoiBenh,
-      ])
-        .then((response) => {
-          let data = response
-            .filter((x) => x?.code == 0)
-            .map((item) => {
-              if (Array.isArray(item?.data)) {
-                return item?.data.map((item2) => {
-                  return item2.file.pdf;
-                });
-              } else {
-                return item.data.file.pdf;
+    getPhieuIn: (payload = {}, state) => {
+      const { nbDotDieuTriId } = payload;
+      return new Promise((resolve, reject) => {
+        nbDotDieuTriProvider
+          .getPhieuIn({
+            nbDotDieuTriId,
+            maManHinh: "002",
+            maViTri: "00201",
+          })
+          .then((s) => {
+            const data = s.data || [];
+            const promises = [];
+            data.forEach((item) => {
+              switch (item.ma) {
+                case "P006":
+                  promises.push(
+                    dichVuProvider.getPhieuGiuTheBHYT(nbDotDieuTriId)
+                  );
+                  break;
+                case "P007":
+                  promises.push(
+                    dichVuProvider.getCamKetDieuTriCovid(nbDotDieuTriId)
+                  );
+                  break;
+                case "P008":
+                  promises.push(
+                    dichVuProvider.getVongTayNguoiBenh(nbDotDieuTriId)
+                  );
+                  break;
+                case "P009":
+                  promises.push(
+                    dichVuProvider.getPhieuKhamBenh(nbDotDieuTriId, {
+                      chiDinhTuLoaiDichVu: 200,
+                    })
+                  );
+                  break;
+                case "P010":
+                  promises.push(
+                    dichVuProvider.getPhieuXetNghiem(nbDotDieuTriId, {
+                      chiDinhTuLoaiDichVu: 200,
+                    })
+                  );
+                  break;
+                case "P011":
+                  promises.push(
+                    dichVuProvider.getPhieuCdha(nbDotDieuTriId, {
+                      chiDinhTuLoaiDichVu: 200,
+                    })
+                  );
+                  break;
               }
             });
-          let service = [];
-          data.map((item) => {
-            if (Array.isArray(item)) {
-              return item.map((item2) => {
-                service.push(item2);
+            Promise.all(promises)
+              .then((s) => {
+                dispatch.tiepDonDichVu.updateData({
+                  listPhieu: s?.map((phieu, index) => {
+                    const item = phieu.data;
+                    item.key = item?.id;
+                    item.index = index + 1;
+                    if (Array.isArray(item?.file?.pdf)) {
+                      item.filePdf = item?.file?.pdf?.map((x) => x);
+                    } else {
+                      item.filePdf = [item?.file?.pdf];
+                    }
+                    return item;
+                  }),
+                });
+              })
+              .catch((e) => {
               });
-            } else {
-              service.push(item);
-            }
+          })
+          .catch((e) => {
           });
-
-          printProvider
-            .printMergePdf(service)
-            .then(() => {
-              console.info("Print success");
-            })
-            .catch((err) => {
-              console.error("Print fail", err);
-            });
-        })
-        .catch((e) => {
-          message.error(e?.message);
-        });
+      });
     },
-    getDanhSachPhieu: ({ id, ...payload }, state) => {
-      const {
-        phieuCdha,
-        phieuXetNghiem,
-        phieuKhamBenh,
-        camKetDieuTriCovid,
-        phieuGiuTheBHYT,
-        vongTayNguoiBenh,
-      } = getPromises({ id, payload });
 
-      return Promise.all([
-        payload.covid ? camKetDieuTriCovid : null,
-        phieuKhamBenh,
-        phieuXetNghiem,
-        phieuCdha,
-        phieuGiuTheBHYT,
-        vongTayNguoiBenh,
-      ])
-        .then((response) => {
-          let listPhieu = response
-            .filter((x) => x?.code == 0)
-            .map((item) => {
-              if (Array.isArray(item?.data)) {
-                return item?.data.map((item2) => {
-                  return item2;
-                });
-              } else {
-                return item?.data;
-              }
-            });
-          listPhieu = listPhieu?.map((item, index) => {
-            item.key = item?.id;
-            item.index = index + 1;
-            if (Array.isArray(item?.file?.pdf)) {
-              item.filePdf = item?.file?.pdf?.map((x) => x);
-            } else {
-              item.filePdf = [item?.file?.pdf];
-            }
-            return item;
-          });
-          console.log(listPhieu);
-          dispatch.tiepDonDichVu.updateData({
-            listPhieu,
-          });
-        })
-        .catch((e) => {
-          message.error(e?.message);
-        });
-    },
     getDataDanhSachPhieu: ({ dsFile, mode, ...payload }, state) => {
       return new Promise((resolve, reject) => {
         printProvider

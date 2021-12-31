@@ -6,7 +6,7 @@ import FormChuyenVien from "./FormChuyenVien";
 import FormNhapVien from "./FormNhapVien";
 import { CollapseWrapper, StickyWrapper } from "./styled";
 import Select from "components/Select";
-import { connect, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   HUONG_DIEU_TRI_KHAM,
   TITLE_KET_LUAN_KHAM,
@@ -17,20 +17,24 @@ import { TRANG_THAI_DICH_VU } from "constants/index";
 const { Panel } = Collapse;
 
 const KetLuan = ({
-  dataTIEU_DE_TRAI_1,
   dataRef,
   handleSetData,
-  listhuongDieuTriKham,
-  listketQuaDieuTriKham,
   popoverData,
   setPopoverData,
-  getListAllBenhVien,
-  getListAllKhoa,
-  updateChiSoSong,
-  getThietLap,
-  getListAllNgheNghiep,
   dataDichVu,
 }) => {
+  const { listhuongDieuTriKham, listketQuaDieuTriKham } = useSelector(
+    (state) => state.utils
+  );
+  const { infoNb } = useSelector((state) => state.khamBenh);
+  const {
+    thietLap: { getThietLap },
+    benhVien: { getListAllBenhVien },
+    khoa: { getListAllKhoa },
+    khamBenh: { updateChiSoSong },
+    ngheNghiep: { getListAllNgheNghiep },
+  } = useDispatch();
+
   const trangThaiKham = useSelector(
     (state) => state.khamBenh.thongTinChiTiet?.nbDvKyThuat?.trangThai
   );
@@ -62,7 +66,6 @@ const KetLuan = ({
       case HUONG_DIEU_TRI_KHAM.NHAP_VIEN:
         content = (
           <FormNhapVien
-            dataTIEU_DE_TRAI_1={dataTIEU_DE_TRAI_1}
             handleSetData={handleSetData}
             updateChiSoSong={updateChiSoSong}
           />
@@ -84,6 +87,8 @@ const KetLuan = ({
           isCollapsed={parseInt(collapsedKey) === 1}
           title={renderTitle()}
           showIconDelete={false}
+          nbDotDieuTriId={infoNb.nbDotDieuTriId}
+          id={infoNb.id}
         />
       ),
       content: renderContent(),
@@ -152,6 +157,7 @@ const KetLuan = ({
     });
   }, [popoverData?.keyHuongDieuTri]);
 
+  console.log('trangThaiKham: ', trangThaiKham);
   const stickyHeader = useMemo(() => {
     {
       return (
@@ -162,6 +168,7 @@ const KetLuan = ({
               <Col span={11} className="info__left">
                 <div>Hướng điều trị</div>
                 <Select
+                  disabled={trangThaiKham == TRANG_THAI_DICH_VU.DA_KET_LUAN}
                   style={{ width: "100%" }}
                   value={popoverData?.keyHuongDieuTri}
                   data={listhuongDieuTriKham}
@@ -172,6 +179,7 @@ const KetLuan = ({
               <Col span={11} offset={2} className="info__right">
                 <div>Kết quả</div>
                 <Select
+                  disabled={trangThaiKham == TRANG_THAI_DICH_VU.DA_KET_LUAN}
                   style={{ width: "100%" }}
                   value={popoverData?.keyKetQua}
                   data={listketQuaDieuTriKhamFilter}
@@ -215,28 +223,4 @@ const KetLuan = ({
   );
 };
 
-export default connect(
-  ({
-    thietLap: { dataTIEU_DE_TRAI_1 },
-    utils: { listhuongDieuTriKham = [], listketQuaDieuTriKham = [] },
-    khamBenh: { thongTinChiTiet },
-  }) => ({
-    listhuongDieuTriKham,
-    listketQuaDieuTriKham,
-    thongTinChiTiet,
-    dataTIEU_DE_TRAI_1,
-  }),
-  ({
-    thietLap: { getThietLap },
-    benhVien: { getListAllBenhVien },
-    khoa: { getListAllKhoa },
-    khamBenh: { updateChiSoSong },
-    ngheNghiep: { getListAllNgheNghiep },
-  }) => ({
-    getThietLap,
-    getListAllBenhVien,
-    getListAllKhoa,
-    updateChiSoSong,
-    getListAllNgheNghiep,
-  })
-)(KetLuan);
+export default KetLuan;

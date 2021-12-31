@@ -5,6 +5,7 @@ const Main = styled("div")`
     padding: 0 40px 34px 40px;
     .home {
       &-breadcrumbs {
+        height: 41px;
         margin: 6px 0px;
         width: 100%;
         font-weight: 600;
@@ -22,7 +23,7 @@ const Main = styled("div")`
           display: inline-block;
           cursor: pointer;
         }
-        .link{
+        .link {
           cursor: pointer;
         }
       }

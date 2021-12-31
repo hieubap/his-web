@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
 import moment from "moment";
-import { Tooltip, Avatar } from "antd";
+import { Tooltip, Avatar, Row, Col } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { HOST } from "client/request";
 import { formatPhone } from "utils";
@@ -31,10 +31,7 @@ const ThongTinBenhNhan = ({
     <PatientInfoWrapper>
       <div className="img-avatar">
         {thongTinBenhNhan?.anhDaiDien ? (
-          <Image
-            preview={false}
-            src={thongTinBenhNhan?.anhDaiDien}
-          />
+          <Image preview={false} src={thongTinBenhNhan?.anhDaiDien} />
         ) : (
           <Avatar icon={<UserOutlined />} size={100} shape={"square"} />
         )}
@@ -46,100 +43,96 @@ const ThongTinBenhNhan = ({
             {gioiTinh.ten && `(${gioiTinh.ten})`}
           </div>
         </div>
-        <div className="info-content">
-          <div className="custom-col">
-            <table>
-              <tbody>
-                <tr>
-                  <td>Ngày sinh:</td>
-                  <td className="info">
-                    {moment(thongTinBenhNhan?.ngaySinh).format("DD/MM/YYYY")}{" "}
-                    {age}
-                  </td>
-                </tr>
-                <tr>
-                  <td>Địa chỉ:</td>
-                  <td className="info">
-                    <Tooltip
-                      placement="topLeft"
-                      title={thongTinBenhNhan?.nbDiaChi?.diaChi}
-                    >
-                      {thongTinBenhNhan?.nbDiaChi?.diaChi}
-                    </Tooltip>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Số giấy tờ tùy thân:</td>
-                  <td className="info">
-                    {thongTinBenhNhan?.nbGiayToTuyThan?.maSo}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div className="custom-col col-2">
-            <table>
-              <tbody>
-                <tr>
-                  <td>SĐT:</td>
-                  <td className="info">
-                    {formatPhone(thongTinBenhNhan?.soDienThoai)}
-                  </td>
-                </tr>
-                <tr>
-                  <td>Mã HS:</td>
-                  <td className="info">{thongTinBenhNhan?.maHoSo}</td>
-                </tr>
-                <tr>
-                  <td>Mã NB:</td>
-                  <td className="info">{thongTinBenhNhan?.maNb}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div className="custom-col">
-            <table>
-              <tbody>
-                <tr>
-                  <td>Số BHYT:</td>
-                  <td className="info">
-                    <span className="info__highlight">
-                      {thongTinBenhNhan?.nbTheBaoHiem?.maThe}
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Giá trị thẻ:</td>
-                  <td className="info">
-                    {thongTinBenhNhan?.nbTheBaoHiem && (
-                      <span className="info__highlight">
-                        Từ{" "}
-                        {moment(thongTinBenhNhan.nbTheBaoHiem?.tuNgay).format(
-                          "DD/MM/YYYY"
-                        )}{" "}
-                        đến{" "}
-                        {moment(thongTinBenhNhan.nbTheBaoHiem?.denNgay).format(
-                          "DD/MM/YYYY"
-                        )}
-                      </span>
+        <Row className="info-content" gutter={12}>
+          <Col xl={12} xxl={10} className="custom-col">
+            <div className="flex">
+              <div className="w150">Ngày sinh:</div>
+              <div className="info">
+                {moment(thongTinBenhNhan?.ngaySinh).format("DD/MM/YYYY")} {age}
+              </div>
+            </div>
+            <div className="flex">
+              <div className="w150">Địa chỉ:</div>
+              <div className="info">
+                <Tooltip
+                  placement="topLeft"
+                  title={thongTinBenhNhan?.nbDiaChi?.diaChi}
+                >
+                  {thongTinBenhNhan?.nbDiaChi?.diaChi}
+                </Tooltip>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="w150">Số giấy tờ tùy thân:</div>
+              <div className="info">
+                {thongTinBenhNhan?.nbGiayToTuyThan?.maSo}
+              </div>
+            </div>
+          </Col>
+          <Col xl={12} xxl={6} className="custom-col">
+            <div className="flex">
+              <div className="w60">SĐT:</div>
+              <div className="info">
+                {formatPhone(thongTinBenhNhan?.soDienThoai)}
+              </div>
+            </div>
+            <div className="flex">
+              <div className="w60">Mã HS:</div>
+              <div className="info">{thongTinBenhNhan?.maHoSo}</div>
+            </div>
+            <div className="flex">
+              <div className="w60">Mã NB:</div>
+              <div className="info">{thongTinBenhNhan?.maNb}</div>
+            </div>
+          </Col>
+          <Col xl={24} xxl={8} className="custom-col col-3">
+            <div className="flex">
+              <div className="w150">Thời gian vào viện:</div>
+              <div className="info">
+                <span className="info__highlight">
+                  {moment(thongTinBenhNhan.thoiGianVaoVien).format(
+                    "DD/MM/YYYY HH:mm:ss"
+                  )}
+                </span>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="w150">Số BHYT:</div>
+              <div className="info">
+                <span className="info__highlight">
+                  {thongTinBenhNhan?.nbTheBaoHiem?.maThe}
+                </span>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="150">Giá trị thẻ:</div>
+              <div className="info">
+                {thongTinBenhNhan?.nbTheBaoHiem && (
+                  <span className="info__highlight">
+                    Từ{" "}
+                    {moment(thongTinBenhNhan.nbTheBaoHiem?.tuNgay).format(
+                      "DD/MM/YYYY"
+                    )}{" "}
+                    đến{" "}
+                    {moment(thongTinBenhNhan.nbTheBaoHiem?.denNgay).format(
+                      "DD/MM/YYYY"
                     )}
-                  </td>
-                </tr>
-                <tr>
-                  <td>Loại khám BH:</td>
-                  <td className="info">
-                    <span className="info__highlight">
-                      {thongTinBenhNhan?.nbTheBaoHiem?.dungTuyen &&
-                        `Đúng tuyến`}
-                      {thongTinBenhNhan?.nbTheBaoHiem?.mucHuong &&
-                        ` (${thongTinBenhNhan?.nbTheBaoHiem?.mucHuong}%)`}
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+                  </span>
+                )}
+              </div>
+            </div>
+            <div className="flex">
+              <div className="w150">Loại khám BH:</div>
+              <div className="info">
+                <span className="info__highlight">
+                  {thongTinBenhNhan?.nbTheBaoHiem?.dungTuyen && `Đúng tuyến`}
+                  {thongTinBenhNhan?.nbTheBaoHiem?.mucHuong &&
+                    ` (${thongTinBenhNhan?.nbTheBaoHiem?.mucHuong}%)`}
+                </span>
+              </div>
+            </div>
+          </Col>
+        </Row>
       </div>
     </PatientInfoWrapper>
   );

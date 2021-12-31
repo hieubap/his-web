@@ -54,7 +54,7 @@ export default {
       });
     },
     getData: (
-      { dichVuId, page = 0, size = 10, soPhieuId, nbDotDieuTriId, ...payload },
+      { dichVuId, page = 0, size = 10, soPhieuId, nbDotDieuTriId, active , dataSortColumn, ...payload },
       state
     ) => {
       dispatch.phongThucHien.updateData({
@@ -78,17 +78,21 @@ export default {
         dichVuId,
         soPhieuId,
         nbDotDieuTriId,
+        active,
+        dataSortColumn
       });
     },
 
-    onSizeChange: ({ size }, state) => {
+    onSizeChange: ({ size , active , dataSortColumn}, state) => {
       dispatch.phongThucHien.updateData({
         size,
         page: 0,
+        dataSortColumn
       });
       dispatch.phongThucHien.onSearch({
         page: 0,
         size,
+        active
       });
     },
 
@@ -155,14 +159,17 @@ export default {
         });
     },
 
-    onSearch: ({ page = 0, soPhieuId, nbDotDieuTriId, ...payload }, state) => {
+    onSearch: ({ page = 0, soPhieuId, nbDotDieuTriId, active,...payload }, state) => {
       let newState = { isLoading: true, page };
       dispatch.phongThucHien.updateData(newState);
       let size = payload.size || state.phongThucHien.size || 10;
       // let page = state.phongThucHien.page || 0;
       const sort = combineSort(
         payload.dataSortColumn || state.phongThucHien.dataSortColumn || {}
-      );
+        );
+        console.log('state.phongThucHien.dataSortColumn: ', state.phongThucHien.dataSortColumn);
+        console.log('payload.dataSortColumn: ', payload.dataSortColumn);
+        console.log('sort: ', sort);
       const dataSearch =
         payload.dataSearch || state.phongThucHien.dataSearch || {};
 
@@ -178,6 +185,7 @@ export default {
           dichVuId,
           soPhieuId,
           nbDotDieuTriId,
+          active,
           ...dataSearch,
         })
         .then((s) => {

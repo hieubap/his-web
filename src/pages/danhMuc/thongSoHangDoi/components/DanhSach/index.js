@@ -1,11 +1,11 @@
 import { Button, Checkbox } from "antd";
 import TableWrapper from "components/TableWrapper";
 import HeaderSearch from "components/TableWrapper/headerSearch";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Main } from "./styled";
 import IcCreate from "assets/images/kho/IcCreate.png";
 import { Pagination } from "components";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import IconDelete from "assets/images/khamBenh/delete.png";
 import Select from "components/Select";
 import showFull from "assets/svg/showFull.svg";
@@ -31,8 +31,55 @@ const DanhSach = (props) => {
     handleCollapsePane,
     showFullTable,
     collapseStatus,
+
+    layerId,
   } = props;
   const [dataEdit, setDataEdit] = useState({});
+  // const refClickBtnAdd = useRef();
+  // const refSelectRow = useRef();
+  // const refAutoFocus = useRef(null);
+  // const { onRegisterHotkey } = useDispatch().phimTat;
+
+  // // register layerId
+  // useEffect(() => {
+  //   onRegisterHotkey({
+  //     layerId,
+  //     hotKeys: [
+  //       {
+  //         keyCode: 112, //F1
+  //         onEvent: () => {
+  //           refClickBtnAdd.current && refClickBtnAdd.current();
+  //         },
+  //       },
+  //       {
+  //         keyCode: 38, //up
+  //         onEvent: (e) => {
+  //           refSelectRow.current && refSelectRow.current(-1);
+  //         },
+  //       },
+  //       {
+  //         keyCode: 40, //down
+  //         onEvent: (e) => {
+  //           refSelectRow.current && refSelectRow.current(1);
+  //         },
+  //       },
+  //     ],
+  //   });
+  // }, []);
+
+  // refSelectRow.current = (index) => {
+  //   const indexNextItem =
+  //     (listData?.findIndex((item) => item.id === dataEdit?.id) || 0) +
+  //     index;
+  //   if (-1 < indexNextItem && indexNextItem < listData.length) {
+  //     updateData({ currentItem: listData[indexNextItem] });
+  //     setDataEdit(listData[indexNextItem]);
+  //     document
+  //       .getElementsByClassName("row-id-" + listData[indexNextItem]?.id)[0]
+  //       .scrollIntoView({ block: "end", behavior: "smooth" });
+  //   }
+  // };
+
   useEffect(() => {
     onSizeChange(10);
   }, []);
@@ -168,7 +215,8 @@ const DanhSach = (props) => {
         }}
         buttonHeader={[
           {
-            title: "Thêm mới",
+            type: "create",
+            title: "Thêm mới [F1]",
             onClick: onClickedBtnAdded,
             buttonHeaderIcon: (
               <img style={{ marginLeft: 5 }} src={IcCreate} alt="" />
@@ -191,7 +239,9 @@ const DanhSach = (props) => {
         dataSource={listData}
         onRow={onRow}
         rowKey={(record) => record.id}
-        rowClassName={setRowClassName}
+        layerId={layerId}
+        dataEditDefault={dataEdit}
+        // rowClassName={setRowClassName}
       ></TableWrapper>
       {totalElements && (
         <Pagination

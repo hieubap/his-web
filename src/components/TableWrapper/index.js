@@ -17,12 +17,14 @@ const TableWrapper = ({
   onRow = () => {},
 
   layerId,
+  layerIds,
   dataEditDefault,
+  rowKey,
   ...rest
 }) => {
   const refClickBtnAdd = useRef();
   const refSelectRow = useRef();
-  const { onRegisterHotkey } = useDispatch().phimTat;
+  const { onRegisterHotkey, onRemoveLayer } = useDispatch().phimTat;
   const classNameCustom =
     rowClassName ||
     ((record, index) => {
@@ -31,34 +33,54 @@ const TableWrapper = ({
         : `row-id-${layerId}_${record.id}`;
     });
 
+  const registerLayer = (_layerId) => {
+    onRegisterHotkey({
+      layerId: _layerId,
+      hotKeys: [
+        {
+          keyCode: 112, //F1
+          onEvent: () => {
+            refClickBtnAdd.current && refClickBtnAdd.current();
+          },
+        },
+        {
+          keyCode: 38, //up
+          onEvent: (e) => {
+            if (e.target.nodeName !== "INPUT")
+              refSelectRow.current && refSelectRow.current(-1);
+          },
+        },
+        {
+          keyCode: 40, //down
+          onEvent: (e) => {
+            if (e.target.nodeName !== "INPUT")
+              refSelectRow.current && refSelectRow.current(1);
+          },
+        },
+      ],
+    });
+  };
   // register layerId
   useEffect(() => {
-    if (layerId)
-      onRegisterHotkey({
-        layerId,
-        hotKeys: [
-          {
-            keyCode: 112, //F1
-            onEvent: () => {
-              refClickBtnAdd.current && refClickBtnAdd.current();
-            },
-          },
-          {
-            keyCode: 38, //up
-            onEvent: (e) => {
-              if (e.target.nodeName !== "INPUT")
-                refSelectRow.current && refSelectRow.current(-1);
-            },
-          },
-          {
-            keyCode: 40, //down
-            onEvent: (e) => {
-              if (e.target.nodeName !== "INPUT")
-                refSelectRow.current && refSelectRow.current(1);
-            },
-          },
-        ],
-      });
+    if (layerId) {
+      registerLayer(layerId);
+    }
+    if (layerIds) {
+      for (let i = 0; i < layerIds.length; i++) {
+        registerLayer(layerIds[i]);
+      }
+    }
+
+    return () => {
+      if (layerId) {
+        onRemoveLayer({ layerId });
+      }
+      if (layerIds) {
+        for (let i = 0; i < layerIds.length; i++) {
+          onRemoveLayer({ layerId: layerIds[i] });
+        }
+      }
+    };
   }, []);
 
   refSelectRow.current = (index) => {
@@ -145,7 +167,7 @@ const TableWrapper = ({
           pagination={false}
           bordered
           scroll={{ y: scroll.y || 370, x: scroll.x || 500 }}
-          rowKey={(record) => record.id}
+          rowKey={rowKey ? rowKey : (_, index) => index + 1}
         />
       </div>
     </Main>

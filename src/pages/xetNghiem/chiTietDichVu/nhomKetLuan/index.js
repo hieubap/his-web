@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Main } from "./styled";
 import { Form, Input, InputNumber } from "antd";
-import Checkbox from "components/Checkbox";
 import Select from "components/Select";
 import { connect } from "react-redux";
 import { LOAI_KET_QUA, CHON_KET_QUA, SERVICE_STATUS } from "../../configs";
@@ -10,7 +9,7 @@ import { openInNewTab } from "utils";
 const { TextArea } = Input;
 
 function NhomKetLuan(props) {
-  const { listMaMay, searchMaMay, form, data } = props;
+  const { listMaMay, searchMaMay, form, data, listphanLoaiKetQuaXetNghiem } = props;
   const [result, setResult] = useState(null);
 
   useEffect(() => {
@@ -24,23 +23,22 @@ function NhomKetLuan(props) {
     setResult(e?.target ? e.target.value : e);
   };
 
-
   const showClassByInput = (item) => {
     let strClass = "";
-    if(item == 0) {
-      strClass="input-center";
+    if (item == 0) {
+      strClass = "input-center";
     }
-    if(item == 10) {
-      strClass="input-left";
+    if (item == 10) {
+      strClass = "input-left";
     }
-    if(item == 20 || item == 30) {
-      strClass="input-right";
+    if (item == 20 || item == 30) {
+      strClass = "input-right";
     }
     return strClass;
   };
 
   const renderKetQua = () => {
-    const { loaiKetQua,phanLoaiKetQua } = data;
+    const { loaiKetQua, phanLoaiKetQua } = data;
     if (loaiKetQua === LOAI_KET_QUA.SO) {
       return (
         <InputNumber
@@ -69,7 +67,6 @@ function NhomKetLuan(props) {
       );
     }
   };
-
   return (
     <Main>
       <div className="group-title">Kết luận</div>
@@ -79,14 +76,14 @@ function NhomKetLuan(props) {
             label="Kết quả"
             name="ketQua"
             rules={
-              data?.loaiKetQua != LOAI_KET_QUA.SO &&
-              data?.loaiKetQua != LOAI_KET_QUA.CHON_GIA_TRI &&
-              [
-                {
-                  max: 1500,
-                  message: "Vui lòng nhập kết quả không quá 1500 ký tự!",
-                },
-              ] || []
+              (data?.loaiKetQua !== LOAI_KET_QUA.SO &&
+                data?.loaiKetQua !== LOAI_KET_QUA.CHON_GIA_TRI && [
+                  {
+                    max: 1500,
+                    message: "Vui lòng nhập kết quả không quá 1500 ký tự!",
+                  },
+                ]) ||
+              []
             }
           >
             {renderKetQua()}
@@ -124,13 +121,20 @@ function NhomKetLuan(props) {
             <TextArea autoSize={{ minRows: 1 }} disabled={isDisabled} />
           </Form.Item>
           <Form.Item
-            label={(
+            label={
               <div
                 className="pointer"
                 onClick={() => openInNewTab("/danh-muc/ma-may")}
-              >Mã máy</div>
-            )} name="maMayId">
+              >
+                Mã máy
+              </div>
+            }
+            name="maMayId"
+          >
             <Select data={listMaMay} disabled={isDisabled} />
+          </Form.Item>
+          <Form.Item label="Đánh giá kết quả" name="phanLoaiKetQua">
+            <Select data={listphanLoaiKetQuaXetNghiem} disabled></Select>
           </Form.Item>
           <Form.Item label="">
             <div>Kết quả bình thường: {data.ketQuaThamChieu}</div>
